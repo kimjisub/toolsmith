@@ -182,11 +182,11 @@ struct OnboardingView: View {
                      lead: String(localized: "Clipboard, screen time and system monitor history stay on this Mac and are never sent anywhere. Choose what to keep now, and change it later in Settings → Privacy & Storage."))
             } art: {
                 VStack(spacing: 0) {
-                    ChoiceRow(title: String(localized: "Record screen time"), detail: String(localized: "How long you used each app. Deleted after 90 days"), isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
+                    ChoiceRow(title: String(localized: "Record Screen Time"), detail: String(localized: "How long you used each app. Deleted after 90 days"), isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
                     GuideInk.hairline.frame(height: 1)
-                    ChoiceRow(title: String(localized: "Look up public IP address"), detail: String(localized: "Network details ask Cloudflare for it"), isOn: settings.binding(\.publicAddressLookup))
+                    ChoiceRow(title: String(localized: "Look Up Public IP Address"), detail: String(localized: "Network details ask Cloudflare for it"), isOn: settings.binding(\.publicAddressLookup))
                     GuideInk.hairline.frame(height: 1)
-                    ChoiceRow(title: String(localized: "Launch at login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
+                    ChoiceRow(title: String(localized: "Launch at Login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
                         get: { LaunchAtLogin.isInstalled ? LaunchAtLogin.isEnabled : settings.settings.launchAtLogin },
                         set: { value in
                             if LaunchAtLogin.isInstalled { try? LaunchAtLogin.set(value) }

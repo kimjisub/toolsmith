@@ -97,7 +97,7 @@ struct LauncherView: View {
                 Text("Ask AI").font(.role(Theme.rowRole)).foregroundStyle(selected ? Color.white : Ink.secondary)
                 Text(model.query.trimmingCharacters(in: .whitespaces)).font(.role(.body)).foregroundStyle(Ink.tertiary).lineLimit(1)
                 Spacer(minLength: Space.s)
-                if !hasAIKey() { Text("Key needed").font(.role(.secondary)).foregroundStyle(Status.warning) }
+                if !hasAIKey() { Text("Key Needed").font(.role(.secondary)).foregroundStyle(Status.warning) }
                 KeyCap(label: "⇥", highlighted: selected)
             }
             .padding(.leading, Space.m)
@@ -126,7 +126,7 @@ struct LauncherView: View {
             if ai.isStreaming {
                 KeyCap(label: "esc"); Text("Stop")
             } else {
-                KeyCap(label: "↵"); Text(ai.isEmpty ? "Ask" : "Ask a follow-up")
+                KeyCap(label: "↵"); Text(ai.isEmpty ? "Ask" : "Ask a Follow-Up")
                 if !ai.isEmpty {
                     KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "C"); Text("Copy Answer")
                 }
@@ -175,7 +175,7 @@ struct LauncherView: View {
 
     private var placeholder: String {
         switch model.mode {
-        case .ai: return ai.isEmpty ? String(localized: "Ask anything") : String(localized: "Ask a follow-up")
+        case .ai: return ai.isEmpty ? String(localized: "Ask anything") : String(localized: "Ask a Follow-Up")
         case .snippets: return String(localized: "Search Snippets")
         case .commands, .fill: return String(localized: "What would you like to do?")
         }

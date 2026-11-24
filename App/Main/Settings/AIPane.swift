@@ -13,7 +13,7 @@ struct AIPane: View {
         SettingsLead(text: String(localized: "Type . at the start of the launcher, or type a question and press ⇥ to choose Ask AI. It searches the web and answers with up-to-date information."))
         SettingsSection(title: String(localized: "OpenRouter Key"),
                         footer: message ?? String(localized: "The key is stored only in this Mac’s keychain. Questions and answers go to and from OpenRouter; \(AppIdentity.name) doesn’t save them.")) {
-            SettingsRow(title: hasSavedKey ? String(localized: "Key saved") : String(localized: "Not set"), detail: hasSavedKey ? String(localized: "Enter a new key to replace it") : String(localized: "Paste a key you created at openrouter.ai")) {
+            SettingsRow(title: hasSavedKey ? String(localized: "Key Saved") : String(localized: "Not Set"), detail: hasSavedKey ? String(localized: "Enter a new key to replace it") : String(localized: "Paste a key you created at openrouter.ai")) {
                 if hasSavedKey {
                     RowButton(String(localized: "Delete"), role: .destructive) {
                         KeyStore.delete()

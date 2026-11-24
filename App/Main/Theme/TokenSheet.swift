@@ -15,7 +15,7 @@ struct TokenSheet: View {
                 Text("App/Main/Theme/Tokens.swift and App/Kit/Design/Palette.swift. Screens use only these names; the lint rejects any other value. Dark only.")
                     .textRole(.detail).foregroundStyle(Ink.tertiary)
             }
-            section(String(localized: "Type roles")) {
+            section(String(localized: "Type Roles")) {
                 VStack(alignment: .leading, spacing: Space.s) {
                     ForEach(TextRole.allCases, id: \.self) { role in
                         HStack(alignment: .firstTextBaseline, spacing: Space.l) {
@@ -39,7 +39,7 @@ struct TokenSheet: View {
                     contrastRow("Status.info", Status.info, Palette.info)
                 }
             }
-            section(String(localized: "Fills and lines")) {
+            section(String(localized: "Fills and Lines")) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: Space.m) {
                     swatch("Fill.faint", Fill.faint)
                     swatch("Fill.card", Fill.card)
@@ -57,7 +57,7 @@ struct TokenSheet: View {
                     swatch("Surface.canvas", Surface.canvas)
                 }
             }
-            section(String(localized: "Brand and status")) {
+            section(String(localized: "Brand and Status")) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: Space.m) {
                     swatch("Brand.lavender", Brand.lavender)
                     swatch("Brand.peach", Brand.peach)
@@ -67,7 +67,7 @@ struct TokenSheet: View {
                     swatch("Status.danger", Status.danger)
                 }
             }
-            section(String(localized: "Tiles (contrast with white symbols)")) {
+            section(String(localized: "Tiles (Contrast with White Symbols)")) {
                 HStack(spacing: Space.l) {
                     ForEach(Array(zip(["gray", "blue", "green", "teal", "indigo", "purple", "pink", "orange"], Palette.Tile.all)), id: \.0) { name, rgba in
                         VStack(spacing: Space.xs) {
@@ -78,7 +78,7 @@ struct TokenSheet: View {
                     }
                 }
             }
-            section(String(localized: "Spacing: Space (4 pt grid)")) {
+            section(String(localized: "Spacing: Space (4-pt Grid)")) {
                 VStack(alignment: .leading, spacing: Space.xs) {
                     ForEach([("xs", Space.xs), ("s", Space.s), ("m", Space.m), ("l", Space.l), ("xl", Space.xl), ("xxl", Space.xxl), ("xxxl", Space.xxxl), ("huge", Space.huge)], id: \.0) { name, value in
                         HStack(spacing: Space.m) {
@@ -89,7 +89,7 @@ struct TokenSheet: View {
                     }
                 }
             }
-            section(String(localized: "Corners: Radius, and icons: IconSize")) {
+            section(String(localized: "Corners: Radius, and Icons: IconSize")) {
                 HStack(alignment: .bottom, spacing: Space.xl) {
                     ForEach([("xs", Radius.xs), ("s", Radius.s), ("m", Radius.m), ("l", Radius.l), ("xl", Radius.xl)], id: \.0) { name, value in
                         VStack(spacing: Space.xs) {

@@ -515,22 +515,22 @@
         }
       }
     },
+    "AI Answers → OpenRouter" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 검색 → OpenRouter"
+          }
+        }
+      }
+    },
     "AI Search" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "AI 검색"
-          }
-        }
-      }
-    },
-    "AI search → OpenRouter" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI 검색 → OpenRouter"
           }
         }
       }
@@ -855,22 +855,22 @@
         }
       }
     },
+    "App Language" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 언어"
+          }
+        }
+      }
+    },
     "App Launcher" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "앱 실행"
-          }
-        }
-      }
-    },
-    "App language" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "앱 언어"
           }
         }
       }
@@ -955,7 +955,7 @@
         }
       }
     },
-    "Ask a follow-up" : {
+    "Ask a Follow-Up" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1085,7 +1085,7 @@
         }
       }
     },
-    "Brand and status" : {
+    "Brand and Status" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1095,7 +1095,7 @@
         }
       }
     },
-    "By app" : {
+    "By App" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1105,7 +1105,7 @@
         }
       }
     },
-    "By hour" : {
+    "By Hour" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1131,7 +1131,7 @@
         }
       }
     },
-    "CPU & other" : {
+    "CPU & Other" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1151,17 +1151,7 @@
         }
       }
     },
-    "CPU Usage" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CPU 사용"
-          }
-        }
-      }
-    },
-    "CPU temperature and power" : {
+    "CPU Temperature and Power" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1171,7 +1161,7 @@
         }
       }
     },
-    "CPU usage" : {
+    "CPU Usage" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1301,7 +1291,7 @@
         }
       }
     },
-    "Changed apps" : {
+    "Changed Apps" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1332,16 +1322,6 @@
       }
     },
     "Charge Limit" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "충전 제한"
-          }
-        }
-      }
-    },
-    "Charge limit" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1481,7 +1461,7 @@
         }
       }
     },
-    "Choose features" : {
+    "Choose Features" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1571,6 +1551,16 @@
         }
       }
     },
+    "Clear History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 지우기"
+          }
+        }
+      }
+    },
     "Clear all screen time history?" : {
       "localizations" : {
         "ko" : {
@@ -1587,16 +1577,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "클립보드 기록을 지울까요?"
-          }
-        }
-      }
-    },
-    "Clear history" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "기록 지우기"
           }
         }
       }
@@ -1721,16 +1701,6 @@
         }
       }
     },
-    "Clipboard history" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "클립보드 기록"
-          }
-        }
-      }
-    },
     "Clipboard, screen time and system monitor history stay on this Mac and are never sent anywhere. Choose what to keep now, and change it later in Settings → Privacy & Storage." : {
       "localizations" : {
         "ko" : {
@@ -1761,7 +1731,7 @@
         }
       }
     },
-    "Color format" : {
+    "Color Format" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1771,7 +1741,7 @@
         }
       }
     },
-    "Combine into one slot" : {
+    "Combine into One Slot" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1959,7 +1929,7 @@
         }
       }
     },
-    "Copy and close (↵)" : {
+    "Copy and Close (↵)" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -1969,7 +1939,7 @@
         }
       }
     },
-    "Copy to clipboard after capturing" : {
+    "Copy to Clipboard After Capturing" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2005,7 +1975,7 @@
         }
       }
     },
-    "Corners: Radius, and icons: IconSize" : {
+    "Corners: Radius, and Icons: IconSize" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2291,7 +2261,7 @@
         }
       }
     },
-    "Customize menu bar" : {
+    "Customize Menu Bar" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2301,7 +2271,7 @@
         }
       }
     },
-    "Cycle count" : {
+    "Cycle Count" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2311,7 +2281,7 @@
         }
       }
     },
-    "Data folder" : {
+    "Data Folder" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2371,22 +2341,22 @@
         }
       }
     },
+    "Design Capacity" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설계 용량"
+          }
+        }
+      }
+    },
     "Design Tokens" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "디자인 토큰"
-          }
-        }
-      }
-    },
-    "Design capacity" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "설계 용량"
           }
         }
       }
@@ -2443,16 +2413,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "디스크 읽기 %1$@, 쓰기 %2$@"
-          }
-        }
-      }
-    },
-    "Disk reads and writes" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "디스크 읽기와 쓰기"
           }
         }
       }
@@ -2607,7 +2567,7 @@
         }
       }
     },
-    "Energy impact" : {
+    "Energy Impact" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2617,7 +2577,7 @@
         }
       }
     },
-    "Energy mode" : {
+    "Energy Mode" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2747,7 +2707,7 @@
         }
       }
     },
-    "Fills and lines" : {
+    "Fills and Lines" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2847,7 +2807,7 @@
         }
       }
     },
-    "Gap between windows" : {
+    "Gap Between Windows" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -2947,7 +2907,7 @@
         }
       }
     },
-    "Graphics processor usage" : {
+    "Graphics Processor Usage" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3065,22 +3025,22 @@
         }
       }
     },
+    "How App Sound Is Changed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 소리를 바꾸는 방법"
+          }
+        }
+      }
+    },
     "How a color from the color picker is copied" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "색 고르기로 고른 색을 복사할 때의 모양"
-          }
-        }
-      }
-    },
-    "How app sound is changed" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "앱 소리를 바꾸는 방법"
           }
         }
       }
@@ -3161,7 +3121,7 @@
         }
       }
     },
-    "Include Mac audio" : {
+    "Include Mac Audio" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3171,7 +3131,7 @@
         }
       }
     },
-    "Include microphone" : {
+    "Include Microphone" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3301,22 +3261,22 @@
         }
       }
     },
+    "Keep History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보관 기간"
+          }
+        }
+      }
+    },
     "Keep Open" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "열어 두기"
-          }
-        }
-      }
-    },
-    "Keep history for" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "보관 기간"
           }
         }
       }
@@ -3361,7 +3321,7 @@
         }
       }
     },
-    "Key needed" : {
+    "Key Needed" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3371,7 +3331,7 @@
         }
       }
     },
-    "Key saved" : {
+    "Key Saved" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3401,7 +3361,7 @@
         }
       }
     },
-    "Last 7 days" : {
+    "Last 7 Days" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3411,7 +3371,7 @@
         }
       }
     },
-    "Last checked" : {
+    "Last Checked" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3421,7 +3381,7 @@
         }
       }
     },
-    "Launch at login" : {
+    "Launch at Login" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3522,7 +3482,7 @@
         }
       }
     },
-    "Load average" : {
+    "Load Average" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3532,7 +3492,7 @@
         }
       }
     },
-    "Load saved sound settings" : {
+    "Load Saved Sound Settings" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3562,7 +3522,7 @@
         }
       }
     },
-    "Look up public IP address" : {
+    "Look Up Public IP Address" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3652,7 +3612,7 @@
         }
       }
     },
-    "Maximum capacity" : {
+    "Maximum Capacity" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -3702,6 +3662,16 @@
         }
       }
     },
+    "Memory Usage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리 사용률"
+          }
+        }
+      }
+    },
     "Memory Used" : {
       "localizations" : {
         "ko" : {
@@ -3712,22 +3682,12 @@
         }
       }
     },
-    "Memory in use" : {
+    "Memory in Use" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "쓰는 메모리"
-          }
-        }
-      }
-    },
-    "Memory usage" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "메모리 사용률"
           }
         }
       }
@@ -3742,32 +3702,22 @@
         }
       }
     },
+    "Menu Bar Preview" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대 미리보기"
+          }
+        }
+      }
+    },
     "Menu Bar Settings" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "메뉴 막대 설정"
-          }
-        }
-      }
-    },
-    "Menu bar" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "메뉴 막대"
-          }
-        }
-      }
-    },
-    "Menu bar preview" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "메뉴 막대 미리보기"
           }
         }
       }
@@ -3972,22 +3922,22 @@
         }
       }
     },
+    "Network Speed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 속도"
+          }
+        }
+      }
+    },
     "Network details ask Cloudflare for it" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "네트워크 자세히 보기에서 Cloudflare 에 묻습니다"
-          }
-        }
-      }
-    },
-    "Network speed" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "네트워크 속도"
           }
         }
       }
@@ -4042,12 +3992,52 @@
         }
       }
     },
-    "Next field" : {
+    "Next Field" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "다음 칸"
+          }
+        }
+      }
+    },
+    "No Apps to Add" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더할 수 있는 앱이 없습니다"
+          }
+        }
+      }
+    },
+    "No Effects to Add" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더할 효과가 없습니다"
+          }
+        }
+      }
+    },
+    "No Matches" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾는 것이 없습니다"
+          }
+        }
+      }
+    },
+    "No Matching Actions" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾는 동작이 없습니다"
           }
         }
       }
@@ -4058,6 +4048,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "결과 없음"
+          }
+        }
+      }
+    },
+    "No Snippets Yet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 스니펫이 없습니다"
           }
         }
       }
@@ -4092,16 +4092,6 @@
         }
       }
     },
-    "No apps to add" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "더할 수 있는 앱이 없습니다"
-          }
-        }
-      }
-    },
     "No charge limit" : {
       "localizations" : {
         "ko" : {
@@ -4122,52 +4112,12 @@
         }
       }
     },
-    "No effects to add" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "더할 효과가 없습니다"
-          }
-        }
-      }
-    },
     "No longer used" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "더 이상 쓰지 않습니다"
-          }
-        }
-      }
-    },
-    "No matches" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "찾는 것이 없습니다"
-          }
-        }
-      }
-    },
-    "No matching actions" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "찾는 동작이 없습니다"
-          }
-        }
-      }
-    },
-    "No snippets yet" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "아직 스니펫이 없습니다"
           }
         }
       }
@@ -4228,6 +4178,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "보내지 않음 (시스템 출력)"
+          }
+        }
+      }
+    },
+    "Not Set" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 없습니다"
           }
         }
       }
@@ -4322,17 +4282,7 @@
         }
       }
     },
-    "Not set" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "아직 없습니다"
-          }
-        }
-      }
-    },
-    "Nothing copied yet" : {
+    "Nothing Copied Yet" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4382,7 +4332,7 @@
         }
       }
     },
-    "Old helper" : {
+    "Old Helper" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4522,16 +4472,6 @@
         }
       }
     },
-    "OpenRouter key" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OpenRouter 키"
-          }
-        }
-      }
-    },
     "Opens the launcher from any app" : {
       "localizations" : {
         "ko" : {
@@ -4592,12 +4532,12 @@
         }
       }
     },
-    "Output groups" : {
+    "Output Volume" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "출력 묶음"
+            "value" : "출력 볼륨"
           }
         }
       }
@@ -4608,16 +4548,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "출력 음소거"
-          }
-        }
-      }
-    },
-    "Output volume" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "출력 볼륨"
           }
         }
       }
@@ -4642,7 +4572,7 @@
         }
       }
     },
-    "Page ins" : {
+    "Page Ins" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4652,7 +4582,7 @@
         }
       }
     },
-    "Page outs" : {
+    "Page Outs" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4672,22 +4602,22 @@
         }
       }
     },
+    "Paste Directly" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바로 붙여넣기"
+          }
+        }
+      }
+    },
     "Paste a key you created at openrouter.ai" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "openrouter.ai 에서 만든 키를 붙여 넣으세요"
-          }
-        }
-      }
-    },
-    "Paste directly" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "바로 붙여넣기"
           }
         }
       }
@@ -4702,7 +4632,7 @@
         }
       }
     },
-    "Paste into app" : {
+    "Paste into App" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4732,7 +4662,7 @@
         }
       }
     },
-    "Pause charging now" : {
+    "Pause Charging Now" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4742,7 +4672,7 @@
         }
       }
     },
-    "Pause history" : {
+    "Pause History" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4752,7 +4682,7 @@
         }
       }
     },
-    "Peak download speed" : {
+    "Peak Download Speed" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4762,7 +4692,7 @@
         }
       }
     },
-    "Peak upload speed" : {
+    "Peak Upload Speed" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -4838,6 +4768,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "여유 있음"
+          }
+        }
+      }
+    },
+    "Plugged in" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터 연결됨"
           }
         }
       }
@@ -4933,14 +4873,8 @@
         }
       }
     },
-    "Pressure %@ · %@ used" : {
+    "Pressure %@ · %@" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Pressure %1$@ · %2$@ used"
-          }
-        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4979,7 +4913,7 @@
         }
       }
     },
-    "Public IP lookup → Cloudflare" : {
+    "Public IP Lookup → Cloudflare" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5039,28 +4973,22 @@
         }
       }
     },
+    "R %@ · W %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽기 %1$@ · 쓰기 %2$@"
+          }
+        }
+      }
+    },
     "Read" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "읽기"
-          }
-        }
-      }
-    },
-    "Read %@ · Write %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Read %1$@ · Write %2$@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "읽기 %1$@ · 쓰기 %2$@"
           }
         }
       }
@@ -5105,7 +5033,7 @@
         }
       }
     },
-    "Record screen time" : {
+    "Record Screen Time" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5225,7 +5153,7 @@
         }
       }
     },
-    "Reopen to apply" : {
+    "Reopen to Apply" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5365,7 +5293,7 @@
         }
       }
     },
-    "Save to" : {
+    "Save Location" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5385,7 +5313,7 @@
         }
       }
     },
-    "Saved history" : {
+    "Saved History" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5465,32 +5393,22 @@
         }
       }
     },
+    "Screen Time Today" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 사용 시간"
+          }
+        }
+      }
+    },
     "Screen capture, recording and text recognition. Takes effect after you reopen the app" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "화면 캡처, 녹화, 글자 읽기. 허락한 뒤 앱을 다시 열어야 적용됩니다"
-          }
-        }
-      }
-    },
-    "Screen time" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용 시간"
-          }
-        }
-      }
-    },
-    "Screen time today" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "오늘 사용 시간"
           }
         }
       }
@@ -5585,7 +5503,7 @@
         }
       }
     },
-    "Send to another output" : {
+    "Send to Another Output" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5725,16 +5643,6 @@
         }
       }
     },
-    "Show welcome guide again" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "처음 안내 다시 보기"
-          }
-        }
-      }
-    },
     "Shows the address and country the internet sees for this Mac" : {
       "localizations" : {
         "ko" : {
@@ -5785,7 +5693,7 @@
         }
       }
     },
-    "Spacing: Space (4 pt grid)" : {
+    "Spacing: Space (4-pt Grid)" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -5915,6 +5823,16 @@
         }
       }
     },
+    "System Monitor History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 모니터 기록"
+          }
+        }
+      }
+    },
     "System Settings → Privacy & Security → Paste from Other Apps: Allow" : {
       "localizations" : {
         "ko" : {
@@ -5931,16 +5849,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시스템 설정 → 개인정보 보호 및 보안 → 화면 및 시스템 오디오 녹음"
-          }
-        }
-      }
-    },
-    "System monitor history" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "시스템 모니터 기록"
           }
         }
       }
@@ -6471,7 +6379,7 @@
         }
       }
     },
-    "Tiles (contrast with white symbols)" : {
+    "Tiles (Contrast with White Symbols)" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -6691,22 +6599,22 @@
         }
       }
     },
+    "Type Roles" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 단계"
+          }
+        }
+      }
+    },
     "Type a period\nand ask" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "점을 찍고\n물어보세요"
-          }
-        }
-      }
-    },
-    "Type roles" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "글자 단계"
           }
         }
       }
@@ -6741,7 +6649,7 @@
         }
       }
     },
-    "Undo delete" : {
+    "Undo Delete" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -6801,7 +6709,7 @@
         }
       }
     },
-    "Update automatically" : {
+    "Update Automatically" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -6983,7 +6891,7 @@
         }
       }
     },
-    "Values in the menu bar" : {
+    "Values in the Menu Bar" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -7069,7 +6977,7 @@
         }
       }
     },
-    "Welcome guide" : {
+    "Welcome Guide" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -7209,7 +7117,7 @@
         }
       }
     },
-    "Wired memory" : {
+    "Wired Memory" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -7219,7 +7127,7 @@
         }
       }
     },
-    "Without formatting" : {
+    "Without Formatting" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
@@ -7400,18 +7308,18 @@
         }
       }
     },
-    "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %@ (ToolsmithHelper) is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %@. Click Remove to put charging back as it was and delete it." : {
+    "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %@. Click Remove to put charging back as it was and delete it." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %1$@ (ToolsmithHelper) is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %2$@. Click Remove to put charging back as it was and delete it."
+            "value" : "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %1$@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %2$@. Click Remove to put charging back as it was and delete it."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 맥의 macOS 에는 충전 제한이 없어(macOS 26.4 이상 애플 실리콘 맥에 있습니다) 맥의 전원 관리 칩(SMC)에 직접 값을 씁니다. 이는 관리자 권한이 필요합니다. 「설치」 를 누르면 %1$@ 안에 든 작은 도우미(ToolsmithHelper)가 시스템의 백그라운드 항목으로 등록되고, 시스템 설정 → 일반 → 로그인 항목에서 허용하면 관리자 권한으로 돕니다. 도우미는 충전 말고는 아무것도 하지 않고 %2$@ 의 요청만 받습니다. 「제거」 를 누르면 충전을 원래대로 돌려놓고 지웁니다."
+            "value" : "이 맥의 macOS 에는 충전 제한이 없어(macOS 26.4 이상 애플 실리콘 맥에 있습니다) 맥의 전원 관리 칩(SMC)에 직접 값을 씁니다. 이는 관리자 권한이 필요합니다. 「설치」 를 누르면 %1$@ 안에 든 작은 도우미가 시스템의 백그라운드 항목으로 등록되고, 시스템 설정 → 일반 → 로그인 항목에서 허용하면 관리자 권한으로 돕니다. 도우미는 충전 말고는 아무것도 하지 않고 %2$@ 의 요청만 받습니다. 「제거」 를 누르면 충전을 원래대로 돌려놓고 지웁니다."
           }
         }
       }

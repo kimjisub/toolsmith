@@ -7,9 +7,9 @@ import ToolsmithKit
 enum MixerStyle {
     // Column widths on the 4 pt grid; the screen is exactly as wide as a row.
     static let nameWidth: CGFloat = 152
-    static let volumeWidth: CGFloat = 200
+    static let volumeWidth: CGFloat = 180
     static let boostWidth: CGFloat = 36
-    static let deviceWidth: CGFloat = 180
+    static let deviceWidth: CGFloat = 240
     static let fxWidth: CGFloat = 28
     static let columnGap = Space.s
     static let rowInset = Space.s
@@ -94,7 +94,7 @@ struct MixerView: View {
             } else {
                 PillMenu(title: String(localized: "Add Favorite"), symbol: "star.fill") {
                     let candidates = mixer.favoriteCandidates()
-                    if candidates.isEmpty { Text("No apps to add") }
+                    if candidates.isEmpty { Text("No Apps to Add") }
                     ForEach(candidates, id: \.key) { app in Button(app.name) { mixer.toggleFavorite(app.key) } }
                 }
                 Spacer()
@@ -139,7 +139,7 @@ struct MixerView: View {
     }
 
     private var appsGroup: some View {
-        MixerGroup(title: String(localized: "Apps"), columns: [String(localized: "Volume"), "Boost", String(localized: "Send to another output"), "FX"],
+        MixerGroup(title: String(localized: "Apps"), columns: [String(localized: "Volume"), "Boost", String(localized: "Send to Another Output"), "FX"],
                    collapsed: Binding(get: { state.appsCollapsed }, set: { state.appsCollapsed = $0 })) {
             if mixer.rows.isEmpty {
                 Text("No apps are playing sound. Apps appear here when they play, and favorites are always shown.")
@@ -441,7 +441,7 @@ private struct SystemDetails: View {
                 }
                 HStack(spacing: Space.s) {
                     PillMenu(title: String(localized: "Add Effect"), symbol: "plus") {
-                        if system.effects.contains(.equalizer) { Text("No effects to add") }
+                        if system.effects.contains(.equalizer) { Text("No Effects to Add") }
                         if !system.effects.contains(.equalizer) {
                             Button(EffectKind.equalizer.title) { mixer.updateSystemEffects { $0.effects.append(.equalizer) } }
                         }
@@ -578,7 +578,7 @@ private struct AppDetails: View {
             HStack(spacing: Space.s) {
                 PillMenu(title: String(localized: "Add Effect"), symbol: "plus") {
                     let missing = EffectKind.forApps.filter { !settings.effects.contains($0) }
-                    if missing.isEmpty { Text("No effects to add") }
+                    if missing.isEmpty { Text("No Effects to Add") }
                     ForEach(missing) { effect in Button(effect.title) { mixer.updateApp(row.key) { $0.effects.append(effect) } } }
                 }
                 Spacer()

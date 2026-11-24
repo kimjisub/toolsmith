@@ -9,19 +9,19 @@ struct CapturePane: View {
     var body: some View {
         SettingsLead(text: String(localized: "Capture an area, a window or the whole screen. Each capture appears at the bottom left, where you can copy it, save it, pin it or recognize its text."))
         SettingsSection(title: String(localized: "After Capturing")) {
-            SettingsRow(title: String(localized: "Save to"), detail: (CaptureCoordinator.folder(settings.settings).path as NSString).abbreviatingWithTildeInPath) {
+            SettingsRow(title: String(localized: "Save Location"), detail: (CaptureCoordinator.folder(settings.settings).path as NSString).abbreviatingWithTildeInPath) {
                 if settings.settings.captureFolder != nil {
                     RowButton(String(localized: "Use Desktop")) { settings.update { $0.captureFolder = nil } }
                 }
                 RowButton(String(localized: "Change…"), action: chooseFolder)
             }
-            ToggleRow(title: String(localized: "Copy to clipboard after capturing"), detail: String(localized: "Paste right away without saving first"), isOn: settings.binding(\.captureCopiesToClipboard))
-            PickerRow(title: String(localized: "Color format"), detail: String(localized: "How a color from the color picker is copied"), selection: settings.binding(\.colorFormat),
+            ToggleRow(title: String(localized: "Copy to Clipboard After Capturing"), detail: String(localized: "Paste right away without saving first"), isOn: settings.binding(\.captureCopiesToClipboard))
+            PickerRow(title: String(localized: "Color Format"), detail: String(localized: "How a color from the color picker is copied"), selection: settings.binding(\.colorFormat),
                       options: ColorFormat.allCases, label: \.title)
         }
         SettingsSection(title: String(localized: "Recording")) {
-            ToggleRow(title: String(localized: "Include Mac audio"), detail: String(localized: "Video recordings only. GIFs have no sound"), isOn: settings.binding(\.recordSystemAudio))
-            ToggleRow(title: String(localized: "Include microphone"), detail: String(localized: "macOS asks for microphone access the first time you record with this on"), isOn: settings.binding(\.recordMicrophone))
+            ToggleRow(title: String(localized: "Include Mac Audio"), detail: String(localized: "Video recordings only. GIFs have no sound"), isOn: settings.binding(\.recordSystemAudio))
+            ToggleRow(title: String(localized: "Include Microphone"), detail: String(localized: "macOS asks for microphone access the first time you record with this on"), isOn: settings.binding(\.recordMicrophone))
         }
     }
 

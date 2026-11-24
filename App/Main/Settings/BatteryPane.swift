@@ -8,7 +8,7 @@ struct BatteryPane: View {
         VStack(alignment: .leading, spacing: Space.xxl) {
             SettingsLead(text: String(localized: "A battery lasts longer when it is not always kept at 100%. Charging stops at a set level."))
             if charge.canControl {
-                SettingsSection(title: String(localized: "Charge limit")) {
+                SettingsSection(title: String(localized: "Charge Limit")) {
                     TimelineView(.periodic(from: .now, by: 5)) { _ in
                         ContentRow { ChargeControls(charge: charge, battery: BatteryReader.battery()) }
                     }
@@ -16,14 +16,14 @@ struct BatteryPane: View {
             }
             if charge.state == .system {
                 if charge.helperRegistered {
-                    SettingsSection(title: String(localized: "Old helper"), footer: String(localized: "This Mac uses macOS’s own charge limit, so the charge helper installed earlier is no longer needed. Removing it puts back the charge settings the helper changed, then deletes it.")) {
+                    SettingsSection(title: String(localized: "Old Helper"), footer: String(localized: "This Mac uses macOS’s own charge limit, so the charge helper installed earlier is no longer needed. Removing it puts back the charge settings the helper changed, then deletes it.")) {
                         SettingsRow(title: String(localized: "Installed"), detail: String(localized: "No longer used")) {
                             RowButton(String(localized: "Remove"), role: .destructive) { charge.uninstall() }.disabled(charge.busy)
                         }
                     }
                 }
             } else {
-                SettingsSection(title: String(localized: "Helper"), footer: String(localized: "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside \(AppIdentity.name) (ToolsmithHelper) is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from \(AppIdentity.name). Click Remove to put charging back as it was and delete it.")) {
+                SettingsSection(title: String(localized: "Helper"), footer: String(localized: "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside \(AppIdentity.name) is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from \(AppIdentity.name). Click Remove to put charging back as it was and delete it.")) {
                     SettingsRow(title: stateTitle, detail: stateDetail) {
                         actions
                     }

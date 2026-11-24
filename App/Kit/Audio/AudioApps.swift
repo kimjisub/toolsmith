@@ -45,6 +45,13 @@ public struct AudioAppRow: Equatable, Sendable {
     public var isPlaying: Bool { group?.isPlaying ?? false }
     /// Not playing now but heard a moment ago.
     public let isRecent: Bool
+
+    public init(key: String, group: AudioAppGroup?, isFavorite: Bool, isRecent: Bool) {
+        self.key = key
+        self.group = group
+        self.isFavorite = isFavorite
+        self.isRecent = isRecent
+    }
 }
 
 public enum AudioApps {

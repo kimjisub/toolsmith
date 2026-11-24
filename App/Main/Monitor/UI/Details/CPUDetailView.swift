@@ -23,8 +23,8 @@ struct CPUDetailView: View {
             UsageList(title: String(localized: "Top Apps"), symbol: "list.number", entries: processes.cpu, format: { String(format: "%.1f%%", $0) })
             HistoryBlock(topic: .gpu, selection: selection) {
                 PanelHeader(title: "GPU", symbol: "square.stack.3d.up")
-                Figure(value: s.gpu.map { MonitorText.whole($0) } ?? "-", unit: "%", caption: String(localized: "Graphics processor usage"))
-                TableRow(label: String(localized: "Memory in use"), value: s.gpuMemory.map { MonitorText.memory($0) } ?? "-")
+                Figure(value: s.gpu.map { MonitorText.whole($0) } ?? "-", unit: "%", caption: String(localized: "Graphics Processor Usage"))
+                TableRow(label: String(localized: "Memory in Use"), value: s.gpuMemory.map { MonitorText.memory($0) } ?? "-")
                 TableRow(label: String(localized: "Temperature"), value: s.temperatures.gpu.map(MonitorText.temperature) ?? "-")
                 TableRow(label: String(localized: "Frequency"), value: s.gpuMHz.map(MonitorText.frequency) ?? "-")
                 if !processes.gpu.isEmpty {
@@ -40,7 +40,7 @@ struct CPUDetailView: View {
                 }
             }
             Panel {
-                TableRow(label: String(localized: "Load average"), value: s.loadAverage.map { String(format: "%.2f", $0) }.joined(separator: "  "))
+                TableRow(label: String(localized: "Load Average"), value: s.loadAverage.map { String(format: "%.2f", $0) }.joined(separator: "  "))
                     .help("Average number of tasks waiting to run over 1, 5 and 15 minutes")
                 TableRow(label: String(localized: "Uptime"), value: UptimeText.text(s.uptime))
             }

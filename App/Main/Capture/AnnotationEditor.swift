@@ -200,7 +200,7 @@ private struct AnnotationEditorView: View {
             Spacer(minLength: Space.s)
             Button("Copy", action: onCopy).help(Text(verbatim: "⌘C"))
             Button("Save", action: onSave).help(Text(verbatim: "⌘S"))
-            Button("Done", action: onDone).keyboardShortcut(.defaultAction).help("Copy and close (↵)")
+            Button("Done", action: onDone).keyboardShortcut(.defaultAction).help("Copy and Close (↵)")
         }
         .padding(.horizontal, Space.l)
         .background(Surface.canvasBar)

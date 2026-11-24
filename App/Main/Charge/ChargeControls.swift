@@ -24,7 +24,7 @@ struct ChargeControls: View {
                 topUpRow
             }
             if charge.canPause {
-                LabeledSwitch(title: String(localized: "Pause charging now"), isOn: Binding(get: { charge.paused }, set: { charge.setPaused($0) }))
+                LabeledSwitch(title: String(localized: "Pause Charging Now"), isOn: Binding(get: { charge.paused }, set: { charge.setPaused($0) }))
             }
             if charge.canDischarge {
                 LabeledSwitch(title: dischargeTitle, isOn: Binding(get: { charge.discharging }, set: { charge.setDischarging($0) }))

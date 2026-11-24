@@ -13,7 +13,7 @@ struct ClipboardPanelScreen: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if items.isEmpty {
-                EmptyState(symbol: "doc.on.clipboard", title: String(localized: "Nothing copied yet"), detail: String(localized: "Whatever you copy appears here."))
+                EmptyState(symbol: "doc.on.clipboard", title: String(localized: "Nothing Copied Yet"), detail: String(localized: "Whatever you copy appears here."))
             } else {
                 VStack(spacing: Space.xs) {
                     ForEach(items) { item in ClipRow(item: item) { onPaste(item) } }

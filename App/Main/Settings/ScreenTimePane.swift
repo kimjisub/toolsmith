@@ -35,7 +35,7 @@ struct ScreenTimePane: View {
             SettingsLead(text: String(localized: "Time isn’t counted after 5 minutes without input, or while the screen is locked or off. During a video call that uses the microphone or camera, it counts even without input."))
             ScreenTimeContent(report: report)
             SettingsSection(title: String(localized: "History"), footer: String(localized: "To stop recording, turn off Screen Time in Settings → Features. What’s already recorded stays.")) {
-                SettingsRow(title: String(localized: "Clear history"), detail: String(localized: "Deletes all screen time recorded so far")) {
+                SettingsRow(title: String(localized: "Clear History"), detail: String(localized: "Deletes all screen time recorded so far")) {
                     RowButton(String(localized: "Clear All…"), role: .destructive) { confirmingClear = true }
                 }
             }
@@ -61,7 +61,7 @@ struct ScreenTimeContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.m) {
             VStack(alignment: .leading, spacing: Space.xs) {
-                Text("Screen time today").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                Text("Screen Time Today").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
                 Text(report.total > 0 ? DurationText.text(report.total) : String(localized: "0 min")).font(.role(.figure, weight: .semibold))
             }
             card {
@@ -73,11 +73,11 @@ struct ScreenTimeContent: View {
                 }
             }
             card {
-                caption(String(localized: "By hour"))
+                caption(String(localized: "By Hour"))
                 Bars(values: report.hourly, labels: [0, 6, 12, 18].map { ($0, String(localized: "\($0):00")) }, highlightLast: false).frame(height: 70)
             }
             card {
-                caption(String(localized: "By app"))
+                caption(String(localized: "By App"))
                 if report.apps.isEmpty {
                     Text("Nothing recorded yet.").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
                 }
@@ -104,7 +104,7 @@ struct ScreenTimeContent: View {
                 }
             }
             card {
-                caption(String(localized: "Last 7 days"))
+                caption(String(localized: "Last 7 Days"))
                 Bars(values: report.week, labels: report.week.count > 1 ? [(0, String(localized: "\(report.week.count - 1) days ago")), (report.week.count - 1, String(localized: "Today"))] : [], highlightLast: true).frame(height: 70)
             }
         }

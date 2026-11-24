@@ -148,7 +148,7 @@ struct SnippetFillView: View {
             if emptyCount > 0 { Text("\(emptyCount) empty fields · ↵ pastes with them left blank") }
             Spacer()
             KeyCap(label: "⇥")
-            Text("Next field")
+            Text("Next Field")
             KeyCap(label: "↵").padding(.leading, Space.s)
             Text("Paste")
             KeyCap(label: "esc").padding(.leading, Space.s)

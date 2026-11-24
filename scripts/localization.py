@@ -5,8 +5,8 @@
     scripts/localization.py check           lint, plus every catalog entry translated into every language
     scripts/localization.py check --built [Dev|Release]
                                             check, plus the last build's strings all in the catalogs
-    scripts/localization.py sync            adds the last builds' new strings to the catalogs (to translate)
-                                            and drops the ones no configuration uses any more
+    scripts/localization.py sync            adds the last development build's new strings to the catalogs
+                                            (to translate) and drops the ones the code no longer uses
 
 English is the development language: code holds English, the catalogs hold the other languages.
 The compiler lists every localizable literal it sees (String(localized:), Text("..."), Kit's
@@ -91,15 +91,15 @@ CONFIGURATION = "Dev"
 
 
 def stringsdata(target: str, configuration: str) -> list[pathlib.Path]:
-    """The compiler's lists for `target`; "*" reads every configuration built (Dev and Release
-    differ: Release leaves out the development aids, and a few strings exist only there)."""
+    """The compiler's lists for `target` in one configuration. Dev has every string (Release
+    leaves out the development aids), so catalogs are synced and pruned from Dev."""
     files = sorted(DERIVED.glob(f"{configuration}/{target}.build/**/*.stringsdata"))
     if not files:
         sys.exit(f"no .stringsdata for {target} under {DERIVED.relative_to(ROOT)}; build first (scripts/build.sh)")
     return files
 
 
-def synced(catalog: pathlib.Path, target: str, folder: pathlib.Path, configuration: str = "*") -> dict:
+def synced(catalog: pathlib.Path, target: str, folder: pathlib.Path, configuration: str = "Dev") -> dict:
     """The catalog as Xcode would leave it after a build: new strings added, vanished ones marked stale."""
     copy = folder / catalog.name
     shutil.copy(catalog, copy)
@@ -120,11 +120,9 @@ def built_differences() -> list[str]:
             name = catalog.relative_to(ROOT)
             for key in sorted(after.keys() - before.keys()):
                 problems.append(f"  {name}: {key!r} is in the code but not in the catalog")
-            # A string is unused only if neither configuration has it; with one built, that is unknown.
-            both_built = all(list(DERIVED.glob(f"{c}/{target}.build")) for c in ("Dev", "Release"))
-            everywhere = synced(catalog, target, pathlib.Path(folder))["strings"] if both_built else {}
-            for key in sorted(before.keys() & everywhere.keys()):
-                if everywhere[key].get("extractionState") == "stale" and before[key].get("extractionState") != "stale":
+            # Only Dev sees every string; a Release build cannot tell an unused one from a development aid's.
+            for key in sorted(before.keys() & after.keys()) if CONFIGURATION == "Dev" else []:
+                if after[key].get("extractionState") == "stale" and before[key].get("extractionState") != "stale":
                     problems.append(f"  {name}: {key!r} is no longer in the code")
     return problems
 

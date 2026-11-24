@@ -19,7 +19,7 @@ struct DashboardView: View {
                     Sparkline(values: zip(monitor.cpuUserHistory.values, monitor.cpuSystemHistory.values).map { $0 + $1 }, ceiling: 100)
                 }
                 row(.memory, symbol: "memorychip", title: String(localized: "Memory"), value: MonitorText.whole(s.memory.usedPercent), unit: "%",
-                    detail: String(localized: "Pressure \(MonitorText.percent(s.memory.pressure)) · \(MonitorText.memory(s.memory.used)) used")) {
+                    detail: String(localized: "Pressure \(MonitorText.percent(s.memory.pressure)) · \(MonitorText.memory(s.memory.used))")) {
                     Sparkline(values: monitor.memoryHistory.values, ceiling: 100)
                 }
                 row(.sensors, symbol: "bolt", title: String(localized: "Power and Temperature"), value: s.power.system.map { MonitorText.whole($0) } ?? "-", unit: "W",
@@ -27,7 +27,7 @@ struct DashboardView: View {
                     Sparkline(values: monitor.powerHistory.values)
                 }
                 row(.disk, symbol: "internaldrive", title: s.volume.name, value: ByteSize.text(Int(s.volume.available)), unit: String(localized: "free"),
-                    detail: String(localized: "Read \(MonitorText.rate(s.diskReadRate)) · Write \(MonitorText.rate(s.diskWriteRate))")) {
+                    detail: String(localized: "R \(MonitorText.rate(s.diskReadRate)) · W \(MonitorText.rate(s.diskWriteRate))")) {
                     MeterBar(fraction: s.volume.usedFraction).frame(width: 92)
                 }
                 row(.network, symbol: "arrow.up.arrow.down", title: String(localized: "Network Download"), value: MonitorText.rate(s.downloadRate), unit: "",
@@ -36,7 +36,7 @@ struct DashboardView: View {
                 }
                 if let battery = s.battery {
                     row(.battery, symbol: battery.isCharging ? "battery.100.bolt" : "battery.75", title: String(localized: "Battery"), value: MonitorText.whole(battery.level), unit: "%",
-                        detail: [battery.isCharging ? String(localized: "Charging") : battery.onAdapter ? String(localized: "Adapter connected") : String(localized: "On battery"), battery.health.map { String(localized: "Health \(MonitorText.percent($0))") }]
+                        detail: [battery.isCharging ? String(localized: "Charging") : battery.onAdapter ? String(localized: "Plugged in") : String(localized: "On battery"), battery.health.map { String(localized: "Health \(MonitorText.percent($0))") }]
                             .compactMap { $0 }.joined(separator: " · ")) {
                         MeterBar(fraction: battery.level / 100, fill: AnyShapeStyle(battery.level < 20 ? MonitorStyle.hot : MonitorStyle.tertiary)).frame(width: 92)
                     }
@@ -91,7 +91,7 @@ struct DashboardView: View {
                     Text(value).font(.role(.title, weight: .medium, design: .rounded)).monospacedDigit().lineLimit(1)
                     if !unit.isEmpty { Text(unit).font(.role(.detail, design: .rounded)).foregroundStyle(MonitorStyle.quiet) }
                 }
-                if !detail.isEmpty { Text(detail).font(.role(.detail)).foregroundStyle(MonitorStyle.quiet).lineLimit(1) }
+                if !detail.isEmpty { Text(detail).font(.role(.detail)).foregroundStyle(MonitorStyle.quiet).lineLimit(1).minimumScaleFactor(0.8) }
             }
             Spacer(minLength: Space.s)
             trailing().frame(width: 92, height: 30)

@@ -99,12 +99,12 @@ enum MonitorMenuBar {
         var descriptor: MenuBarItemDescriptor {
             let graphs: [MenuBarStyle] = [.graph, .iconAndValue, .value]
             switch self {
-            case .cpu: return item(String(localized: "CPU usage"), "cpu", graphs)
-            case .memory: return item(String(localized: "Memory usage"), "memorychip", graphs)
-            case .disk: return item(String(localized: "Disk reads and writes"), "internaldrive", graphs)
-            case .network: return item(String(localized: "Network speed"), "arrow.up.arrow.down", graphs)
+            case .cpu: return item(String(localized: "CPU Usage"), "cpu", graphs)
+            case .memory: return item(String(localized: "Memory Usage"), "memorychip", graphs)
+            case .disk: return item(String(localized: "Disk Reads and Writes"), "internaldrive", graphs)
+            case .network: return item(String(localized: "Network Speed"), "arrow.up.arrow.down", graphs)
             case .battery: return item(String(localized: "Battery"), "battery.75percent", graphs)
-            case .readout: return item(String(localized: "CPU temperature and power"), "thermometer.medium", [.value, .iconAndValue])
+            case .readout: return item(String(localized: "CPU Temperature and Power"), "thermometer.medium", [.value, .iconAndValue])
             }
         }
 

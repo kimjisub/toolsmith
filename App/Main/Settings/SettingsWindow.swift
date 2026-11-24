@@ -228,7 +228,9 @@ private struct SettingsSidebar: View {
             .scrollIndicators(.automatic)
         }
         .padding(.horizontal, Space.m)
-        .frame(width: 222)
+        // As wide as the longest page name needs, so no language's names are cut off.
+        .frame(minWidth: 222)
+        .fixedSize(horizontal: true, vertical: false)
         .frame(maxHeight: .infinity)
         .background(Shade.medium)
         .overlay(alignment: .trailing) { Line.subtle.frame(width: 1) }
@@ -239,7 +241,7 @@ private struct SettingsSidebar: View {
         return Button { selection = pane } label: {
             HStack(spacing: Space.s) {
                 IconTile(symbol: pane.symbol(modules), color: pane.color(modules))
-                Text(pane.title(modules)).font(.role(.body)).lineLimit(1)
+                Text(pane.title(modules)).font(.role(.body)).fixedSize()
                 Spacer(minLength: 0)
             }
             .foregroundStyle(selected ? Color.white : Ink.secondary)

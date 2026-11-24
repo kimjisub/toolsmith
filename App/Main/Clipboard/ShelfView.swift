@@ -104,7 +104,7 @@ struct ShelfView: View {
 
     private var empty: some View {
         let searching = !model.query.trimmingCharacters(in: .whitespaces).isEmpty || model.kind != nil || model.pinnedOnly
-        return Text(searching ? "No matches" : "Nothing copied yet. Whatever you copy appears here.")
+        return Text(searching ? "No Matches" : "Nothing copied yet. Whatever you copy appears here.")
             .font(.role(.body))
             .foregroundStyle(Ink.tertiary)
             .frame(maxWidth: .infinity)
@@ -117,11 +117,11 @@ struct ShelfView: View {
                 Image(systemName: "exclamationmark.circle").foregroundStyle(Status.warning)
                 Text(banner).foregroundStyle(Status.warning)
             } else if model.lastDeleted != nil {
-                KeyCap(label: "⌘"); KeyCap(label: "Z"); Text("Undo delete")
+                KeyCap(label: "⌘"); KeyCap(label: "Z"); Text("Undo Delete")
             } else {
-                KeyCap(label: "↵"); Text("Paste into app")
-                KeyCap(label: "⇧").padding(.leading, Space.m); KeyCap(label: "↵"); Text("Without formatting")
-                KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "1"); Text(verbatim: "~"); KeyCap(label: "9"); Text("Paste directly")
+                KeyCap(label: "↵"); Text("Paste into App")
+                KeyCap(label: "⇧").padding(.leading, Space.m); KeyCap(label: "↵"); Text("Without Formatting")
+                KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "1"); Text(verbatim: "~"); KeyCap(label: "9"); Text("Paste Directly")
             }
             Spacer()
             KeyCap(label: "⇥"); Text("Kind")

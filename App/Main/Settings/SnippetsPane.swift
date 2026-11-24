@@ -50,7 +50,7 @@ struct SnippetsPane: View {
 
     private var emptyState: some View {
         SettingsSection(title: String(localized: "Example"), footer: String(localized: "Anything in braces asks for a value when you paste.")) {
-            EmptyState(symbol: "text.quote", title: String(localized: "No snippets yet"),
+            EmptyState(symbol: "text.quote", title: String(localized: "No Snippets Yet"),
                        detail: String(localized: "Add text you write again and again, then paste it from the launcher or with a shortcut."),
                        action: (String(localized: "Add Snippet"), startDraft))
             ContentRow {

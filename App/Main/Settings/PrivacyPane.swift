@@ -10,9 +10,9 @@ struct PrivacyPane: View {
     @State private var sizes: [String: Int64] = [:]
 
     private static let folders: [(key: String, title: String, detail: String, pane: SettingsPane?)] = [
-        ("clipboard", String(localized: "Clipboard history"), String(localized: "Text and images you copied. Copies marked as passwords and copies from apps you excluded are never kept"), .clipboard),
-        ("screentime", String(localized: "Screen time"), String(localized: "Which app was in front, and for how long. Deleted after 90 days"), .screenTime),
-        ("monitor", String(localized: "System monitor history"), String(localized: "One-minute averages of numbers like CPU, memory, network and power. Deleted after 28 days"), .monitor),
+        ("clipboard", String(localized: "Clipboard History"), String(localized: "Text and images you copied. Copies marked as passwords and copies from apps you excluded are never kept"), .clipboard),
+        ("screentime", String(localized: "Screen Time"), String(localized: "Which app was in front, and for how long. Deleted after 90 days"), .screenTime),
+        ("monitor", String(localized: "System Monitor History"), String(localized: "One-minute averages of numbers like CPU, memory, network and power. Deleted after 28 days"), .monitor),
     ]
 
     var body: some View {
@@ -26,7 +26,7 @@ struct PrivacyPane: View {
                         }
                     }
                 }
-                SettingsRow(title: String(localized: "OpenRouter key"), detail: KeyStore.hasSavedKey ? String(localized: "In this Mac’s keychain") : String(localized: "None")) {
+                SettingsRow(title: String(localized: "OpenRouter Key"), detail: KeyStore.hasSavedKey ? String(localized: "In this Mac’s keychain") : String(localized: "None")) {
                     if modules.isEnabled(AIModule.descriptor.id) { RowButton(String(localized: "Manage")) { environment.settingsPane = .ai } }
                 }
                 SettingsRow(title: String(localized: "Settings"), detail: String(localized: "Shortcuts and the choices on these screens")) {
@@ -34,10 +34,10 @@ struct PrivacyPane: View {
                 }
             }
             SettingsSection(title: String(localized: "Sent Out")) {
-                SettingsRow(title: String(localized: "AI search → OpenRouter"), detail: String(localized: "Only when you ask the AI in the launcher, and only that question. Answers aren’t saved"))
-                ToggleRow(title: String(localized: "Public IP lookup → Cloudflare"), detail: String(localized: "Only when you open the network details, at most once every 5 minutes. Nothing about you is sent"),
+                SettingsRow(title: String(localized: "AI Answers → OpenRouter"), detail: String(localized: "Only when you ask the AI in the launcher, and only that question. Answers aren’t saved"))
+                ToggleRow(title: String(localized: "Public IP Lookup → Cloudflare"), detail: String(localized: "Only when you open the network details, at most once every 5 minutes. Nothing about you is sent"),
                           isOn: settings.binding(\.publicAddressLookup))
-                ToggleRow(title: String(localized: "Record screen time"), detail: String(localized: "Never sent. When off, the app in front isn’t recorded"), isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
+                ToggleRow(title: String(localized: "Record Screen Time"), detail: String(localized: "Never sent. When off, the app in front isn’t recorded"), isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
             }
         }
         .onAppear(perform: refresh)

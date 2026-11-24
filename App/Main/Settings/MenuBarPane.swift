@@ -21,7 +21,7 @@ struct MenuBarPane: View {
             SettingsSection(footer: layout.combined
                             ? String(localized: "All items sit side by side in one menu bar slot. Clicking opens the item under the pointer.")
                             : String(localized: "Each item gets its own menu bar slot, in the order of this list.")) {
-                ToggleRow(title: String(localized: "Combine into one slot"), detail: String(localized: "When off, each item gets its own slot"), isOn: Binding(
+                ToggleRow(title: String(localized: "Combine into One Slot"), detail: String(localized: "When off, each item gets its own slot"), isOn: Binding(
                     get: { layout.combined },
                     set: { on in settings.update { $0.menuBarLayout.combined = on } }))
             }
@@ -80,7 +80,7 @@ struct MenuBarPane: View {
                         in: RoundedRectangle(cornerRadius: Radius.s, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: Radius.s, style: .continuous).strokeBorder(Line.base, lineWidth: 1))
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Menu bar preview")
+            .accessibilityLabel("Menu Bar Preview")
         }
     }
 

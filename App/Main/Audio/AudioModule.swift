@@ -12,7 +12,7 @@ import ToolsmithKit
     nonisolated static let descriptor = ModuleDescriptor(
         id: screenID, title: String(localized: "Sound"), summary: String(localized: "Change the output, input and alert devices, and each app's volume, output and effects"),
         symbol: "speaker.wave.2.fill", tint: .pink, permissions: [.audioCapture],
-        menuBarItems: [MenuBarItemDescriptor(id: volumeItemID, moduleID: screenID, title: String(localized: "Output volume"), symbol: "speaker.wave.2.fill",
+        menuBarItems: [MenuBarItemDescriptor(id: volumeItemID, moduleID: screenID, title: String(localized: "Output Volume"), symbol: "speaker.wave.2.fill",
                                              styles: [.icon, .iconAndValue], defaultStyle: .icon, defaultVisible: true)])
     var descriptor: ModuleDescriptor { Self.descriptor }
 
@@ -91,6 +91,10 @@ import ToolsmithKit
     #if TOOLSMITH_DEV
     func runDevelopmentAid(_ arguments: [String]) {
         if let index = arguments.firstIndex(of: "--expand"), index + 1 < arguments.count { pendingExpanded = arguments[index + 1] }
+        if arguments.contains("--audio-demo") {
+            AudioDevelopmentAids.showDemo(on: mixer)
+            if pendingExpanded == nil { pendingExpanded = AudioDevelopmentAids.demoExpandedApp }
+        }
         if arguments.contains("--show-mixer") { DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in self?.open() } }
         AudioDevelopmentAids.run(arguments)
     }

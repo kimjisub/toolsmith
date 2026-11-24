@@ -11,16 +11,16 @@ struct MonitorPane: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xxl) {
             SettingsLead(text: String(localized: "Click a value in the menu bar to open the dashboard. Hold the pointer over a card to open its details beside it."))
-            SettingsSection(title: String(localized: "Menu bar")) {
-                SettingsRow(title: String(localized: "Values in the menu bar"), detail: String(localized: "Choose the order and style of CPU, memory, disk, network, battery, CPU temperature and power")) {
+            SettingsSection(title: String(localized: "Menu Bar")) {
+                SettingsRow(title: String(localized: "Values in the Menu Bar"), detail: String(localized: "Choose the order and style of CPU, memory, disk, network, battery, CPU temperature and power")) {
                     RowButton(String(localized: "Menu Bar Settings")) { environment.settingsPane = .menuBar }
                 }
             }
             SettingsSection(title: String(localized: "Network"), footer: String(localized: "When on, opening the network details asks Cloudflare’s public address (www.cloudflare.com/cdn-cgi/trace) at most once every 5 minutes. Nothing is sent; Cloudflare sees this Mac’s public IP.")) {
-                ToggleRow(title: String(localized: "Look up public IP address"), detail: String(localized: "Shows the address and country the internet sees for this Mac"), isOn: settings.binding(\.publicAddressLookup))
+                ToggleRow(title: String(localized: "Look Up Public IP Address"), detail: String(localized: "Shows the address and country the internet sees for this Mac"), isOn: settings.binding(\.publicAddressLookup))
             }
             SettingsSection(title: String(localized: "History"), footer: String(localized: "The last hour is kept in memory only. Longer periods are kept on this Mac for 28 days as 1-minute averages (10-minute averages after 3 days).")) {
-                SettingsRow(title: String(localized: "Saved history"), detail: ByteSize.text(Int(historyBytes))) {
+                SettingsRow(title: String(localized: "Saved History"), detail: ByteSize.text(Int(historyBytes))) {
                     RowButton(String(localized: "Clear…"), role: .destructive) { confirmingClear = true }
                 }
             }

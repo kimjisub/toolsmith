@@ -19,8 +19,8 @@ struct NetworkDetailView: View {
                     direction("arrow.up", MonitorStyle.secondary, MonitorText.rate(monitor.snapshot.uploadRate), String(localized: "Upload"))
                 }
                 DualSparkline(down: monitor.downloadHistory.values, up: monitor.uploadHistory.values).frame(height: 44)
-                TableRow(label: String(localized: "Peak download speed"), value: MonitorText.rate(monitor.peakDownload))
-                TableRow(label: String(localized: "Peak upload speed"), value: MonitorText.rate(monitor.peakUpload))
+                TableRow(label: String(localized: "Peak Download Speed"), value: MonitorText.rate(monitor.peakDownload))
+                TableRow(label: String(localized: "Peak Upload Speed"), value: MonitorText.rate(monitor.peakUpload))
             }
             Panel {
                 PanelHeader(title: String(localized: "Connection"), symbol: c.isWiFi ? "wifi" : "cable.connector")

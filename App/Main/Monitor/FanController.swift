@@ -123,9 +123,12 @@ import ToolsmithKit
 
     /// Starts the helper as root. macOS asks for an administrator password. Returns why it failed, if it did.
     nonisolated private static func startHelper() -> String? {
+        // Outside the #if so every build's string catalog check sees it.
+        let unavailable = String(localized: "This build does not include fan control.")
         #if !TOOLSMITH_DEV
-        return String(localized: "This build does not include fan control.")
+        return unavailable
         #else
+        _ = unavailable
         guard let executable = Bundle.main.executablePath else { return "Could not find the app's executable." }
         let escaped = executable.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
         let script = """

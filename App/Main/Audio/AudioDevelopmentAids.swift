@@ -1,5 +1,6 @@
 #if TOOLSMITH_DEV
 import AppKit
+import CoreAudio
 import ScreenCaptureKit
 import SwiftUI
 import ToolsmithKit
@@ -34,6 +35,38 @@ import ToolsmithKit
         } catch {
             try? "screen shot failed: \(error)".write(to: url.appendingPathExtension("error.txt"), atomically: true, encoding: .utf8)
         }
+    }
+
+    /// The app whose line `--audio-demo` opens.
+    static let demoExpandedApp = "com.apple.Music"
+
+    /// `--audio-demo`: the sound screen on made-up devices, apps and levels in the app's language,
+    /// for pictures without this Mac's own devices or apps. No route is built.
+    static func showDemo(on mixer: AudioMixer) {
+        let korean = Locale.app.language.languageCode == .korean
+        let speakers = AudioDevice(id: 9_001, uid: "demo-speakers", name: korean ? "MacBook Pro 스피커" : "MacBook Pro Speakers",
+                                   hasOutput: true, hasInput: false, transport: kAudioDeviceTransportTypeBuiltIn)
+        let microphone = AudioDevice(id: 9_002, uid: "demo-microphone", name: korean ? "MacBook Pro 마이크" : "MacBook Pro Microphone",
+                                     hasOutput: false, hasInput: true, transport: kAudioDeviceTransportTypeBuiltIn)
+        let display = AudioDevice(id: 9_003, uid: "demo-display", name: korean ? "Studio Display 스피커" : "Studio Display Speakers",
+                                  hasOutput: true, hasInput: false, transport: kAudioDeviceTransportTypeDisplayPort)
+        func device(_ device: AudioDevice, volume: Double, rates: [Double]) -> SystemDeviceState {
+            SystemDeviceState(device: device, volume: volume, canSetVolume: true, muted: false, canMute: true, balance: 0, canSetBalance: true,
+                              sampleRate: rates.first, sampleRates: rates)
+        }
+        var music = AppAudioSettings(volume: 0.8, overdrive: 2, eq: EQPreset.bassBoost.settings)
+        music.magicBoost = true
+        let apps = [
+            AudioMixer.DemoApp(key: "com.apple.Music", path: "/System/Applications/Music.app", settings: music, isPlaying: true, isFavorite: true),
+            AudioMixer.DemoApp(key: "com.apple.podcasts", path: "/System/Applications/Podcasts.app", settings: AppAudioSettings(volume: 0.6, muted: true),
+                               isPlaying: true, isFavorite: true),
+            AudioMixer.DemoApp(key: "com.apple.Safari", path: "/Applications/Safari.app", settings: AppAudioSettings(volume: 0.45, outputUID: display.uid),
+                               isPlaying: true, isFavorite: false),
+        ]
+        mixer.showDemo(devices: [speakers, microphone, display], output: device(speakers, volume: 0.62, rates: [48_000, 44_100]),
+                       input: device(microphone, volume: 0.5, rates: [48_000]), effects: device(speakers, volume: 0.62, rates: []),
+                       alertVolume: 0.7, apps: apps,
+                       levels: [AudioMixer.outputKey: 0.55, "com.apple.Music": 0.42, "com.apple.podcasts": 0, "com.apple.Safari": 0.3])
     }
 
     /// Runs the aid `arguments` ask for, if any. Each one ends the app when it is done.

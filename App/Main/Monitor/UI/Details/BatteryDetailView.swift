@@ -52,15 +52,15 @@ struct BatteryDetailView: View {
                     if let health = battery.health {
                         Figure(value: MonitorText.whole(health), unit: "%", caption: String(localized: "Current capacity compared with when new"))
                     }
-                    if let design = battery.designCapacity { TableRow(label: String(localized: "Design capacity"), value: "\(design) mAh") }
-                    if let maximum = battery.maximumCapacity { TableRow(label: String(localized: "Maximum capacity"), value: "\(maximum) mAh") }
-                    if let cycles = battery.cycleCount { TableRow(label: String(localized: "Cycle count"), value: String(localized: "\(cycles) cycles")) }
+                    if let design = battery.designCapacity { TableRow(label: String(localized: "Design Capacity"), value: "\(design) mAh") }
+                    if let maximum = battery.maximumCapacity { TableRow(label: String(localized: "Maximum Capacity"), value: "\(maximum) mAh") }
+                    if let cycles = battery.cycleCount { TableRow(label: String(localized: "Cycle Count"), value: String(localized: "\(cycles) cycles")) }
                     if let condition = battery.conditionText { TableRow(label: String(localized: "Condition"), value: condition) }
                 }
                 HistoryBlock(topic: .batteryTemperature, selection: selection) {
                     PanelHeader(title: String(localized: "Temperature"), symbol: "thermometer.medium")
                     if let temperature = battery.temperature { HeatRow(label: String(localized: "Battery"), celsius: temperature) }
-                    if let mode = monitor.energyMode { TableRow(label: String(localized: "Energy mode"), value: mode.label) }
+                    if let mode = monitor.energyMode { TableRow(label: String(localized: "Energy Mode"), value: mode.label) }
                     if let watts = battery.adapterWatts, battery.onAdapter { TableRow(label: String(localized: "Adapter"), value: "\(watts) W") }
                 }
             }
@@ -77,7 +77,7 @@ struct BatteryDetailView: View {
                     }
                 }
             }
-            UsageList(title: String(localized: "Apps Using the Most Energy"), symbol: "leaf", entries: processes.energy, format: { String(format: "%.1f", $0) }, trailing: String(localized: "Energy impact"))
+            UsageList(title: String(localized: "Apps Using the Most Energy"), symbol: "leaf", entries: processes.energy, format: { String(format: "%.1f", $0) }, trailing: String(localized: "Energy Impact"))
         }
     }
 }
@@ -104,7 +104,7 @@ struct PowerFlow: View {
         add(String(localized: "Graphics"), "square.stack.3d.up", power.gpu, MonitorStyle.secondary)
         add(String(localized: "Memory"), "memorychip", power.memory, MonitorStyle.tertiary)
         add(String(localized: "Neural Engine"), "brain", power.neuralEngine, Brand.mint)
-        add(power.cpu == nil ? String(localized: "CPU & other") : String(localized: "Other"), "ellipsis", power.other, Ink.tertiary)
+        add(power.cpu == nil ? String(localized: "CPU & Other") : String(localized: "Other"), "ellipsis", power.other, Ink.tertiary)
         if charging == nil, let battery = power.battery, battery > 0.05 { add(String(localized: "Charge"), "battery.100.bolt", battery, MonitorStyle.tertiary) }
         return list
     }

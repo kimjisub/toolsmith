@@ -24,7 +24,7 @@ struct HotkeysPane: View {
                 }
             }
             if others.isEmpty {
-                Card { EmptyState(symbol: "command", title: search.isEmpty ? String(localized: "No actions can have a shortcut yet") : String(localized: "No matching actions")) }
+                Card { EmptyState(symbol: "command", title: search.isEmpty ? String(localized: "No actions can have a shortcut yet") : String(localized: "No Matching Actions")) }
             }
         }
         .onDisappear { environment.cancelRecording() }

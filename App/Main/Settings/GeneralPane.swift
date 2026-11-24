@@ -11,17 +11,17 @@ struct GeneralPane: View {
     var body: some View {
         SettingsPage(title: String(localized: "General")) {
             SettingsSection(title: String(localized: "App"), footer: loginError ?? (LaunchAtLogin.isInstalled ? nil : String(localized: "Launch at login takes effect once the app is installed in the Applications folder."))) {
-                ToggleRow(title: String(localized: "Launch at login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
+                ToggleRow(title: String(localized: "Launch at Login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
                     // For an installed copy the system's own status is the truth.
                     get: { LaunchAtLogin.isInstalled ? LaunchAtLogin.isEnabled : settings.settings.launchAtLogin },
                     set: { setLaunchAtLogin($0) }))
             }
             SettingsSection(title: String(localized: "Language"), footer: language == AppLanguagePreference.launched ? nil : String(localized: "The new language is used after the app reopens.")) {
-                PickerRow(title: String(localized: "App language"), detail: String(localized: "Follows the system unless you choose one"),
+                PickerRow(title: String(localized: "App Language"), detail: String(localized: "Follows the system unless you choose one"),
                           selection: Binding(get: { language }, set: { language = $0; AppLanguagePreference.set($0) }),
                           options: AppLanguage.allCases, label: { $0.label() })
                 if language != AppLanguagePreference.launched {
-                    SettingsRow(title: String(localized: "Reopen to apply")) {
+                    SettingsRow(title: String(localized: "Reopen to Apply")) {
                         RowButton(String(localized: "Reopen Now")) { Relaunch.now() }
                     }
                 }
@@ -37,15 +37,15 @@ struct GeneralPane: View {
                     RowButton(String(localized: "Change")) { environment.settingsPane = .hotkeys }
                 }
                 }
-                SettingsRow(title: String(localized: "Show welcome guide again"), detail: String(localized: "Goes over permissions and features again in one place")) {
+                SettingsRow(title: String(localized: "Show Welcome Guide Again"), detail: String(localized: "Goes over permissions and features again in one place")) {
                     RowButton(String(localized: "Open")) { environment.onboarding.show() }
                 }
             }
             SettingsSection(title: String(localized: "Features and Menu Bar")) {
-                SettingsRow(title: String(localized: "Choose features"), detail: String(localized: "Keep on only the features you use")) {
+                SettingsRow(title: String(localized: "Choose Features"), detail: String(localized: "Keep on only the features you use")) {
                     RowButton(String(localized: "Features")) { environment.settingsPane = .features }
                 }
-                SettingsRow(title: String(localized: "Customize menu bar"), detail: String(localized: "Choose the items the menu bar shows, their order and their style")) {
+                SettingsRow(title: String(localized: "Customize Menu Bar"), detail: String(localized: "Choose the items the menu bar shows, their order and their style")) {
                     RowButton(String(localized: "Menu Bar")) { environment.settingsPane = .menuBar }
                 }
             }
@@ -86,10 +86,10 @@ struct AboutPane: View {
             .padding(.vertical, Space.s)
             UpdateSection(updates: environment.updates, settings: environment.settings)
             SettingsSection {
-                SettingsRow(title: String(localized: "Welcome guide"), detail: String(localized: "Goes over permissions and features from the start")) {
+                SettingsRow(title: String(localized: "Welcome Guide"), detail: String(localized: "Goes over permissions and features from the start")) {
                     RowButton(String(localized: "Show Again")) { environment.onboarding.show() }
                 }
-                SettingsRow(title: String(localized: "Data folder"), detail: String(localized: "Where history and settings are kept. Only on this Mac")) {
+                SettingsRow(title: String(localized: "Data Folder"), detail: String(localized: "Where history and settings are kept. Only on this Mac")) {
                     RowButton(String(localized: "Show in Finder")) { NSWorkspace.shared.activateFileViewerSelecting([SettingsStore.supportDirectory]) }
                 }
             }
@@ -107,8 +107,8 @@ private struct UpdateSection: View {
         SettingsSection(title: String(localized: "Updates"), footer: updates.canUpdate
                         ? String(localized: "A new version is installed only after its developer signature and Apple notarization are checked, and waits for a screen recording to finish. A version that can’t be downloaded or installed is reported in a notification and not downloaded again automatically.")
                         : String(localized: "Development builds and apps you build yourself don’t check for updates. Only signed releases do.")) {
-            ToggleRow(title: String(localized: "Update automatically"), detail: String(localized: "Checks every 6 hours and installs a new version, then reopens"), isOn: settings.binding(\.automaticUpdates))
-            SettingsRow(title: String(localized: "Last checked"), detail: updates.lastCheck.map { "\(RelativeTime.text(from: $0.at, now: Date())) · \($0.message)" } ?? String(localized: "Not checked yet")) {
+            ToggleRow(title: String(localized: "Update Automatically"), detail: String(localized: "Checks every 6 hours and installs a new version, then reopens"), isOn: settings.binding(\.automaticUpdates))
+            SettingsRow(title: String(localized: "Last Checked"), detail: updates.lastCheck.map { "\(RelativeTime.text(from: $0.at, now: Date())) · \($0.message)" } ?? String(localized: "Not checked yet")) {
                 if updates.isChecking {
                     Spinner()
                 } else {

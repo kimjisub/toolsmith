@@ -26,13 +26,13 @@ struct ClipboardPane: View {
                 Notice(text: String(localized: "macOS is blocking what you copy in other apps. In System Settings → Privacy & Security → Paste from Other Apps, set \(AppIdentity.name) to Allow."))
             }
             SettingsSection(title: String(localized: "History"), footer: sizeNote) {
-                ToggleRow(title: String(localized: "Pause history"), detail: String(localized: "While this is on, what you copy isn’t recorded"), isOn: settings.binding(\.clipboardPaused))
-                PickerRow(title: String(localized: "Keep history for"), detail: String(localized: "Pinned items stay regardless"), selection: Binding(get: { settings.settings.clipRetention }, set: { value in
+                ToggleRow(title: String(localized: "Pause History"), detail: String(localized: "While this is on, what you copy isn’t recorded"), isOn: settings.binding(\.clipboardPaused))
+                PickerRow(title: String(localized: "Keep History"), detail: String(localized: "Pinned items stay regardless"), selection: Binding(get: { settings.settings.clipRetention }, set: { value in
                     settings.update { $0.clipRetention = value }
                     clipboard.purge()
                     refresh()
                 }), options: ClipRetention.allCases, label: \.title)
-                SettingsRow(title: String(localized: "Saved history"), detail: "\(String(localized: "\(stats.count) items")) · \(ByteSize.text(stats.bytes))") {
+                SettingsRow(title: String(localized: "Saved History"), detail: "\(String(localized: "\(stats.count) items")) · \(ByteSize.text(stats.bytes))") {
                     RowButton(String(localized: "Clear All…"), role: .destructive) { confirmingClear = true }
                 }
             }

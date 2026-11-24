@@ -23,7 +23,7 @@ import ToolsmithKit
             commands += deviceCommands(.output, idPrefix: "output", symbol: "hifispeaker", keywords: ["output", "speaker", "headphones", "출력", "스피커", "헤드폰", "이어폰"])
             commands += deviceCommands(.input, idPrefix: "input", symbol: "mic", keywords: ["input", "microphone", "mic", "입력", "마이크"])
             commands += mixer.configuration.quickConfigs.map { config in
-                Command(id: "audio.config:\(config.id.uuidString)", title: String(localized: "Quick Config: \(config.name)"), subtitle: String(localized: "Load saved sound settings"),
+                Command(id: "audio.config:\(config.id.uuidString)", title: String(localized: "Quick Config: \(config.name)"), subtitle: String(localized: "Load Saved Sound Settings"),
                         keywords: ["quick config", "소리 설정", "프리셋"], section: Self.section, icon: .symbol("square.stack.3d.up"), hotkeyID: nil,
                         run: { [weak self] in self?.mixer.applyQuickConfig(config.id) })
             }
