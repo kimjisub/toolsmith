@@ -92,45 +92,45 @@ final class ScreenTimeTests: XCTestCase {
     }
 
     func testDurationText() {
-        XCTAssertEqual(DurationText.text(20), "1분 미만")
-        XCTAssertEqual(DurationText.text(45 * 60), "45분")
-        XCTAssertEqual(DurationText.text(3 * 3_600 + 12 * 60 + 40), "3시간 12분")
-        XCTAssertEqual(DurationText.text(2 * 3_600), "2시간")
+        XCTAssertEqual(DurationText.text(20, locale: english), "Less than 1 min")
+        XCTAssertEqual(DurationText.text(45 * 60, locale: english), "45 min")
+        XCTAssertEqual(DurationText.text(3 * 3_600 + 12 * 60 + 40, locale: english), "3 hr, 12 min")
+        XCTAssertEqual(DurationText.text(2 * 3_600, locale: english), "2 hr")
     }
 
     func testInsights() {
         let apps = [AppUsage(bundleID: "s", name: "Slack", seconds: 3_900), AppUsage(bundleID: "c", name: "Chrome", seconds: 2_100)]
         var hourly = [Double](repeating: 0, count: 24)
         hourly[14] = 3_000; hourly[10] = 1_800; hourly[9] = 1_200
-        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [7_200, 3_600, 0, 5_400])
+        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [7_200, 3_600, 0, 5_400], locale: english)
         XCTAssertEqual(lines, [
-            "어제보다 10분 더 썼습니다.",                         // 6000 vs 5400
-            "최근 평균(1시간 30분)보다 10분 더 썼습니다.",        // average of the days that had any use
-            "가장 오래 쓴 앱은 Slack 입니다 (1시간 5분, 65%).",
-            "가장 많이 쓴 시간대는 오후 2시입니다.",
-            "오전 9시에 시작했습니다.",
+            "10 min more than yesterday.",                              // 6000 vs 5400
+            "10 min more than your recent average (1 hr, 30 min).",    // average of the days that had any use
+            "You used Slack the most (1 hr, 5 min, 65%).",
+            "Your busiest hour was 2\u{202F}PM.",
+            "You started at 9\u{202F}AM.",
         ])
     }
 
     func testInsightsWithNothingToCompare() {
-        XCTAssertEqual(ScreenTimeInsights.lines(apps: [], hourly: [Double](repeating: 0, count: 24), previousDays: []), ["아직 기록이 없습니다."])
+        XCTAssertEqual(ScreenTimeInsights.lines(apps: [], hourly: [Double](repeating: 0, count: 24), previousDays: [], locale: english), ["Nothing recorded yet."])
         let apps = [AppUsage(bundleID: "s", name: "Slack", seconds: 600)]
         var hourly = [Double](repeating: 0, count: 24); hourly[0] = 600
-        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [0, 0])
-        XCTAssertEqual(lines.first, "가장 오래 쓴 앱은 Slack 입니다 (10분, 100%).")
-        XCTAssertTrue(lines.contains("가장 많이 쓴 시간대는 오전 12시입니다."))
+        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [0, 0], locale: english)
+        XCTAssertEqual(lines.first, "You used Slack the most (10 min, 100%).")
+        XCTAssertTrue(lines.contains("Your busiest hour was 12\u{202F}AM."))
     }
 
     func testInsightUsedLess() {
         let apps = [AppUsage(bundleID: "s", name: "Slack", seconds: 1_800)]
         var hourly = [Double](repeating: 0, count: 24); hourly[13] = 1_800
-        XCTAssertEqual(ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [3_600]).first, "어제보다 30분 덜 썼습니다.")
+        XCTAssertEqual(ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [3_600], locale: english).first, "30 min less than yesterday.")
     }
 
     func testInsightComparesWithTheSameTimeOfDay() {
         let apps = [AppUsage(bundleID: "s", name: "Slack", seconds: 1_800)]
         var hourly = [Double](repeating: 0, count: 24); hourly[9] = 1_800
-        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [1_800, 1_800], byThisTime: true)
-        XCTAssertEqual(Array(lines.prefix(2)), ["어제 이 시각과 비슷하게 썼습니다.", "최근 이 시각 평균(30분)와 비슷하게 썼습니다."])
+        let lines = ScreenTimeInsights.lines(apps: apps, hourly: hourly, previousDays: [1_800, 1_800], byThisTime: true, locale: english)
+        XCTAssertEqual(Array(lines.prefix(2)), ["About the same as yesterday by this time.", "About the same as your recent average by this time (30 min)."])
     }
 }

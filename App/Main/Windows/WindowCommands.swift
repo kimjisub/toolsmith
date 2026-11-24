@@ -3,7 +3,7 @@ import ToolsmithKit
 
 /// The window placements as launcher commands.
 @MainActor final class WindowCommandSource: CommandSource {
-    static let section = CommandSection(id: "window", title: "화면 나누기", order: 0)
+    static let section = CommandSection(id: "window", title: String(localized: "Window Snapping"), order: 0)
     private let mover = WindowMover()
     /// The app whose window an action moves: the one in front when the launcher opened, or when a shortcut fired.
     var target: () -> NSRunningApplication? = { nil }
@@ -14,7 +14,7 @@ import ToolsmithKit
     nonisolated func commands() -> [Command] {
         MainActor.assumeIsolated {
             WindowAction.allCases.map { action in
-                Command(id: action.id, title: action.title, subtitle: nil, keywords: action.keywords, section: Self.section,
+                Command(id: action.id, localizedTitle: action.titleResource, subtitle: nil, keywords: action.keywords, section: Self.section,
                         icon: .symbol(action.symbol), hotkeyID: action.id,
                         run: { [weak self] in self?.run(action) })
             }

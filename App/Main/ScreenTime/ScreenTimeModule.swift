@@ -2,9 +2,9 @@ import AppKit
 import SwiftUI
 import ToolsmithKit
 
-/// 사용 시간: which app was in front, and for how long. Switched off, nothing is counted.
+/// Screen time: which app was in front, and for how long. Switched off, nothing is counted.
 @MainActor final class ScreenTimeModule: AppModule {
-    nonisolated static let descriptor = ModuleDescriptor(id: "screenTime", title: "사용 시간", summary: "어느 앱을 얼마나 썼는지 이 맥에만 기록합니다. 90일 뒤 지웁니다",
+    nonisolated static let descriptor = ModuleDescriptor(id: "screenTime", title: String(localized: "Screen Time"), summary: String(localized: "Records on this Mac only how long you used each app. Deleted after 90 days"),
                                              symbol: "hourglass", tint: .indigo)
     var descriptor: ModuleDescriptor { Self.descriptor }
     static let openID = "util.screentime"
@@ -33,7 +33,7 @@ import ToolsmithKit
     init(open: @escaping @MainActor () -> Void) { self.open = open }
 
     nonisolated func commands() -> [Command] {
-        MainActor.assumeIsolated { [Command(id: ScreenTimeModule.openID, title: "사용 시간 보기", subtitle: nil, keywords: ["screen time", "스크린타임", "통계", "인사이트", "얼마나 썼나"],
+        MainActor.assumeIsolated { [Command(id: ScreenTimeModule.openID, localizedTitle: "Show Screen Time", subtitle: nil, keywords: ["screen time", "스크린타임", "통계", "인사이트", "얼마나 썼나"],
                  section: UtilCommandSource.section, icon: .symbol("hourglass"), hotkeyID: ScreenTimeModule.openID, run: open)] }
     }
 }

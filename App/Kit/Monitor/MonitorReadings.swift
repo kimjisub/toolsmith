@@ -32,12 +32,14 @@ public struct CoreCluster: Equatable, Sendable {
         self.count = count
     }
 
-    /// "성능 코어", "효율 코어", "슈퍼 코어"; an unknown name stays as it is.
-    public var label: String {
+    /// "Performance Cores", "Efficiency Cores", "Super Cores"; an unknown name stays as it is.
+    public var label: String { label(locale: .app) }
+
+    public func label(locale: Locale) -> String {
         switch name.lowercased() {
-        case "performance": return "성능 코어"
-        case "efficiency": return "효율 코어"
-        case "super": return "슈퍼 코어"
+        case "performance": return localized("Performance Cores", locale: locale)
+        case "efficiency": return localized("Efficiency Cores", locale: locale)
+        case "super": return localized("Super Cores", locale: locale)
         default: return name
         }
     }
@@ -108,22 +110,22 @@ public enum CounterRates {
     }
 }
 
-/// How long the Mac has been on: "6일", "3시간 12분", "12분".
+/// How long the Mac has been on: "6 days", "3 hr, 12 min", "12 min".
 public enum UptimeText {
-    public static func text(_ seconds: Double) -> String {
+    public static func text(_ seconds: Double, locale: Locale = .app) -> String {
         let minutes = seconds.isFinite ? Int(min(max(seconds, 0), 1e12)) / 60 : 0
-        let days = minutes / 1_440, hours = minutes / 60 % 24, rest = minutes % 60
-        if days > 0 { return hours > 0 ? "\(days)일 \(hours)시간" : "\(days)일" }
-        if hours > 0 { return rest > 0 ? "\(hours)시간 \(rest)분" : "\(hours)시간" }
-        return "\(rest)분"
+        // Days and hours, or hours and minutes: never all three.
+        let shown = minutes >= 1_440 ? minutes / 60 * 60 : minutes
+        return DurationText.units(minutes: shown, allowed: [.days, .hours, .minutes], locale: locale)
     }
 }
 
 /// Numbers as the monitor shows them.
 public enum MonitorText {
-    /// "1.2MB/초", "512KB/초"
-    public static func rate(_ bytesPerSecond: Double) -> String {
-        ByteSize.text(bytesPerSecond.isFinite ? Int(min(max(bytesPerSecond, 0), 1e15).rounded()) : 0) + "/초"
+    /// "1.2 MB/s", "512 KB/s"
+    public static func rate(_ bytesPerSecond: Double, locale: Locale = .app) -> String {
+        let size = ByteSize.text(bytesPerSecond.isFinite ? Int(min(max(bytesPerSecond, 0), 1e15).rounded()) : 0, locale: locale)
+        return localized("\(size)/s", locale: locale)
     }
 
     /// "9.3 W", "450 mW"
@@ -147,16 +149,9 @@ public enum MonitorText {
 
     public static func percent(_ value: Double) -> String { whole(value) + "%" }
 
-    /// Memory in the binary units macOS uses for it (a 96 GB Mac shows "96GB", not "103.1GB").
-    public static func memory(_ bytes: UInt64) -> String {
-        let units = ["B", "KB", "MB", "GB", "TB"]
-        var value = Double(bytes), unit = 0
-        while value >= 1_024, unit < units.count - 1 {
-            value /= 1_024
-            unit += 1
-        }
-        let rounded = (value * 10).rounded() / 10
-        return rounded == rounded.rounded() ? "\(Int(rounded))\(units[unit])" : "\(rounded)\(units[unit])"
+    /// Memory in the binary units macOS uses for it (a 96 GB Mac shows "96 GB", not "103.1 GB").
+    public static func memory(_ bytes: UInt64, locale: Locale = .app) -> String {
+        ByteSize.text(Double(bytes), step: 1_024, locale: locale)
     }
 
     public static func temperature(_ celsius: Double) -> String { whole(celsius) + "°" }

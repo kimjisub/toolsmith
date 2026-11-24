@@ -45,11 +45,18 @@ public struct AudioAppRow: Equatable, Sendable {
     public var isPlaying: Bool { group?.isPlaying ?? false }
     /// Not playing now but heard a moment ago.
     public let isRecent: Bool
+
+    public init(key: String, group: AudioAppGroup?, isFavorite: Bool, isRecent: Bool) {
+        self.key = key
+        self.group = group
+        self.isFavorite = isFavorite
+        self.isRecent = isRecent
+    }
 }
 
 public enum AudioApps {
     /// Processes that play for apps they are not inside of, under the name people know.
-    public static let knownNames = ["com.apple.WebKit.GPU": "Safari 와 웹 화면 (WebKit)"]
+    public static let knownNames = ["com.apple.WebKit.GPU": localized("Safari and web views (WebKit)")]
 
     /// How long an app that went quiet stays in the list.
     public static let recentWindow: TimeInterval = 60

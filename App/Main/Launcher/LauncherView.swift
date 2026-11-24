@@ -78,7 +78,7 @@ struct LauncherView: View {
                 hint
             } else if noResults {
                 Line.subtle.frame(height: 1)
-                Text("결과 없음")
+                Text("No Results")
                     .font(.role(Theme.rowRole))
                     .foregroundStyle(Ink.tertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,16 +88,16 @@ struct LauncherView: View {
             }
     }
 
-    /// "AI 에게 묻기": always the last row, never selected unless the user goes there.
+    /// "Ask AI": always the last row, never selected unless the user goes there.
     @ViewBuilder private var aiRow: some View {
         if model.showsAIRow {
             let selected = model.selectedID == LauncherModel.aiRowID
             HStack(spacing: Space.m) {
                 Image(systemName: "sparkles").font(.role(.emphasis, weight: .medium)).foregroundStyle(Brand.lavender).frame(width: 24, height: 24)
-                Text("AI 에게 묻기").font(.role(Theme.rowRole)).foregroundStyle(selected ? Color.white : Ink.secondary)
+                Text("Ask AI").font(.role(Theme.rowRole)).foregroundStyle(selected ? Color.white : Ink.secondary)
                 Text(model.query.trimmingCharacters(in: .whitespaces)).font(.role(.body)).foregroundStyle(Ink.tertiary).lineLimit(1)
                 Spacer(minLength: Space.s)
-                if !hasAIKey() { Text("키 필요").font(.role(.secondary)).foregroundStyle(Status.warning) }
+                if !hasAIKey() { Text("Key Needed").font(.role(.secondary)).foregroundStyle(Status.warning) }
                 KeyCap(label: "⇥", highlighted: selected)
             }
             .padding(.leading, Space.m)
@@ -124,16 +124,16 @@ struct LauncherView: View {
     private var aiHint: some View {
         HStack(spacing: Space.xs) {
             if ai.isStreaming {
-                KeyCap(label: "esc"); Text("멈추기")
+                KeyCap(label: "esc"); Text("Stop")
             } else {
-                KeyCap(label: "↵"); Text(ai.isEmpty ? "묻기" : "이어서 묻기")
+                KeyCap(label: "↵"); Text(ai.isEmpty ? "Ask" : "Ask a Follow-Up")
                 if !ai.isEmpty {
-                    KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "C"); Text("답 복사")
+                    KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "C"); Text("Copy Answer")
                 }
             }
             Spacer()
-            if !hasAIKey() { Text("OpenRouter 키가 필요합니다. ↵ 를 누르면 설정이 열립니다").foregroundStyle(Status.warning) }
-            if !ai.isStreaming { KeyCap(label: "esc").padding(.leading, Space.s); Text("돌아가기") }
+            if !hasAIKey() { Text("An OpenRouter key is needed. Press ↵ to open Settings").foregroundStyle(Status.warning) }
+            if !ai.isStreaming { KeyCap(label: "esc").padding(.leading, Space.s); Text("Back") }
         }
         .font(.role(.detail))
         .foregroundStyle(Ink.tertiary)
@@ -149,7 +149,7 @@ struct LauncherView: View {
             if model.mode == .ai {
                 HStack(spacing: Space.xs) {
                     Image(systemName: "sparkles").font(.role(.detail, weight: .semibold))
-                    Text("AI").font(.role(.secondary, weight: .semibold))
+                    Text(verbatim: "AI").font(.role(.secondary, weight: .semibold))
                 }
                 .foregroundStyle(Brand.lavender)
                 .padding(.horizontal, Space.m)
@@ -159,7 +159,7 @@ struct LauncherView: View {
             if model.mode == .snippets {
                 HStack(spacing: Space.xs) {
                     Image(systemName: "text.quote").font(.role(.detail, weight: .semibold))
-                    Text("스니펫").font(.role(.secondary, weight: .semibold))
+                    Text("Snippets").font(.role(.secondary, weight: .semibold))
                 }
                 .foregroundStyle(Ink.secondary)
                 .padding(.horizontal, Space.m)
@@ -175,9 +175,9 @@ struct LauncherView: View {
 
     private var placeholder: String {
         switch model.mode {
-        case .ai: return ai.isEmpty ? "무엇이든 물어보세요" : "이어서 묻기"
-        case .snippets: return "스니펫 검색"
-        case .commands, .fill: return "무엇을 할까요"
+        case .ai: return ai.isEmpty ? String(localized: "Ask anything") : String(localized: "Ask a Follow-Up")
+        case .snippets: return String(localized: "Search Snippets")
+        case .commands, .fill: return String(localized: "What would you like to do?")
         }
     }
 
@@ -287,12 +287,12 @@ struct LauncherView: View {
     private var hint: some View {
         HStack(spacing: Space.xs) {
             KeyCap(label: "⌘")
-            Text("와 숫자를 누르면 그 줄이 바로 실행됩니다")
+            Text("and a number run that row")
             Spacer()
             KeyCap(label: "↵")
-            Text("실행")
+            Text("Run")
             KeyCap(label: "esc").padding(.leading, Space.s)
-            Text(model.mode == .snippets && model.snippetSearchReturnsToList ? "돌아가기" : "닫기")
+            Text(model.mode == .snippets && model.snippetSearchReturnsToList ? "Back" : "Close")
         }
         .font(.role(.detail))
         .foregroundStyle(Ink.tertiary)

@@ -79,7 +79,7 @@ final class WindowActionTests: XCTestCase {
         XCTAssertEqual(WindowAction.allCases.count, 18)
         XCTAssertEqual(Set(WindowAction.allCases.map(\.id)).count, 18)
         XCTAssertEqual(WindowAction.leftHalf.id, "window.left-half")
-        XCTAssertEqual(WindowAction.leftHalf.title, "왼쪽 절반")
+        XCTAssertEqual(WindowAction.leftHalf.title(locale: english), "Left Half")
     }
 
     func testDefaultHotkeys() {
@@ -94,7 +94,8 @@ final class WindowActionTests: XCTestCase {
     }
 
     func testFoundByKoreanAndEnglish() {
-        XCTAssertNotNil(Matcher.score(query: "왼", candidate: WindowAction.leftHalf.title))
+        XCTAssertNotNil(Matcher.score(query: "left h", candidate: WindowAction.leftHalf.title(locale: english)))
+        XCTAssertTrue(WindowAction.leftHalf.keywords.contains { Matcher.score(query: "좌", candidate: $0) != nil })
         XCTAssertTrue(WindowAction.maximize.keywords.contains { Matcher.score(query: "max", candidate: $0) != nil })
     }
 }

@@ -162,7 +162,7 @@ struct CoreBars: View {
                             .fill(colors[(index < kinds.count ? kinds[index] : 0) % colors.count])
                             .frame(height: max(2, proxy.size.height * MeterBar.clamp(value / 100)))
                     }
-                    .help("코어 \(index + 1): \(MonitorText.percent(value))")
+                    .help("Core \(index + 1): \(MonitorText.percent(value))")
                 }
             }
         }
@@ -198,7 +198,7 @@ struct UsageList: View {
         Panel {
             PanelHeader(title: title, symbol: symbol, trailing: trailing)
             if entries.isEmpty {
-                Text("모으는 중…").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
+                Text("Collecting…").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
             }
             let top = max(entries.first?.value ?? 1, 0.0001)
             ForEach(entries) { entry in
@@ -247,16 +247,16 @@ enum HistoryTopic: String, Identifiable {
 
     var title: String {
         switch self {
-        case .cpu: return "CPU 사용"
-        case .gpu: return "GPU 사용"
-        case .memoryUsed: return "메모리 사용"
-        case .memoryPressure: return "메모리 압력"
-        case .disk: return "디스크 읽기와 쓰기"
-        case .network: return "네트워크"
-        case .power: return "맥 전체 전력"
-        case .cpuTemperature: return "CPU 온도"
-        case .batteryLevel: return "배터리 잔량"
-        case .batteryTemperature: return "배터리 온도"
+        case .cpu: return String(localized: "CPU Usage")
+        case .gpu: return String(localized: "GPU Usage")
+        case .memoryUsed: return String(localized: "Memory Used")
+        case .memoryPressure: return String(localized: "Memory Pressure")
+        case .disk: return String(localized: "Disk Reads and Writes")
+        case .network: return String(localized: "Network")
+        case .power: return String(localized: "Whole-Mac Power")
+        case .cpuTemperature: return String(localized: "CPU Temperature")
+        case .batteryLevel: return String(localized: "Battery Level")
+        case .batteryTemperature: return String(localized: "Battery Temperature")
         }
     }
 
@@ -278,8 +278,8 @@ enum HistoryTopic: String, Identifiable {
 
     var legend: [String] {
         switch self {
-        case .disk: return ["읽기", "쓰기"]
-        case .network: return ["다운로드", "업로드"]
+        case .disk: return [String(localized: "Read"), String(localized: "Write")]
+        case .network: return [String(localized: "Download"), String(localized: "Upload")]
         default: return []
         }
     }
@@ -360,9 +360,9 @@ struct HistoryPanelView: View {
                 chart(topic).frame(height: 150)
                     .background(alignment: .bottom) { MonitorStyle.track.frame(height: 1) }
                 HStack {
-                    Text("\(range.label) 전").font(.role(.caption)).foregroundStyle(MonitorStyle.quiet)
+                    Text("\(range.label) ago").font(.role(.caption)).foregroundStyle(MonitorStyle.quiet)
                     Spacer()
-                    Text("지금").font(.role(.caption)).foregroundStyle(MonitorStyle.quiet)
+                    Text("Now").font(.role(.caption)).foregroundStyle(MonitorStyle.quiet)
                 }
                 stats(topic)
                 if !topic.legend.isEmpty {
@@ -429,9 +429,9 @@ struct HistoryPanelView: View {
     private func stats(_ topic: HistoryTopic) -> some View {
         let values = combined(topic).compactMap { $0 }.filter(\.isFinite)
         return HStack(spacing: 0) {
-            stat("낮음", values.min().map(topic.format) ?? "-")
-            stat("평균", values.isEmpty ? "-" : topic.format(values.reduce(0, +) / Double(values.count)))
-            stat("높음", values.max().map(topic.format) ?? "-")
+            stat(String(localized: "Low"), values.min().map(topic.format) ?? "-")
+            stat(String(localized: "Average"), values.isEmpty ? "-" : topic.format(values.reduce(0, +) / Double(values.count)))
+            stat(String(localized: "High"), values.max().map(topic.format) ?? "-")
         }
         .padding(.vertical, Space.m)
         .background(Fill.card, in: RoundedRectangle(cornerRadius: Radius.m, style: .continuous))

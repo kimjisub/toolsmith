@@ -29,10 +29,6 @@ public enum NetworkCounters {
     }
 }
 
-public extension ByteSize {
-    /// "1.5KB/s"
-    static func rate(_ bytesPerSecond: Double) -> String { text(Int(bytesPerSecond.rounded())) + "/s" }
-}
 
 /// The last few readings of something, for a small graph.
 public struct History: Equatable, Sendable {

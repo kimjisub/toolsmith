@@ -22,8 +22,8 @@ public struct HotkeyGroup: Equatable {
 }
 
 public enum HotkeyCatalog {
-    public static let launcher = HotkeyAction(id: HotkeyID.openLauncher, title: "입력창 열기", group: "일반",
-                                              detail: "어느 앱에서든 \(AppIdentity.name) 을 부릅니다")
+    public static let launcher = HotkeyAction(id: HotkeyID.openLauncher, title: localized("Open Launcher"), group: localized("General"),
+                                              detail: localized("Brings up \(AppIdentity.name) from any app"))
 
     /// The launcher first, then every command that carries a `hotkeyID`. A feature that registers
     /// commands shows up here without touching the settings window.

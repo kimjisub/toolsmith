@@ -19,16 +19,16 @@ final class PowerAndHistoryTests: XCTestCase {
         battery.maximumCapacity = 6_012
         XCTAssertEqual(battery.health!, 96.2, accuracy: 0.05)
         battery.condition = "Good"
-        XCTAssertEqual(battery.conditionText, "정상")
+        XCTAssertEqual(battery.conditionText(locale: english), "Normal")
         battery.isCharging = true
         battery.minutesRemaining = 80
-        XCTAssertEqual(battery.stateText, "충전 중, 다 차기까지 1시간 20분")
+        XCTAssertEqual(battery.stateText(locale: english), "Charging, 1 hr, 20 min until full")
         battery.isCharging = false
         battery.onAdapter = true
-        XCTAssertEqual(battery.stateText, "어댑터 연결됨, 충전 보류")
+        XCTAssertEqual(battery.stateText(locale: english), "Power adapter connected, charging on hold")
         battery.onAdapter = false
         battery.minutesRemaining = 45
-        XCTAssertEqual(battery.stateText, "배터리 사용 중, 45분 남음")
+        XCTAssertEqual(battery.stateText(locale: english), "On battery, 45 min left")
     }
 
     func testEnergyModeFromPmset() {

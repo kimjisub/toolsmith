@@ -184,7 +184,7 @@ struct EmptyState: View {
     }
 }
 
-/// A small word in a capsule ("필요", "선택", "항상 켜짐").
+/// A small word in a capsule ("Required", "Optional", "Always On").
 struct Badge: View {
     let text: String
     var color: Color = .white
@@ -216,7 +216,7 @@ struct RowButton: View {
     }
 }
 
-/// A small labelled button of a panel's footer ("입력창", "종료").
+/// A small labelled button of a panel's footer ("Launcher", "Quit").
 struct FooterButton: View {
     let title: String
     let symbol: String
@@ -292,7 +292,7 @@ struct LabeledSwitch: View {
     }
 }
 
-/// Two to four choices side by side (자동 / 직접, 얇게 / 보통 / 굵게).
+/// Two to four choices side by side (Automatic / Manual, Thin / Regular / Bold).
 struct Segmented<Value: Hashable>: View {
     let title: String
     @Binding var selection: Value
@@ -337,15 +337,15 @@ struct PermissionCard: View {
             VStack(alignment: .leading, spacing: Space.xs) {
                 HStack(spacing: Space.s) {
                     Text(permission.title).font(.role(.body, weight: .medium))
-                    Badge(text: permission.required ? "필요" : "선택", color: permission.required ? Brand.peach : .white)
+                    Badge(text: permission.required ? String(localized: "Required") : String(localized: "Optional"), color: permission.required ? Brand.peach : .white)
                 }
                 Text(permission.purpose).font(.role(.detail)).foregroundStyle(Ink.tertiary).fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             if granted {
-                Label("허락됨", systemImage: "checkmark.circle.fill").font(.role(.secondary, weight: .medium)).foregroundStyle(Status.success)
+                Label("Allowed", systemImage: "checkmark.circle.fill").font(.role(.secondary, weight: .medium)).foregroundStyle(Status.success)
             } else if let grant = permission.grant {
-                RowButton("허락하기", action: grant)
+                RowButton(String(localized: "Allow"), action: grant)
             } else if let instructions = permission.instructions {
                 Text(instructions).font(.role(.detail)).foregroundStyle(Status.warning).multilineTextAlignment(.trailing).frame(maxWidth: 170, alignment: .trailing)
             }

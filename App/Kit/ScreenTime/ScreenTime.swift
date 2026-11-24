@@ -29,19 +29,23 @@ public enum ActivityRule {
 }
 
 public enum DurationText {
-    /// "3시간 12분", "45분", "1분 미만"
-    public static func text(_ seconds: Double) -> String {
-        let minutes = Int(seconds) / 60
-        if minutes < 1 { return "1분 미만" }
-        let hours = minutes / 60, rest = minutes % 60
-        if hours == 0 { return "\(rest)분" }
-        return rest == 0 ? "\(hours)시간" : "\(hours)시간 \(rest)분"
+    /// "3 hr, 12 min", "45 min", "Less than 1 min"
+    public static func text(_ seconds: Double, locale: Locale = .app) -> String {
+        let minutes = seconds.isFinite ? Int(min(max(seconds, 0), 1e12)) / 60 : 0
+        if minutes < 1 { return localized("Less than 1 min", locale: locale) }
+        return units(minutes: minutes, allowed: [.hours, .minutes], locale: locale)
     }
 
-    /// "오후 2시"
-    public static func hour(_ hour: Int) -> String {
-        let twelve = hour % 12 == 0 ? 12 : hour % 12
-        return "\(hour < 12 ? "오전" : "오후") \(twelve)시"
+    /// "2 PM"
+    public static func hour(_ hour: Int, locale: Locale = .app) -> String {
+        var style = Date.FormatStyle(date: .omitted, time: .omitted, locale: locale, timeZone: TimeZone(identifier: "UTC")!).hour()
+        style.calendar = Calendar(identifier: .gregorian)
+        return Date(timeIntervalSinceReferenceDate: Double(hour) * 3_600).formatted(style)
+    }
+
+    /// Whole minutes in the largest of `allowed` units, at most two of them ("6 days, 3 hr").
+    static func units(minutes: Int, allowed: Set<Duration.UnitsFormatStyle.Unit>, locale: Locale) -> String {
+        Duration.seconds(minutes * 60).formatted(Duration.UnitsFormatStyle(allowedUnits: allowed, width: .abbreviated, maximumUnitCount: 2).locale(locale))
     }
 }
 
@@ -182,31 +186,52 @@ public final class ScreenTimeStore {
 public enum ScreenTimeInsights {
     /// `previousDays` are the totals of the days before, oldest first (the last one is yesterday).
     /// With `byThisTime` they are those days' use up to the present time of day, and the lines say so.
-    public static func lines(apps: [AppUsage], hourly: [Double], previousDays: [Double], byThisTime: Bool = false) -> [String] {
+    public static func lines(apps: [AppUsage], hourly: [Double], previousDays: [Double], byThisTime: Bool = false, locale: Locale = .app) -> [String] {
         let today = apps.reduce(0) { $0 + $1.seconds }
-        guard today > 0 else { return ["아직 기록이 없습니다."] }
+        guard today > 0 else { return [localized("Nothing recorded yet.", locale: locale)] }
         var lines: [String] = []
+        let duration = { (seconds: Double) in DurationText.text(seconds, locale: locale) }
 
-        func compare(_ label: String, _ other: Double, with particle: String = "와") -> String {
-            let difference = today - other
-            if abs(difference) < 60 { return "\(label)\(particle) 비슷하게 썼습니다." }
-            return "\(label)보다 \(DurationText.text(abs(difference))) \(difference > 0 ? "더" : "덜") 썼습니다."
+        if let yesterday = previousDays.last, yesterday > 0 {
+            let difference = today - yesterday, amount = duration(abs(difference))
+            switch (byThisTime, Comparison(difference)) {
+            case (false, .same): lines.append(localized("About the same as yesterday.", locale: locale))
+            case (false, .more): lines.append(localized("\(amount) more than yesterday.", locale: locale))
+            case (false, .less): lines.append(localized("\(amount) less than yesterday.", locale: locale))
+            case (true, .same): lines.append(localized("About the same as yesterday by this time.", locale: locale))
+            case (true, .more): lines.append(localized("\(amount) more than yesterday by this time.", locale: locale))
+            case (true, .less): lines.append(localized("\(amount) less than yesterday by this time.", locale: locale))
+            }
         }
-        if let yesterday = previousDays.last, yesterday > 0 { lines.append(byThisTime ? compare("어제 이 시각", yesterday, with: "과") : compare("어제", yesterday)) }
         let used = previousDays.filter { $0 > 0 }
         if used.count >= 2 {
             let average = used.reduce(0, +) / Double(used.count)
-            lines.append(compare("\(byThisTime ? "최근 이 시각 평균" : "최근 평균")(\(DurationText.text(average)))", average))
+            let difference = today - average, amount = duration(abs(difference)), mean = duration(average)
+            switch (byThisTime, Comparison(difference)) {
+            case (false, .same): lines.append(localized("About the same as your recent average (\(mean)).", locale: locale))
+            case (false, .more): lines.append(localized("\(amount) more than your recent average (\(mean)).", locale: locale))
+            case (false, .less): lines.append(localized("\(amount) less than your recent average (\(mean)).", locale: locale))
+            case (true, .same): lines.append(localized("About the same as your recent average by this time (\(mean)).", locale: locale))
+            case (true, .more): lines.append(localized("\(amount) more than your recent average by this time (\(mean)).", locale: locale))
+            case (true, .less): lines.append(localized("\(amount) less than your recent average by this time (\(mean)).", locale: locale))
+            }
         }
         if let top = apps.max(by: { $0.seconds < $1.seconds }) {
-            lines.append("가장 오래 쓴 앱은 \(top.name) 입니다 (\(DurationText.text(top.seconds)), \(Int((top.seconds / today * 100).rounded()))%).")
+            let share = (top.seconds / today).formatted(.percent.precision(.fractionLength(0)).locale(locale))
+            lines.append(localized("You used \(top.name) the most (\(duration(top.seconds)), \(share)).", locale: locale))
         }
         if let peak = hourly.indices.max(by: { hourly[$0] < hourly[$1] }), hourly[peak] > 0 {
-            lines.append("가장 많이 쓴 시간대는 \(DurationText.hour(peak))입니다.")
+            lines.append(localized("Your busiest hour was \(DurationText.hour(peak, locale: locale)).", locale: locale))
         }
         if let first = hourly.firstIndex(where: { $0 > 0 }), first > 0 {
-            lines.append("\(DurationText.hour(first))에 시작했습니다.")
+            lines.append(localized("You started at \(DurationText.hour(first, locale: locale)).", locale: locale))
         }
         return lines
+    }
+
+    /// Today against another day: within a minute counts as the same.
+    private enum Comparison {
+        case same, more, less
+        init(_ difference: Double) { self = abs(difference) < 60 ? .same : difference > 0 ? .more : .less }
     }
 }

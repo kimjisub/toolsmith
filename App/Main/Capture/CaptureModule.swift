@@ -6,9 +6,9 @@ import ToolsmithKit
 /// 캡처와 녹화: screenshots, recordings, text recognition, the color picker and the ruler.
 @MainActor final class CaptureModule: AppModule {
     nonisolated static let descriptor = ModuleDescriptor(
-        id: "capture", title: "캡처와 녹화", summary: "영역, 창, 스크롤 캡처와 주석, 글자 인식, 영상과 GIF 녹화",
+        id: "capture", title: String(localized: "Screen Capture"), summary: String(localized: "Area, window and scrolling captures with annotation, text recognition, video and GIF recording"),
         symbol: "camera.viewfinder", tint: .pink, permissions: [.screenRecording, .microphone],
-        menuBarItems: [MenuBarItemDescriptor(id: "capture.icon", moduleID: "capture", title: "캡처", symbol: "camera.viewfinder",
+        menuBarItems: [MenuBarItemDescriptor(id: "capture.icon", moduleID: "capture", title: String(localized: "Capture"), symbol: "camera.viewfinder",
                                              styles: [.icon], defaultVisible: false)])
     var descriptor: ModuleDescriptor { Self.descriptor }
     let coordinator = CaptureCoordinator()
@@ -30,7 +30,7 @@ import ToolsmithKit
             AnnotationEditorWindow.show(image, on: screen,
                 onCopy: { result in
                     CaptureCoordinator.copy(result)
-                    host?.notify("주석을 넣은 그림을 복사했습니다.")
+                    host?.notify(String(localized: "Annotated image copied."))
                 },
                 onSave: { result in self?.coordinator.save(result) })
         }
@@ -46,7 +46,7 @@ import ToolsmithKit
     }
 
     var panelScreens: [PanelScreen] {
-        [PanelScreen(id: Self.descriptor.id, title: "캡처와 녹화", symbol: "camera.viewfinder", settings: .capture, content: { [weak self] in
+        [PanelScreen(id: Self.descriptor.id, title: String(localized: "Screen Capture"), symbol: "camera.viewfinder", settings: .capture, content: { [weak self] in
             guard let self else { return AnyView(EmptyView()) }
             let commands = self.source.commands().filter { $0.id != CaptureCommandSource.stopID || self.coordinator.isRecording }
             return AnyView(CapturePanelScreen(commands: commands, isRecording: self.coordinator.isRecording) { [weak self] command in

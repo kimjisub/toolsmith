@@ -246,8 +246,8 @@ private final class SelectionView: NSView {
     }
 
     private func drawHint() {
-        let text = mode == .window ? (canSwitchMode ? "창을 눌러 고르기 · Space 영역으로 · esc 취소" : "창을 눌러 고르기 · esc 취소")
-            : (hint.isEmpty ? "끌어서 영역 고르기 · Space 창 고르기 · esc 취소" : hint)
+        let text = mode == .window ? (canSwitchMode ? String(localized: "Click a window to select it · Space for an area · esc to cancel") : String(localized: "Click a window to select it · esc to cancel"))
+            : (hint.isEmpty ? String(localized: "Drag to select an area · Space to pick a window · esc to cancel") : hint)
         let (_, size) = pill(text, size: 12.5)
         drawPill(text, size: 12.5, at: CGPoint(x: bounds.midX - size.width / 2, y: bounds.maxY - size.height - 64))
     }

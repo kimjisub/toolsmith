@@ -40,7 +40,7 @@ enum RecordingFormat {
         let anchor = selection.map { CGPoint(x: $0.midX, y: $0.midY) } ?? pointer
         guard let screen = NSScreen.screens.first(where: { $0.frame.contains(anchor) }) ?? NSScreen.main,
               let displayID = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID else {
-            throw CaptureError.failed("화면이 없습니다")
+            throw CaptureError.failed(String(localized: "There is no display."))
         }
         let content: SCShareableContent
         do {
@@ -48,7 +48,7 @@ enum RecordingFormat {
         } catch {
             throw CaptureError.failed(error.localizedDescription)
         }
-        guard let display = content.displays.first(where: { $0.displayID == displayID }) else { throw CaptureError.failed("그 화면을 찾지 못했습니다") }
+        guard let display = content.displays.first(where: { $0.displayID == displayID }) else { throw CaptureError.failed(String(localized: "That display could not be found.")) }
 
         // Our own windows (the stop button, the outline) stay out of the recording.
         let own = content.applications.filter { $0.processID == ProcessInfo.processInfo.processIdentifier }
@@ -94,7 +94,7 @@ enum RecordingFormat {
 
     /// Stops and returns the movie file, or throws the reason there is none.
     func stop() async throws -> URL {
-        guard let stream, let fileURL else { throw CaptureError.failed("녹화 중이 아닙니다") }
+        guard let stream, let fileURL else { throw CaptureError.failed(String(localized: "Not recording.")) }
         self.stream = nil
         startedAt = nil
         stopGeneration += 1
@@ -115,7 +115,7 @@ enum RecordingFormat {
         let size = (try? FileManager.default.attributesOfItem(atPath: fileURL.path)[.size] as? Int) ?? 0
         if size > 0 { return fileURL }
         try? FileManager.default.removeItem(at: fileURL)
-        throw CaptureError.failed(failure ?? "녹화 파일이 만들어지지 않았습니다")
+        throw CaptureError.failed(failure ?? String(localized: "The recording file was not created."))
     }
 
     private func resumeFinished() {
@@ -134,7 +134,7 @@ enum RecordingFormat {
     nonisolated static func makeGIF(from movie: URL, to destination: URL) async throws {
         let asset = AVURLAsset(url: movie)
         let duration = try await asset.load(.duration).seconds
-        guard let track = try await asset.loadTracks(withMediaType: .video).first else { throw CaptureError.failed("영상에 그림이 없습니다") }
+        guard let track = try await asset.loadTracks(withMediaType: .video).first else { throw CaptureError.failed(String(localized: "The video has no frames.")) }
         let natural = try await track.load(.naturalSize)
         let size = GIFPlan.size(width: Int(natural.width), height: Int(natural.height), maxWidth: GIFPlan.maxWidth)
         let times = GIFPlan.frameTimes(duration: duration, fps: GIFPlan.fps)
@@ -146,7 +146,7 @@ enum RecordingFormat {
         generator.requestedTimeToleranceAfter = CMTime(value: 1, timescale: 60)
 
         guard let target = CGImageDestinationCreateWithURL(destination as CFURL, UTType.gif.identifier as CFString, times.count, nil) else {
-            throw CaptureError.failed("GIF 파일을 만들지 못했습니다")
+            throw CaptureError.failed(String(localized: "Couldn’t create the GIF file."))
         }
         CGImageDestinationSetProperties(target, [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFLoopCount: 0]] as CFDictionary)
         let frame = [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFDelayTime: 1.0 / Double(GIFPlan.fps)]] as CFDictionary
@@ -156,7 +156,7 @@ enum RecordingFormat {
             CGImageDestinationAddImage(target, image, frame)
             added += 1
         }
-        guard added > 0, CGImageDestinationFinalize(target) else { throw CaptureError.failed("GIF 로 바꾸지 못했습니다") }
+        guard added > 0, CGImageDestinationFinalize(target) else { throw CaptureError.failed(String(localized: "Couldn’t convert to GIF.")) }
     }
 }
 
@@ -225,7 +225,7 @@ extension ScreenRecorder: SCRecordingOutputDelegate, SCStreamDelegate {
         label.font = .monospacedDigitSystemFont(ofSize: 13, weight: .medium)
         label.textColor = .white
         label.frame = NSRect(x: 34, y: 11, width: 70, height: 18)
-        let stop = NSButton(title: isGIF ? "GIF 끝내기" : "끝내기", target: self, action: #selector(stopPressed))
+        let stop = NSButton(title: isGIF ? String(localized: "Stop GIF") : String(localized: "Finish"), target: self, action: #selector(stopPressed))
         stop.bezelStyle = .rounded
         stop.controlSize = .small
         stop.frame = NSRect(x: 100, y: 7, width: 80, height: 26)

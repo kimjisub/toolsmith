@@ -2,9 +2,9 @@ import AppKit
 import SwiftUI
 import ToolsmithKit
 
-/// 화면 나누기: window placements as commands and shortcuts. Nothing runs in the background.
+/// Window snapping: window placements as commands and shortcuts. Nothing runs in the background.
 @MainActor final class WindowsModule: AppModule {
-    nonisolated static let descriptor = ModuleDescriptor(id: "windows", title: "화면 나누기", summary: "창을 화면의 절반, 3분의 1, 귀퉁이로 옮깁니다",
+    nonisolated static let descriptor = ModuleDescriptor(id: "windows", title: String(localized: "Window Snapping"), summary: String(localized: "Moves windows to halves, thirds and corners of the screen"),
                                              symbol: "rectangle.split.2x1.fill", tint: .blue, permissions: [.accessibility])
     var descriptor: ModuleDescriptor { Self.descriptor }
     private let source = WindowCommandSource()

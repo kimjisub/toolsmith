@@ -50,24 +50,32 @@ public struct BatteryInfo: Equatable, Sendable {
         return min(100, Double(maximumCapacity) / Double(designCapacity) * 100)
     }
 
-    /// The system's verdict in Korean.
-    public var conditionText: String? {
+    /// The system's verdict in the app's language.
+    public var conditionText: String? { conditionText(locale: .app) }
+
+    public func conditionText(locale: Locale) -> String? {
         guard let condition else { return nil }
         switch condition.lowercased() {
-        case "good", "normal": return "정상"
-        case "fair": return "보통"
-        case "poor": return "나쁨"
-        case "check battery", "service recommended": return "점검 권장"
+        case "good", "normal": return localized("Normal", locale: locale)
+        case "fair": return localized("Fair", locale: locale)
+        case "poor": return localized("Poor", locale: locale)
+        case "check battery", "service recommended": return localized("Service Recommended", locale: locale)
         default: return condition
         }
     }
 
-    /// "충전 중, 1시간 20분 남음", "어댑터 연결됨", "배터리 사용 중, 3시간 남음"
-    public var stateText: String {
-        let remaining = minutesRemaining.map { m in m >= 60 ? "\(m / 60)시간 \(m % 60)분" : "\(m)분" }
-        if isCharging { return remaining.map { "충전 중, 다 차기까지 \($0)" } ?? "충전 중" }
-        if onAdapter { return isFull ? "다 참, 어댑터 연결됨" : "어댑터 연결됨, 충전 보류" }
-        return remaining.map { "배터리 사용 중, \($0) 남음" } ?? "배터리 사용 중"
+    /// "Charging, 1 hr, 20 min until full", "Power adapter connected", "On battery, 3 hr left"
+    public var stateText: String { stateText(locale: .app) }
+
+    public func stateText(locale: Locale) -> String {
+        let remaining = minutesRemaining.map { DurationText.units(minutes: $0, allowed: [.hours, .minutes], locale: locale) }
+        if isCharging {
+            return remaining.map { localized("Charging, \($0) until full", locale: locale) } ?? localized("Charging", locale: locale)
+        }
+        if onAdapter {
+            return isFull ? localized("Fully charged, power adapter connected", locale: locale) : localized("Power adapter connected, charging on hold", locale: locale)
+        }
+        return remaining.map { localized("On battery, \($0) left", locale: locale) } ?? localized("On battery", locale: locale)
     }
 }
 
@@ -77,9 +85,9 @@ public enum EnergyMode: Int, Sendable {
 
     public var label: String {
         switch self {
-        case .automatic: return "자동"
-        case .low: return "저전력"
-        case .high: return "고성능"
+        case .automatic: return localized("Automatic")
+        case .low: return localized("Low Power")
+        case .high: return localized("High Power")
         }
     }
 

@@ -9,14 +9,14 @@ private struct ChargeLimitPanel: View {
 
     var body: some View {
         Panel {
-            PanelHeader(title: "충전 제한", symbol: "battery.75percent")
+            PanelHeader(title: String(localized: "Charge Limit"), symbol: "battery.75percent")
             if charge.canControl {
                 ChargeControls(charge: charge, battery: battery, tint: MonitorStyle.tertiary, compact: true)
             } else {
                 HStack(spacing: Space.s) {
-                    Text("설정 → 배터리 충전에서 켭니다").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
+                    Text("Turn it on in Settings → Battery Charging").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
                     Spacer()
-                    RowButton("열기", action: onChargeSettings)
+                    RowButton(String(localized: "Open"), action: onChargeSettings)
                 }
             }
         }
@@ -36,7 +36,7 @@ struct BatteryDetailView: View {
         VStack(spacing: Space.s) {
             if let battery = s.battery {
                 HistoryBlock(topic: .batteryLevel, selection: selection) {
-                    PanelHeader(title: "배터리", symbol: battery.isCharging ? "battery.100.bolt" : "battery.75")
+                    PanelHeader(title: String(localized: "Battery"), symbol: battery.isCharging ? "battery.100.bolt" : "battery.75")
                     Figure(value: MonitorText.whole(battery.level), unit: "%", caption: battery.stateText)
                     MeterBar(fraction: battery.level / 100, fill: AnyShapeStyle(battery.level < 20 ? MonitorStyle.hot : MonitorStyle.tertiary), height: 6)
                 }
@@ -44,29 +44,29 @@ struct BatteryDetailView: View {
                     ChargeLimitPanel(charge: charge, battery: battery, onChargeSettings: onChargeSettings)
                 }
                 HistoryBlock(topic: .power, selection: selection) {
-                    PanelHeader(title: "전원 흐름", symbol: "bolt")
+                    PanelHeader(title: String(localized: "Power Flow"), symbol: "bolt")
                     PowerFlow(power: s.power)
                 }
                 Panel {
-                    PanelHeader(title: "건강", symbol: "heart")
+                    PanelHeader(title: String(localized: "Health"), symbol: "heart")
                     if let health = battery.health {
-                        Figure(value: MonitorText.whole(health), unit: "%", caption: "새것일 때 용량과 견준 지금 용량")
+                        Figure(value: MonitorText.whole(health), unit: "%", caption: String(localized: "Current capacity compared with when new"))
                     }
-                    if let design = battery.designCapacity { TableRow(label: "설계 용량", value: "\(design) mAh") }
-                    if let maximum = battery.maximumCapacity { TableRow(label: "최대 용량", value: "\(maximum) mAh") }
-                    if let cycles = battery.cycleCount { TableRow(label: "충전 사이클", value: "\(cycles)회") }
-                    if let condition = battery.conditionText { TableRow(label: "배터리 상태", value: condition) }
+                    if let design = battery.designCapacity { TableRow(label: String(localized: "Design Capacity"), value: "\(design) mAh") }
+                    if let maximum = battery.maximumCapacity { TableRow(label: String(localized: "Maximum Capacity"), value: "\(maximum) mAh") }
+                    if let cycles = battery.cycleCount { TableRow(label: String(localized: "Cycle Count"), value: String(localized: "\(cycles) cycles")) }
+                    if let condition = battery.conditionText { TableRow(label: String(localized: "Condition"), value: condition) }
                 }
                 HistoryBlock(topic: .batteryTemperature, selection: selection) {
-                    PanelHeader(title: "온도", symbol: "thermometer.medium")
-                    if let temperature = battery.temperature { HeatRow(label: "배터리", celsius: temperature) }
-                    if let mode = monitor.energyMode { TableRow(label: "에너지 모드", value: mode.label) }
-                    if let watts = battery.adapterWatts, battery.onAdapter { TableRow(label: "어댑터", value: "\(watts) W") }
+                    PanelHeader(title: String(localized: "Temperature"), symbol: "thermometer.medium")
+                    if let temperature = battery.temperature { HeatRow(label: String(localized: "Battery"), celsius: temperature) }
+                    if let mode = monitor.energyMode { TableRow(label: String(localized: "Energy Mode"), value: mode.label) }
+                    if let watts = battery.adapterWatts, battery.onAdapter { TableRow(label: String(localized: "Adapter"), value: "\(watts) W") }
                 }
             }
             if !monitor.accessories.isEmpty {
                 Panel {
-                    PanelHeader(title: "연결된 기기", symbol: "keyboard")
+                    PanelHeader(title: String(localized: "Connected Devices"), symbol: "keyboard")
                     ForEach(monitor.accessories) { accessory in
                         HStack(spacing: Space.s) {
                             Text(accessory.name).font(MonitorStyle.body).foregroundStyle(Ink.secondary).lineLimit(1)
@@ -77,7 +77,7 @@ struct BatteryDetailView: View {
                     }
                 }
             }
-            UsageList(title: "에너지를 많이 쓰는 앱", symbol: "leaf", entries: processes.energy, format: { String(format: "%.1f", $0) }, trailing: "에너지 영향")
+            UsageList(title: String(localized: "Apps Using the Most Energy"), symbol: "leaf", entries: processes.energy, format: { String(format: "%.1f", $0) }, trailing: String(localized: "Energy Impact"))
         }
     }
 }
@@ -101,11 +101,11 @@ struct PowerFlow: View {
             if let watts, watts.isFinite, watts >= 0.05 { list.append(Node(label: label, symbol: symbol, watts: watts, color: color)) }
         }
         add("CPU", "cpu", power.cpu, MonitorStyle.primary)
-        add("그래픽", "square.stack.3d.up", power.gpu, MonitorStyle.secondary)
-        add("메모리", "memorychip", power.memory, MonitorStyle.tertiary)
-        add("뉴럴 엔진", "brain", power.neuralEngine, Brand.mint)
-        add(power.cpu == nil ? "CPU·기타" : "기타", "ellipsis", power.other, Ink.tertiary)
-        if charging == nil, let battery = power.battery, battery > 0.05 { add("충전", "battery.100.bolt", battery, MonitorStyle.tertiary) }
+        add(String(localized: "Graphics"), "square.stack.3d.up", power.gpu, MonitorStyle.secondary)
+        add(String(localized: "Memory"), "memorychip", power.memory, MonitorStyle.tertiary)
+        add(String(localized: "Neural Engine"), "brain", power.neuralEngine, Brand.mint)
+        add(power.cpu == nil ? String(localized: "CPU & Other") : String(localized: "Other"), "ellipsis", power.other, Ink.tertiary)
+        if charging == nil, let battery = power.battery, battery > 0.05 { add(String(localized: "Charge"), "battery.100.bolt", battery, MonitorStyle.tertiary) }
         return list
     }
 
@@ -120,8 +120,8 @@ struct PowerFlow: View {
     /// cannot keep up.
     private var sources: [Node] {
         var list: [Node] = []
-        if let adapter = power.adapter, adapter > 0.5 { list.append(Node(label: "어댑터", symbol: "powerplug.fill", watts: adapter, color: MonitorStyle.secondary)) }
-        if let battery = power.battery, battery < -0.05 { list.append(Node(label: "배터리", symbol: "battery.75", watts: -battery, color: MonitorStyle.tertiary)) }
+        if let adapter = power.adapter, adapter > 0.5 { list.append(Node(label: String(localized: "Adapter"), symbol: "powerplug.fill", watts: adapter, color: MonitorStyle.secondary)) }
+        if let battery = power.battery, battery < -0.05 { list.append(Node(label: String(localized: "Battery"), symbol: "battery.75", watts: -battery, color: MonitorStyle.tertiary)) }
         return list
     }
 
@@ -154,9 +154,9 @@ struct PowerFlow: View {
                     place(tile(symbol: source.symbol, tint: source.color, value: MonitorText.watts(source.watts), caption: source.label), in: layout.sourceTiles[index])
                 }
                 if let charging, let battery = layout.battery {
-                    place(tile(symbol: "battery.100.bolt", tint: MonitorStyle.tertiary, value: MonitorText.watts(charging), caption: "충전"), in: battery)
+                    place(tile(symbol: "battery.100.bolt", tint: MonitorStyle.tertiary, value: MonitorText.watts(charging), caption: String(localized: "Charge")), in: battery)
                 }
-                place(tile(symbol: "laptopcomputer", tint: .white, value: MonitorText.watts(total), caption: "맥 전체"), in: layout.mac)
+                place(tile(symbol: "laptopcomputer", tint: .white, value: MonitorText.watts(total), caption: String(localized: "Whole Mac")), in: layout.mac)
                 ForEach(Array(parts.enumerated()), id: \.element.id) { index, part in
                     let rect = layout.rows[index]
                     HStack(spacing: Space.xs) {

@@ -27,15 +27,15 @@ public enum OnboardingTour {
         "capture.screen": KeyCombo(keyCode: 20, modifiers: [.option, .shift]),
     ]) { first, _ in first }
 
-    public static func items(hotkeys: HotkeyTable) -> [Item] {
+    public static func items(hotkeys: HotkeyTable, locale: Locale = .app) -> [Item] {
         func keys(_ id: String) -> String? { hotkeys.combo(for: id)?.display }
         return [
-            Item(title: "화면 나누기", detail: "창을 절반, 3분의 1, 귀퉁이로", symbol: "rectangle.lefthalf.filled", keys: keys(WindowAction.leftHalf.id)),
-            Item(title: "클립보드 기록", detail: "복사했던 것을 찾아 다시 붙이기", symbol: "doc.on.clipboard", keys: keys("clipboard.open")),
-            Item(title: "화면 캡처", detail: "영역, 주석, 녹화, 글자 읽기", symbol: "camera.viewfinder", keys: keys("capture.area")),
-            Item(title: "AI 검색", detail: "입력창 맨 앞에 점을 치고 묻기", symbol: "sparkles", keys: "."),
-            Item(title: "시스템 모니터", detail: "메뉴 막대 아이콘을 누르기", symbol: "gauge.with.dots.needle.50percent", keys: nil),
-            Item(title: "사용 시간", detail: "어느 앱을 얼마나 썼는지", symbol: "hourglass", keys: nil),
+            Item(title: localized("Window Snapping", locale: locale), detail: localized("Halves, thirds and corners", locale: locale), symbol: "rectangle.lefthalf.filled", keys: keys(WindowAction.leftHalf.id)),
+            Item(title: localized("Clipboard History", locale: locale), detail: localized("Find what you copied and paste it again", locale: locale), symbol: "doc.on.clipboard", keys: keys("clipboard.open")),
+            Item(title: localized("Screen Capture", locale: locale), detail: localized("Areas, annotations, recording, text recognition", locale: locale), symbol: "camera.viewfinder", keys: keys("capture.area")),
+            Item(title: localized("AI Answers", locale: locale), detail: localized("Type a period first in the launcher and ask", locale: locale), symbol: "sparkles", keys: "."),
+            Item(title: localized("System Monitor", locale: locale), detail: localized("Click its icon in the menu bar", locale: locale), symbol: "gauge.with.dots.needle.50percent", keys: nil),
+            Item(title: localized("Screen Time", locale: locale), detail: localized("How long you used each app", locale: locale), symbol: "hourglass", keys: nil),
         ]
     }
 }

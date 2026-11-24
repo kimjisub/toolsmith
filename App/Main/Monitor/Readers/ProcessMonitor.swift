@@ -135,7 +135,7 @@ import ToolsmithKit
                 found = (bundle, bundle, FileManager.default.displayName(atPath: bundle).replacingOccurrences(of: ".app", with: ""))
             } else {
                 let name = executable.map { ($0 as NSString).lastPathComponent } ?? commands[pid] ?? "pid \(pid)"
-                found = (executable, "pid:\(pid)", pid == 0 ? "macOS 커널" : name)
+                found = (executable, "pid:\(pid)", pid == 0 ? String(localized: "macOS kernel") : name)
             }
             cache[pid] = found
             if cache.count > 4_000 { cache.removeAll() }

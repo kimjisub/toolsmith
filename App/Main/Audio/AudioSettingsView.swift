@@ -9,17 +9,17 @@ struct AudioSettingsGroups: View {
 
     var body: some View {
         if mixer.loadFailed {
-            Notice(text: "저장된 소리 설정 파일을 읽지 못해 audio.broken.json 으로 옮겨 두었습니다. 지금은 기본값으로 동작합니다.")
+            Notice(text: String(localized: "The saved sound settings could not be read and were moved to audio.broken.json. The defaults are in use for now."))
         }
-        SettingsSection(title: "열기", footer: "메뉴 막대의 스피커를 누르거나 입력창에서 「소리 조절 열기」 로 엽니다. 스피커를 메뉴 막대에 둘지, 볼륨 숫자를 함께 보일지는 「메뉴 막대」 칸에서 정합니다. 입력창에는 출력, 입력 장치를 바로 바꾸는 명령과 저장한 Quick Config 도 나옵니다.") {
-            SettingsRow(title: "소리 조절") { RowButton("열기", action: open) }
+        SettingsSection(title: String(localized: "Open"), footer: String(localized: "Click the speaker in the menu bar, or choose “Open Sound” in the launcher. Whether the speaker shows in the menu bar, and with the volume, is set in Menu Bar. The launcher also lists commands that switch the output and input device, and your saved Quick Configs.")) {
+            SettingsRow(title: String(localized: "Sound")) { RowButton(String(localized: "Open"), action: open) }
         }
-        SettingsSection(title: "앱 소리를 바꾸는 방법", footer: "손대지 않은 앱은 macOS 가 평소대로 소리를 냅니다. 앱 하나의 볼륨, 보낼 곳, 효과를 바꾸면 그 앱의 소리만 받아 와서 바꾼 뒤 고른 장치로 냅니다. 이 기능을 끄거나 앱을 닫으면 모든 앱이 평소대로 돌아옵니다. 허락하지 않으면 바꾼 앱의 소리가 들리지 않으니, 그때는 허락하거나 그 앱의 설정을 되돌립니다.") {
-            SettingsRow(title: "바꾼 앱", detail: mixer.configuration.apps.isEmpty ? "없음" : "\(mixer.configuration.apps.count)개") {
-                RowButton("모두 되돌리기", role: .destructive) { mixer.configuration.apps.keys.forEach(mixer.resetApp) }
+        SettingsSection(title: String(localized: "How App Sound Is Changed"), footer: String(localized: "Apps you have not changed play as macOS plays them. When you change one app’s volume, output or effects, only that app’s audio is received, changed and played on the device you chose. Turning this feature off or quitting the app puts every app back as it was. Without permission, apps you changed go silent: allow it, or reset those apps.")) {
+            SettingsRow(title: String(localized: "Changed Apps"), detail: mixer.configuration.apps.isEmpty ? String(localized: "None") : String(localized: "\(mixer.configuration.apps.count) apps")) {
+                RowButton(String(localized: "Reset All"), role: .destructive) { mixer.configuration.apps.keys.forEach(mixer.resetApp) }
             }
-            SettingsRow(title: "Quick Configs", detail: mixer.configuration.quickConfigs.isEmpty ? "없음" : mixer.configuration.quickConfigs.map(\.name).joined(separator: ", "))
-            SettingsRow(title: "출력 묶음", detail: mixer.configuration.outputGroups.isEmpty ? "없음" : mixer.configuration.outputGroups.map(\.name).joined(separator: ", "))
+            SettingsRow(title: String(localized: "Quick Configs"), detail: mixer.configuration.quickConfigs.isEmpty ? String(localized: "None") : mixer.configuration.quickConfigs.map(\.name).joined(separator: ", "))
+            SettingsRow(title: String(localized: "Output Groups"), detail: mixer.configuration.outputGroups.isEmpty ? String(localized: "None") : mixer.configuration.outputGroups.map(\.name).joined(separator: ", "))
         }
     }
 }

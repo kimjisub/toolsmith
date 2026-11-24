@@ -3,11 +3,11 @@ import Combine
 import SwiftUI
 import ToolsmithKit
 
-/// 시스템 모니터: CPU, memory, power, temperatures, disk, network and battery, in the menu bar
+/// System monitor: CPU, memory, power, temperatures, disk, network and battery, in the menu bar
 /// and in the dashboard under it. Switched off, nothing is read and no history is written.
 @MainActor final class MonitorModule: AppModule {
     nonisolated static let descriptor = ModuleDescriptor(
-        id: "monitor", title: "시스템 모니터", summary: "CPU, 메모리, 전력, 온도, 네트워크를 메뉴 막대와 대시보드에서 봅니다",
+        id: "monitor", title: String(localized: "System Monitor"), summary: String(localized: "See CPU, memory, power, temperature and network in the menu bar and a dashboard"),
         symbol: "gauge.with.dots.needle.67percent", tint: .orange, permissions: [.location],
         menuBarItems: MonitorMenuBar.Reading.allCases.map(\.descriptor))
     var descriptor: ModuleDescriptor { Self.descriptor }
@@ -28,7 +28,7 @@ import ToolsmithKit
     }
 
     var appMenuItems: [AppMenuEntry] {
-        [AppMenuEntry(title: "시스템 모니터", symbol: "gauge.with.dots.needle.67percent") { [weak self] in self?.open(section: nil, below: nil) }]
+        [AppMenuEntry(title: String(localized: "System Monitor"), symbol: "gauge.with.dots.needle.67percent") { [weak self] in self?.open(section: nil, below: nil) }]
     }
 
     var menuBarItems: [MenuBarItem] {
@@ -48,7 +48,7 @@ import ToolsmithKit
     static let screenID = "monitor"
 
     var panelScreens: [PanelScreen] {
-        [PanelScreen(id: Self.screenID, title: "시스템 모니터", symbol: Self.descriptor.symbol, width: MonitorStyle.width,
+        [PanelScreen(id: Self.screenID, title: String(localized: "System Monitor"), symbol: Self.descriptor.symbol, width: MonitorStyle.width,
                      settings: .monitor, content: { [panels] in panels.dashboard() },
                      onShow: { [weak self] window in
                          guard let self else { return }
@@ -99,12 +99,12 @@ enum MonitorMenuBar {
         var descriptor: MenuBarItemDescriptor {
             let graphs: [MenuBarStyle] = [.graph, .iconAndValue, .value]
             switch self {
-            case .cpu: return item("CPU 사용률", "cpu", graphs)
-            case .memory: return item("메모리 사용률", "memorychip", graphs)
-            case .disk: return item("디스크 읽기와 쓰기", "internaldrive", graphs)
-            case .network: return item("네트워크 속도", "arrow.up.arrow.down", graphs)
-            case .battery: return item("배터리", "battery.75percent", graphs)
-            case .readout: return item("CPU 온도와 전력", "thermometer.medium", [.value, .iconAndValue])
+            case .cpu: return item(String(localized: "CPU Usage"), "cpu", graphs)
+            case .memory: return item(String(localized: "Memory Usage"), "memorychip", graphs)
+            case .disk: return item(String(localized: "Disk Reads and Writes"), "internaldrive", graphs)
+            case .network: return item(String(localized: "Network Speed"), "arrow.up.arrow.down", graphs)
+            case .battery: return item(String(localized: "Battery"), "battery.75percent", graphs)
+            case .readout: return item(String(localized: "CPU Temperature and Power"), "thermometer.medium", [.value, .iconAndValue])
             }
         }
 
@@ -135,29 +135,29 @@ enum MonitorMenuBar {
             return MenuBarGlyph(pieces: [.label("CPU"), .bars(lower: recent(monitor.cpuUserHistory).map { $0 / 100 },
                                                                upper: recent(monitor.cpuSystemHistory).map { $0 / 100 })], spoken: spoken)
         case .memory:
-            let spoken = "메모리 \(MonitorText.percent(s.memory.usedPercent))"
+            let spoken = String(localized: "Memory \(MonitorText.percent(s.memory.usedPercent))")
             guard style == .graph else { return value([.text(MonitorText.percent(s.memory.usedPercent))], spoken: spoken) }
             return MenuBarGlyph(pieces: [.label("MEM"), .level(s.memory.usedPercent / 100, MenuBarRenderer.blue)], spoken: spoken)
         case .disk:
-            let spoken = "디스크 읽기 \(MonitorText.rate(s.diskReadRate)), 쓰기 \(MonitorText.rate(s.diskWriteRate))"
+            let spoken = String(localized: "Disk read \(MonitorText.rate(s.diskReadRate)), write \(MonitorText.rate(s.diskWriteRate))")
             guard style == .graph else { return value([.stack(MonitorText.rate(s.diskReadRate), MonitorText.rate(s.diskWriteRate))], spoken: spoken) }
             let (r, w) = scaled(recent(monitor.diskReadHistory), recent(monitor.diskWriteHistory), floor: 1_048_576)
             return MenuBarGlyph(pieces: [.label("SSD"), .mirror(above: r, below: w, aboveColor: MenuBarRenderer.blue, belowColor: MenuBarRenderer.red)], spoken: spoken)
         case .network:
-            let spoken = "업로드 \(MonitorText.rate(s.uploadRate)), 다운로드 \(MonitorText.rate(s.downloadRate))"
+            let spoken = String(localized: "Upload \(MonitorText.rate(s.uploadRate)), download \(MonitorText.rate(s.downloadRate))")
             guard style == .graph else { return value([.stack("↑" + MonitorText.rate(s.uploadRate), "↓" + MonitorText.rate(s.downloadRate))], spoken: spoken) }
             let (u, d) = scaled(recent(monitor.uploadHistory), recent(monitor.downloadHistory), floor: 262_144)
             return MenuBarGlyph(pieces: [.label("NET"), .mirror(above: u, below: d, aboveColor: MenuBarRenderer.red, belowColor: MenuBarRenderer.blue)], spoken: spoken)
         case .battery:
             guard let battery = s.battery else { return nil }
-            let spoken = "배터리 \(MonitorText.percent(battery.level))"
+            let spoken = String(localized: "Battery \(MonitorText.percent(battery.level))")
             guard style == .graph else { return value([.text(MonitorText.percent(battery.level))], spoken: spoken) }
             return MenuBarGlyph(pieces: [.label("BAT"), .level(battery.level / 100, battery.level < 20 ? MenuBarRenderer.red : MenuBarRenderer.green)], spoken: spoken)
         case .readout:
             guard let temperature = s.temperatures.cpu else { return nil }
             let watts = s.power.system.map { MonitorText.whole($0) + "W" }
             return value([.stack(MonitorText.temperature(temperature), watts ?? "")],
-                         spoken: "CPU \(MonitorText.temperature(temperature))" + (s.power.system.map { ", 전력 \(MonitorText.watts($0))" } ?? ""))
+                         spoken: s.power.system.map { String(localized: "CPU \(MonitorText.temperature(temperature)), power \(MonitorText.watts($0))") } ?? "CPU \(MonitorText.temperature(temperature))")
         }
     }
 }

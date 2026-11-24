@@ -7,9 +7,9 @@ import ToolsmithKit
 enum MixerStyle {
     // Column widths on the 4 pt grid; the screen is exactly as wide as a row.
     static let nameWidth: CGFloat = 152
-    static let volumeWidth: CGFloat = 200
+    static let volumeWidth: CGFloat = 180
     static let boostWidth: CGFloat = 36
-    static let deviceWidth: CGFloat = 180
+    static let deviceWidth: CGFloat = 240
     static let fxWidth: CGFloat = 28
     static let columnGap = Space.s
     static let rowInset = Space.s
@@ -85,26 +85,26 @@ struct MixerView: View {
     private var footer: some View {
         HStack(spacing: Space.s) {
             if let name = savingName {
-                TextField("이 설정의 이름", text: Binding(get: { name }, set: { savingName = $0 }))
+                TextField("Name for these settings", text: Binding(get: { name }, set: { savingName = $0 }))
                     .textFieldStyle(.roundedBorder).frame(maxWidth: 220)
                     .onSubmit(saveConfig)
-                RowButton("저장", action: saveConfig).disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
-                RowButton("취소") { savingName = nil }
+                RowButton(String(localized: "Save"), action: saveConfig).disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                RowButton(String(localized: "Cancel")) { savingName = nil }
                 Spacer()
             } else {
-                PillMenu(title: "즐겨찾기 더하기", symbol: "star.fill") {
+                PillMenu(title: String(localized: "Add Favorite"), symbol: "star.fill") {
                     let candidates = mixer.favoriteCandidates()
-                    if candidates.isEmpty { Text("더할 수 있는 앱이 없습니다") }
+                    if candidates.isEmpty { Text("No Apps to Add") }
                     ForEach(candidates, id: \.key) { app in Button(app.name) { mixer.toggleFavorite(app.key) } }
                 }
                 Spacer()
-                PillMenu(title: "Quick Configs", symbol: "slider.horizontal.3") {
+                PillMenu(title: String(localized: "Quick Configs"), symbol: "slider.horizontal.3") {
                     let configs = mixer.configuration.quickConfigs
                     ForEach(configs) { config in Button(config.name) { mixer.applyQuickConfig(config.id) } }
                     if !configs.isEmpty { Divider() }
-                    Button("지금 설정 저장…") { savingName = "" }
+                    Button("Save Current Settings…") { savingName = "" }
                     if !configs.isEmpty {
-                        Menu("지우기") {
+                        Menu("Delete") {
                             ForEach(configs) { config in Button(config.name, role: .destructive) { mixer.removeQuickConfig(config.id) } }
                         }
                     }
@@ -121,7 +121,7 @@ struct MixerView: View {
     // MARK: Groups
 
     private var systemGroup: some View {
-        MixerGroup(title: "시스템", columns: ["볼륨", "Boost", "장치", "FX"],
+        MixerGroup(title: String(localized: "System"), columns: [String(localized: "Volume"), "Boost", String(localized: "Device"), "FX"],
                    collapsed: Binding(get: { state.systemCollapsed }, set: { state.systemCollapsed = $0 })) {
             ForEach([DeviceRole.output, .input, .effects], id: \.self) { role in
                 let open = expanded == .system(role)
@@ -139,10 +139,10 @@ struct MixerView: View {
     }
 
     private var appsGroup: some View {
-        MixerGroup(title: "앱", columns: ["볼륨", "Boost", "다른 출력으로 보내기", "FX"],
+        MixerGroup(title: String(localized: "Apps"), columns: [String(localized: "Volume"), "Boost", String(localized: "Send to Another Output"), "FX"],
                    collapsed: Binding(get: { state.appsCollapsed }, set: { state.appsCollapsed = $0 })) {
             if mixer.rows.isEmpty {
-                Text("지금 소리를 내는 앱이 없습니다. 앱이 소리를 내면 여기에 나오고, 즐겨찾기한 앱은 늘 보입니다.")
+                Text("No apps are playing sound. Apps appear here when they play, and favorites are always shown.")
                     .font(.role(.secondary)).foregroundStyle(MixerStyle.quiet)
                     .frame(maxWidth: .infinity).padding(.vertical, Space.l)
             }
@@ -230,7 +230,7 @@ private struct RowLayout<Leading: View, Volume: View, Boost: View, Device: View>
                 Image(systemName: open ? "chevron.down" : "chevron.right").font(.role(.caption, weight: .bold))
                     .frame(width: 24, height: 24).background(MixerStyle.control, in: Circle()).contentShape(Circle())
             }
-            .buttonStyle(.plain).frame(width: MixerStyle.fxWidth).help("효과와 옵션")
+            .buttonStyle(.plain).frame(width: MixerStyle.fxWidth).help("Effects and options")
         }
         .padding(.horizontal, MixerStyle.rowInset)
         .frame(height: MixerStyle.rowHeight)
@@ -253,7 +253,7 @@ private struct VolumeColumn: View {
                     .foregroundStyle(muted ? MixerStyle.muted : Ink.secondary)
                     .frame(width: 22, height: 22).contentShape(Rectangle())
             }
-            .buttonStyle(.plain).help(muted ? "소리 켜기" : "음소거")
+            .buttonStyle(.plain).help(muted ? String(localized: "Unmute") : String(localized: "Mute"))
             TrackSlider(value: volume, range: 0...1, fill: muted ? MixerStyle.muted : MixerStyle.accent, enabled: enabled, onChange: onChange)
             Text(enabled ? AudioGain.percentText(volume) : "-").font(.role(.detail, design: .rounded)).monospacedDigit()
                 .frame(width: 38, alignment: .trailing)
@@ -272,7 +272,7 @@ private struct BoostButton: View {
                 .foregroundStyle(on ? Ink.onAccent : Ink.secondary)
                 .frame(width: 28, height: 28).background(on ? MixerStyle.accent : MixerStyle.control, in: Circle())
         }
-        .buttonStyle(.plain).help(on ? "Magic Boost 끄기" : "Magic Boost: 작은 소리를 키우고 큰 소리는 그대로 둡니다")
+        .buttonStyle(.plain).help(on ? String(localized: "Turn Off Magic Boost") : String(localized: "Magic Boost: raises quiet sounds and leaves loud ones as they are"))
     }
 }
 
@@ -371,9 +371,9 @@ private struct SystemRow: View {
 
     private var title: String {
         switch role {
-        case .output: return "출력"
-        case .input: return "입력"
-        case .effects: return "알림음"
+        case .output: return String(localized: "Output")
+        case .input: return String(localized: "Input")
+        case .effects: return String(localized: "Alerts")
         }
     }
 
@@ -388,10 +388,10 @@ private struct SystemRow: View {
     @ViewBuilder private var deviceMenu: some View {
         let follows = role == .effects && mixer.configuration.effectsFollowOutput
         let current = state.device
-        DeviceMenu(title: follows ? "시스템 출력 따라가기" : current?.name ?? "없음",
+        DeviceMenu(title: follows ? String(localized: "Same as Output") : current?.name ?? String(localized: "None"),
                    symbol: follows ? "arrow.up" : current.map { symbol(for: $0, input: role == .input) } ?? "speaker.slash") {
             if role == .effects {
-                choice("시스템 출력 따라가기", symbol: "arrow.up", checked: follows) { mixer.setEffectsFollowOutput(true) }
+                choice(String(localized: "Same as Output"), symbol: "arrow.up", checked: follows) { mixer.setEffectsFollowOutput(true) }
                 Divider()
             }
             ForEach(mixer.devices(for: role)) { device in
@@ -440,20 +440,20 @@ private struct SystemDetails: View {
                     }
                 }
                 HStack(spacing: Space.s) {
-                    PillMenu(title: "효과 더하기", symbol: "plus") {
-                        if system.effects.contains(.equalizer) { Text("더할 효과가 없습니다") }
+                    PillMenu(title: String(localized: "Add Effect"), symbol: "plus") {
+                        if system.effects.contains(.equalizer) { Text("No Effects to Add") }
                         if !system.effects.contains(.equalizer) {
                             Button(EffectKind.equalizer.title) { mixer.updateSystemEffects { $0.effects.append(.equalizer) } }
                         }
                     }
                     Spacer()
                     TimedMuteMenu(mixer: mixer, key: AudioMixer.outputKey)
-                    PillMenu(title: "옵션", symbol: "gearshape.2") {
-                        Button("효과 모두 되돌리기") { mixer.updateSystemEffects { $0 = SystemEffects() } }
+                    PillMenu(title: String(localized: "Options"), symbol: "gearshape.2") {
+                        Button("Reset All Effects") { mixer.updateSystemEffects { $0 = SystemEffects() } }
                     }
                 }
             } else if role == .effects {
-                Text("알림음 볼륨은 출력 볼륨에 대한 비율입니다.").font(.role(.detail)).foregroundStyle(MixerStyle.quiet).frame(maxWidth: .infinity, alignment: .leading)
+                Text("The alert volume is a share of the output volume.").font(.role(.detail)).foregroundStyle(MixerStyle.quiet).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(.horizontal, Space.m).padding(.bottom, Space.s)
@@ -479,7 +479,7 @@ private struct AppRow: View {
                     Image(systemName: row.row.isFavorite ? "star.fill" : "star").font(.role(.secondary))
                         .foregroundStyle(row.row.isFavorite ? MixerStyle.accent : Ink.disabled).frame(width: 18)
                 }
-                .buttonStyle(.plain).help(row.row.isFavorite ? "즐겨찾기에서 빼기" : "즐겨찾기에 고정")
+                .buttonStyle(.plain).help(row.row.isFavorite ? String(localized: "Remove from Favorites") : String(localized: "Pin to Favorites"))
                 LevelMeter(level: meters.level(row.key))
                 icon
                 Text(row.name).font(.role(.body, weight: .medium)).lineLimit(1)
@@ -520,30 +520,30 @@ private struct AppRow: View {
         } else if let current, let device = outputs.first(where: { $0.uid == current }) {
             (title, icon) = (device.name, symbol(for: device))
         } else if current != nil {
-            (title, icon) = ("연결 안 됨", "exclamationmark.triangle")
+            (title, icon) = (String(localized: "Not connected"), "exclamationmark.triangle")
         } else {
-            (title, icon) = ("보내지 않음", "arrow.up")
+            (title, icon) = (String(localized: "Not sent"), "arrow.up")
         }
         return DeviceMenu(title: title, symbol: icon, highlighted: current != nil) {
-            choice("보내지 않음 (시스템 출력)", symbol: "arrow.up", checked: current == nil) { mixer.updateApp(row.key) { $0.outputUID = nil } }
+            choice(String(localized: "Not Sent (System Output)"), symbol: "arrow.up", checked: current == nil) { mixer.updateApp(row.key) { $0.outputUID = nil } }
             Divider()
             ForEach(regular) { device in
                 choice(device.name, symbol: symbol(for: device), checked: device.uid == current) { mixer.updateApp(row.key) { $0.outputUID = device.uid } }
             }
             Section("AirPlay") {
-                if airPlay.isEmpty { Text("AirPlay 기기는 제어 센터에서 한 번 고르면 여기에 나옵니다") }
+                if airPlay.isEmpty { Text("AirPlay devices appear here once you choose them in Control Center") }
                 ForEach(airPlay) { device in
                     choice(device.name, symbol: "airplayaudio", checked: device.uid == current) { mixer.updateApp(row.key) { $0.outputUID = device.uid } }
                 }
             }
-            Section("출력 묶음") {
+            Section("Output Groups") {
                 ForEach(groups) { group in
                     choice(group.name, symbol: "square.stack.3d.up", checked: group.reference == current) { mixer.updateApp(row.key) { $0.outputUID = group.reference } }
                 }
-                Button(action: onNewGroup) { Label("출력 묶음 만들기…", systemImage: "plus.square.on.square") }
+                Button(action: onNewGroup) { Label("New Output Group…", systemImage: "plus.square.on.square") }
             }
         }
-        .help("이 앱 소리만 다른 출력 장치로 보냅니다")
+        .help("Send only this app’s sound to another output device")
     }
 }
 
@@ -557,7 +557,7 @@ private struct AppDetails: View {
     var body: some View {
         VStack(spacing: Space.s) {
             if row.outputMissing {
-                Text("고른 출력 장치가 연결되어 있지 않아 시스템 출력으로 냅니다. 다시 연결하면 그쪽으로 갑니다.")
+                Text("The chosen output device is not connected, so the sound plays on the system output. It goes back when the device reconnects.")
                     .font(.role(.detail)).foregroundStyle(MixerStyle.quiet).frame(maxWidth: .infinity, alignment: .leading)
             }
             if let error = row.routeError {
@@ -576,25 +576,25 @@ private struct AppDetails: View {
                 }
             }
             HStack(spacing: Space.s) {
-                PillMenu(title: "효과 더하기", symbol: "plus") {
+                PillMenu(title: String(localized: "Add Effect"), symbol: "plus") {
                     let missing = EffectKind.forApps.filter { !settings.effects.contains($0) }
-                    if missing.isEmpty { Text("더할 효과가 없습니다") }
+                    if missing.isEmpty { Text("No Effects to Add") }
                     ForEach(missing) { effect in Button(effect.title) { mixer.updateApp(row.key) { $0.effects.append(effect) } } }
                 }
                 Spacer()
                 TimedMuteMenu(mixer: mixer, key: row.key)
-                PillMenu(title: "옵션", symbol: "gearshape.2") {
+                PillMenu(title: String(localized: "Options"), symbol: "gearshape.2") {
                     let allOff = settings.effects.allSatisfy(settings.bypassed.contains)
-                    Button(allOff ? "효과 모두 켜기" : "효과 모두 끄기") {
+                    Button(allOff ? String(localized: "Turn On All Effects") : String(localized: "Turn Off All Effects")) {
                         mixer.updateApp(row.key) { $0.bypassed = allOff ? [] : Set($0.effects) }
                     }
                     if row.row.isFavorite {
                         Divider()
-                        Button("즐겨찾기에서 위로") { mixer.moveFavorite(row.key, by: -1) }
-                        Button("즐겨찾기에서 아래로") { mixer.moveFavorite(row.key, by: 1) }
+                        Button("Move Up in Favorites") { mixer.moveFavorite(row.key, by: -1) }
+                        Button("Move Down in Favorites") { mixer.moveFavorite(row.key, by: 1) }
                     }
                     Divider()
-                    Button("이 앱 설정 되돌리기", role: .destructive) { mixer.resetApp(row.key) }
+                    Button("Reset This App", role: .destructive) { mixer.resetApp(row.key) }
                 }
             }
         }
@@ -640,7 +640,7 @@ private struct EffectCard<Control: View>: View {
                 Button(action: onRemove) {
                     Image(systemName: "xmark").font(.role(.caption, weight: .bold)).frame(width: 24, height: 24).background(MixerStyle.control, in: Circle())
                 }
-                .buttonStyle(.plain).help("이 효과 빼기")
+                .buttonStyle(.plain).help("Remove this effect")
             }
         }
         .padding(.horizontal, Space.m).padding(.vertical, Space.s)
@@ -675,19 +675,21 @@ private struct BalanceControl: View {
     var body: some View {
         HStack(spacing: Space.s) {
             Text(label).font(.role(.secondary)).monospacedDigit().frame(width: 72, alignment: .trailing)
-            Text("L").font(.role(.detail, weight: .semibold)).foregroundStyle(MixerStyle.quiet).fixedSize()
+            Text(verbatim: "L").font(.role(.detail, weight: .semibold)).foregroundStyle(MixerStyle.quiet).fixedSize()
             TrackSlider(value: balance, range: -1...1, fill: MixerStyle.accent, fillsFromCentre: true) { onChange(abs($0) < 0.04 ? 0 : $0) }
                 .frame(width: 120)
-            Text("R").font(.role(.detail, weight: .semibold)).foregroundStyle(MixerStyle.quiet).fixedSize()
+            Text(verbatim: "R").font(.role(.detail, weight: .semibold)).foregroundStyle(MixerStyle.quiet).fixedSize()
         }
     }
 
     private var label: String {
-        abs(balance) < 0.01 ? "가운데" : "\(balance < 0 ? "왼쪽" : "오른쪽") \(Int((abs(balance) * 100).rounded()))%"
+        let percent = Int((abs(balance) * 100).rounded())
+        if abs(balance) < 0.01 { return String(localized: "Center") }
+        return balance < 0 ? String(localized: "Left \(percent)%") : String(localized: "Right \(percent)%")
     }
 }
 
-/// The preset menu; 「조절」 opens the ten bands under it.
+/// The preset menu; "Adjust" opens the ten bands under it.
 private struct EqualizerControl: View {
     let eq: EQSettings
     let onChange: (EQSettings) -> Void
@@ -696,13 +698,13 @@ private struct EqualizerControl: View {
     var body: some View {
         HStack(spacing: Space.s) {
             Text("Preset").font(.role(.secondary)).fixedSize()
-            DeviceMenu(title: eq.preset.map { $0 == .flat ? "평평하게 (꺼짐)" : $0.title } ?? "직접 맞춤", symbol: eq.isFlat ? "minus" : "slider.vertical.3") {
+            DeviceMenu(title: eq.preset.map { $0 == .flat ? String(localized: "Flat (Off)") : $0.title } ?? String(localized: "Custom"), symbol: eq.isFlat ? "minus" : "slider.vertical.3") {
                 ForEach(EQPreset.allCases) { preset in
-                    choice(preset == .flat ? "평평하게 (꺼짐)" : preset.title, checked: eq.preset == preset) { onChange(preset.settings) }
+                    choice(preset == .flat ? String(localized: "Flat (Off)") : preset.title, checked: eq.preset == preset) { onChange(preset.settings) }
                 }
             }
             .frame(width: 160)
-            RowButton(editing ? "닫기" : "조절") { editing.toggle() }.fixedSize()
+            RowButton(editing ? String(localized: "Close") : String(localized: "Adjust")) { editing.toggle() }.fixedSize()
                 .popover(isPresented: $editing, arrowEdge: .bottom) { EqualizerBands(eq: eq, onChange: onChange).padding(Space.m) }
         }
     }
@@ -762,16 +764,16 @@ private struct TimedMuteMenu: View {
     let key: String
 
     var body: some View {
-        PillMenu(title: "잠시 음소거", symbol: "timer") {
-            Button("30초") { mixer.muteFor(key, seconds: 30) }
-            Button("1분") { mixer.muteFor(key, seconds: 60) }
-            Button("2분") { mixer.muteFor(key, seconds: 120) }
+        PillMenu(title: String(localized: "Mute For"), symbol: "timer") {
+            Button("30 Seconds") { mixer.muteFor(key, seconds: 30) }
+            Button("1 Minute") { mixer.muteFor(key, seconds: 60) }
+            Button("2 Minutes") { mixer.muteFor(key, seconds: 120) }
             if mixer.timedMutes[key] != nil {
                 Divider()
-                Button("지금 다시 켜기") { mixer.cancelTimedMute(key) }
+                Button("Unmute Now") { mixer.cancelTimedMute(key) }
             }
         }
-        .help("정한 시간 동안 소리를 끄고, 끝나면 서서히 다시 켭니다")
+        .help("Mutes the sound for a set time, then fades it back in")
     }
 }
 
@@ -803,9 +805,9 @@ private struct OutputGroupEditor: View {
         ZStack {
             Shade.strong.onTapGesture(perform: close)
             VStack(alignment: .leading, spacing: Space.s) {
-                Text("출력 묶음 만들기").font(.role(.emphasis, weight: .bold))
-                Text("고른 장치 모두에서 같은 소리가 납니다. 첫 장치가 시간을 맞춥니다.").font(.role(.detail)).foregroundStyle(MixerStyle.quiet)
-                TextField("이름 (예: 스피커와 헤드폰)", text: $draft.name).textFieldStyle(.roundedBorder)
+                Text("New Output Group").font(.role(.emphasis, weight: .bold))
+                Text("The same sound plays on every chosen device. The first device keeps the time.").font(.role(.detail)).foregroundStyle(MixerStyle.quiet)
+                TextField("Name (for example, Speakers and Headphones)", text: $draft.name).textFieldStyle(.roundedBorder)
                 VStack(alignment: .leading, spacing: Space.xs) {
                     ForEach(mixer.devices(for: .output)) { device in
                         LabeledSwitch(title: device.name, isOn: Binding(get: { draft.deviceUIDs.contains(device.uid) }, set: { on in
@@ -815,14 +817,14 @@ private struct OutputGroupEditor: View {
                 }
                 HStack {
                     if !mixer.configuration.outputGroups.isEmpty {
-                        Menu("묶음 지우기") {
+                        Menu("Delete Group") {
                             ForEach(mixer.configuration.outputGroups) { group in Button(group.name, role: .destructive) { mixer.removeOutputGroup(group.id) } }
                         }
                         .fixedSize()
                     }
                     Spacer()
-                    Button("취소", action: close)
-                    Button("만들기") {
+                    Button("Cancel", action: close)
+                    Button("Create") {
                         if mixer.saveOutputGroup(id: draft.id, name: draft.name, deviceUIDs: draft.deviceUIDs) != nil { close() }
                     }
                     .keyboardShortcut(.defaultAction)

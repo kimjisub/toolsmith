@@ -50,20 +50,20 @@ enum SettingsPane: Hashable, Identifiable {
         let pages = modules.running.map { SettingsPane.module($0.descriptor.id) }
         return [
             (nil, [.general, .features, .menuBar, .hotkeys]),
-            ("기능", pages),
-            ("앱", [.permissions, .privacy]),
+            (String(localized: "Features"), pages),
+            (String(localized: "App"), [.permissions, .privacy]),
         ].filter { !$0.1.isEmpty }
     }
 
     @MainActor func title(_ modules: ModuleManager) -> String {
         switch self {
-        case .general: return "일반"
-        case .features: return "기능"
-        case .menuBar: return "메뉴 막대"
-        case .hotkeys: return "단축키"
-        case .permissions: return "권한"
-        case .privacy: return "개인정보와 저장 공간"
-        case .about: return "정보"
+        case .general: return String(localized: "General")
+        case .features: return String(localized: "Features")
+        case .menuBar: return String(localized: "Menu Bar")
+        case .hotkeys: return String(localized: "Shortcuts")
+        case .permissions: return String(localized: "Permissions")
+        case .privacy: return String(localized: "Privacy & Storage")
+        case .about: return String(localized: "About")
         case .module(let id): return modules.module(id: id)?.descriptor.title ?? id
         }
     }
@@ -115,7 +115,7 @@ enum SettingsPane: Hashable, Identifiable {
         window.standardWindowButton(.zoomButton)?.isEnabled = false
         super.init(window: window)
         window.delegate = self
-        let host = NSHostingView(rootView: SettingsView(environment: environment, modules: environment.modules))
+        let host = NSHostingView(rootView: SettingsView(environment: environment, modules: environment.modules).environment(\.locale, .app))
         host.sizingOptions = []
         window.contentView = host
         window.setContentSize(Self.size)
@@ -205,7 +205,7 @@ private struct SettingsSidebar: View {
                 AppIconImage(size: 34)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(AppIdentity.name).font(.role(.body, weight: .semibold))
-                    Text("설정").font(.role(.detail)).foregroundStyle(Ink.tertiary)
+                    Text("Settings").font(.role(.detail)).foregroundStyle(Ink.tertiary)
                 }
             }
             .padding(.horizontal, Space.m)
@@ -228,7 +228,9 @@ private struct SettingsSidebar: View {
             .scrollIndicators(.automatic)
         }
         .padding(.horizontal, Space.m)
-        .frame(width: 222)
+        // As wide as the longest page name needs, so no language's names are cut off.
+        .frame(minWidth: 222)
+        .fixedSize(horizontal: true, vertical: false)
         .frame(maxHeight: .infinity)
         .background(Shade.medium)
         .overlay(alignment: .trailing) { Line.subtle.frame(width: 1) }
@@ -239,7 +241,7 @@ private struct SettingsSidebar: View {
         return Button { selection = pane } label: {
             HStack(spacing: Space.s) {
                 IconTile(symbol: pane.symbol(modules), color: pane.color(modules))
-                Text(pane.title(modules)).font(.role(.body)).lineLimit(1)
+                Text(pane.title(modules)).font(.role(.body)).fixedSize()
                 Spacer(minLength: 0)
             }
             .foregroundStyle(selected ? Color.white : Ink.secondary)

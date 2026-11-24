@@ -11,14 +11,14 @@ struct SensorsDetailView: View {
     var body: some View {
         VStack(spacing: Space.s) {
             HistoryBlock(topic: .power, selection: selection) {
-                PanelHeader(title: "전력", symbol: "bolt")
-                Figure(value: s.power.system.map { MonitorText.whole($0) } ?? "-", unit: "W", caption: "맥 전체가 지금 쓰는 전력")
+                PanelHeader(title: String(localized: "Power"), symbol: "bolt")
+                Figure(value: s.power.system.map { MonitorText.whole($0) } ?? "-", unit: "W", caption: String(localized: "Power the whole Mac is using now"))
                 PowerFlow(power: s.power)
             }
             HistoryBlock(topic: .cpuTemperature, selection: selection) {
-                PanelHeader(title: "온도", symbol: "thermometer.medium")
+                PanelHeader(title: String(localized: "Temperature"), symbol: "thermometer.medium")
                 if s.sensors.isEmpty {
-                    Text("온도 센서를 읽을 수 없습니다").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
+                    Text("Temperature sensors can’t be read").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)
                 }
                 ForEach(SensorCatalog.summaries(s.sensors)) { summary in
                     SensorGroupRow(summary: summary, expanded: expanded.contains(summary.group)) {
@@ -28,14 +28,14 @@ struct SensorsDetailView: View {
             }
             if !s.fans.isEmpty {
                 Panel {
-                    PanelHeader(title: "팬", symbol: "fan")
+                    PanelHeader(title: String(localized: "Fans"), symbol: "fan")
                     ForEach(s.fans) { reading in
                         HStack(spacing: Space.s) {
-                            Text(s.fans.count == 2 ? (reading.index == 0 ? "왼쪽" : "오른쪽") : "팬 \(reading.index + 1)").font(MonitorStyle.body)
+                            Text(s.fans.count == 2 ? (reading.index == 0 ? String(localized: "Left") : String(localized: "Right")) : String(localized: "Fan \(reading.index + 1)")).font(MonitorStyle.body)
                                 .foregroundStyle(Ink.secondary)
                             Spacer()
                             MeterBar(fraction: reading.fraction, height: 4).frame(width: 54)
-                            Text(reading.rpm < 1 ? "멈춤" : "\(MonitorText.whole(reading.rpm)) rpm").font(MonitorStyle.number).frame(width: 76, alignment: .trailing)
+                            Text(reading.rpm < 1 ? String(localized: "Stopped") : "\(MonitorText.whole(reading.rpm)) rpm").font(MonitorStyle.number).frame(width: 76, alignment: .trailing)
                         }
                     }
                     #if TOOLSMITH_DEV
@@ -60,13 +60,13 @@ private struct SensorGroupRow: View {
                     Image(systemName: "chevron.right").font(.role(.caption, weight: .bold)).rotationEffect(.degrees(expanded ? 90 : 0))
                         .foregroundStyle(MonitorStyle.quiet).opacity(summary.readings.count > 1 ? 1 : 0)
                     HeatRow(label: summary.name, celsius: summary.peak,
-                            note: summary.readings.count > 1 ? "평균 \(MonitorText.temperature(summary.average))" : nil)
+                            note: summary.readings.count > 1 ? String(localized: "Average \(MonitorText.temperature(summary.average))") : nil)
                 }
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .disabled(summary.readings.count < 2)
-            .help(summary.readings.count > 1 ? "센서 \(summary.readings.count)개 중 가장 뜨거운 값" : "")
+            .help(summary.readings.count > 1 ? String(localized: "Hottest of \(summary.readings.count) sensors") : "")
             if expanded {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: Space.xs) {
                     ForEach(summary.readings) { reading in
@@ -91,9 +91,9 @@ private struct FanControls: View {
     var body: some View {
         Line.subtle.frame(height: 1)
         HStack(spacing: Space.s) {
-            Segmented(title: "팬", selection: Binding(get: { fan.mode == .manual },
+            Segmented(title: String(localized: "Fans"), selection: Binding(get: { fan.mode == .manual },
                                                     set: { manual in if manual { fan.applyManual(fans: fans) } else { fan.returnToAutomatic() } }),
-                      options: [false, true], label: { $0 ? "직접" : "자동" })
+                      options: [false, true], label: { $0 ? String(localized: "Manual") : String(localized: "Auto") })
             .frame(width: 110)
             .disabled(fan.isBusy)
             if fan.isBusy {
@@ -106,7 +106,7 @@ private struct FanControls: View {
         if let message = fan.message {
             Text(message).font(.role(.detail)).foregroundStyle(Status.warning).fixedSize(horizontal: false, vertical: true)
         } else if fan.mode == .manual {
-            Text("앱을 끄거나 \(Int(FanLimits.emergencyTemperature))° 를 넘으면 자동으로 돌아갑니다").font(.role(.detail)).foregroundStyle(Ink.tertiary)
+            Text("Goes back to Auto when the app quits or the temperature passes \(Int(FanLimits.emergencyTemperature))°").font(.role(.detail)).foregroundStyle(Ink.tertiary)
         }
     }
 }

@@ -6,36 +6,47 @@ struct GeneralPane: View {
     @ObservedObject var environment: AppEnvironment
     @ObservedObject var settings: SettingsStore
     @State private var loginError: String?
+    @State private var language = AppLanguagePreference.current
 
     var body: some View {
-        SettingsPage(title: "일반") {
-            SettingsSection(title: "앱", footer: loginError ?? (LaunchAtLogin.isInstalled ? nil : "자동 실행은 응용 프로그램 폴더에 설치한 뒤에 적용됩니다.")) {
-                ToggleRow(title: "로그인할 때 자동 실행", detail: "맥을 켜면 메뉴 막대에서 기다립니다", isOn: Binding(
+        SettingsPage(title: String(localized: "General")) {
+            SettingsSection(title: String(localized: "App"), footer: loginError ?? (LaunchAtLogin.isInstalled ? nil : String(localized: "Launch at login takes effect once the app is installed in the Applications folder."))) {
+                ToggleRow(title: String(localized: "Launch at Login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
                     // For an installed copy the system's own status is the truth.
                     get: { LaunchAtLogin.isInstalled ? LaunchAtLogin.isEnabled : settings.settings.launchAtLogin },
                     set: { setLaunchAtLogin($0) }))
             }
-            SettingsSection(title: "입력창") {
+            SettingsSection(title: String(localized: "Language"), footer: language == AppLanguagePreference.launched ? nil : String(localized: "The new language is used after the app reopens.")) {
+                PickerRow(title: String(localized: "App Language"), detail: String(localized: "Follows the system unless you choose one"),
+                          selection: Binding(get: { language }, set: { language = $0; AppLanguagePreference.set($0) }),
+                          options: AppLanguage.allCases, label: { $0.label() })
+                if language != AppLanguagePreference.launched {
+                    SettingsRow(title: String(localized: "Reopen to Apply")) {
+                        RowButton(String(localized: "Reopen Now")) { Relaunch.now() }
+                    }
+                }
+            }
+            SettingsSection(title: String(localized: "Launcher")) {
                 if environment.modules.isEnabled(LauncherModule.descriptor.id) {
-                SettingsRow(title: "입력창 열기", detail: "어느 앱에서든 이 키로 입력창을 엽니다") {
+                SettingsRow(title: String(localized: "Open Launcher"), detail: String(localized: "Opens the launcher from any app")) {
                     HStack(spacing: Space.xs) {
                         ForEach(Array((settings.settings.hotkeys.combo(for: HotkeyID.openLauncher)?.displayParts ?? []).enumerated()), id: \.offset) { _, part in
                             KeyCap(label: part)
                         }
                     }
-                    RowButton("바꾸기") { environment.settingsPane = .hotkeys }
+                    RowButton(String(localized: "Change")) { environment.settingsPane = .hotkeys }
                 }
                 }
-                SettingsRow(title: "처음 안내 다시 보기", detail: "권한과 기능을 한 번에 다시 봅니다") {
-                    RowButton("열기") { environment.onboarding.show() }
+                SettingsRow(title: String(localized: "Show Welcome Guide Again"), detail: String(localized: "Goes over permissions and features again in one place")) {
+                    RowButton(String(localized: "Open")) { environment.onboarding.show() }
                 }
             }
-            SettingsSection(title: "기능과 메뉴 막대") {
-                SettingsRow(title: "기능 고르기", detail: "쓰는 기능만 켜 둡니다") {
-                    RowButton("기능") { environment.settingsPane = .features }
+            SettingsSection(title: String(localized: "Features and Menu Bar")) {
+                SettingsRow(title: String(localized: "Choose Features"), detail: String(localized: "Keep on only the features you use")) {
+                    RowButton(String(localized: "Features")) { environment.settingsPane = .features }
                 }
-                SettingsRow(title: "메뉴 막대 꾸미기", detail: "메뉴 막대에 보일 항목, 순서, 모양을 고릅니다") {
-                    RowButton("메뉴 막대") { environment.settingsPane = .menuBar }
+                SettingsRow(title: String(localized: "Customize Menu Bar"), detail: String(localized: "Choose the items the menu bar shows, their order and their style")) {
+                    RowButton(String(localized: "Menu Bar")) { environment.settingsPane = .menuBar }
                 }
             }
         }
@@ -48,7 +59,7 @@ struct GeneralPane: View {
                 try LaunchAtLogin.set(enabled)
             } catch {
                 // The switch stays where it was; say why.
-                loginError = "자동 실행을 바꾸지 못했습니다: \(error.localizedDescription)"
+                loginError = String(localized: "Couldn’t change launch at login: \(error.localizedDescription)")
                 return
             }
         }
@@ -63,23 +74,23 @@ struct AboutPane: View {
     private var copyright: String { Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? "" }
 
     var body: some View {
-        SettingsPage(title: "정보") {
+        SettingsPage(title: String(localized: "About")) {
             VStack(spacing: Space.m) {
                 AppIconImage(size: 96)
                 Text(AppIdentity.name).font(.role(.hero, weight: .semibold))
-                Text("버전 \(version) (\(build))").font(.role(.secondary).monospacedDigit()).foregroundStyle(Ink.tertiary).textSelection(.enabled)
-                Text("필요한 기능만 켜서 쓰는 맥 도구. 입력창, 클립보드, 화면 나누기, 캡처, AI 검색, 시스템 모니터, 소리 조절을 한 앱에서 씁니다.")
+                Text("Version \(version) (\(build))").font(.role(.secondary).monospacedDigit()).foregroundStyle(Ink.tertiary).textSelection(.enabled)
+                Text("Mac utilities you switch on as you need them: launcher, clipboard, window snapping, capture, AI answers, system monitor and sound control in one app.")
                     .font(.role(.secondary)).foregroundStyle(Ink.tertiary).multilineTextAlignment(.center).frame(maxWidth: 420)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, Space.s)
             UpdateSection(updates: environment.updates, settings: environment.settings)
             SettingsSection {
-                SettingsRow(title: "처음 안내", detail: "권한과 기능을 처음부터 다시 봅니다") {
-                    RowButton("다시 보기") { environment.onboarding.show() }
+                SettingsRow(title: String(localized: "Welcome Guide"), detail: String(localized: "Goes over permissions and features from the start")) {
+                    RowButton(String(localized: "Show Again")) { environment.onboarding.show() }
                 }
-                SettingsRow(title: "저장 폴더", detail: "기록과 설정이 있는 곳. 이 맥에만 있습니다") {
-                    RowButton("Finder 에서 보기") { NSWorkspace.shared.activateFileViewerSelecting([SettingsStore.supportDirectory]) }
+                SettingsRow(title: String(localized: "Data Folder"), detail: String(localized: "Where history and settings are kept. Only on this Mac")) {
+                    RowButton(String(localized: "Show in Finder")) { NSWorkspace.shared.activateFileViewerSelecting([SettingsStore.supportDirectory]) }
                 }
             }
             Text(copyright).font(.role(.detail)).foregroundStyle(Ink.tertiary).frame(maxWidth: .infinity)
@@ -93,15 +104,15 @@ private struct UpdateSection: View {
     @ObservedObject var settings: SettingsStore
 
     var body: some View {
-        SettingsSection(title: "업데이트", footer: updates.canUpdate
-                        ? "새 버전은 개발자 서명과 애플 공증을 확인한 뒤에만 설치하고, 화면 녹화 중이면 끝날 때까지 기다립니다. 받거나 바꾸지 못한 버전은 알림으로 알리고 자동으로 다시 받지 않습니다."
-                        : "개발 빌드와 직접 빌드한 앱은 업데이트를 확인하지 않습니다. 서명된 배포판에서만 동작합니다.") {
-            ToggleRow(title: "자동으로 업데이트", detail: "6시간마다 확인해 새 버전이 있으면 받아서 바꾸고 다시 켭니다", isOn: settings.binding(\.automaticUpdates))
-            SettingsRow(title: "마지막 확인", detail: updates.lastCheck.map { "\(RelativeTime.text(from: $0.at, now: Date())) · \($0.message)" } ?? "아직 확인하지 않았습니다") {
+        SettingsSection(title: String(localized: "Updates"), footer: updates.canUpdate
+                        ? String(localized: "A new version is installed only after its developer signature and Apple notarization are checked, and waits for a screen recording to finish. A version that can’t be downloaded or installed is reported in a notification and not downloaded again automatically.")
+                        : String(localized: "Development builds and apps you build yourself don’t check for updates. Only signed releases do.")) {
+            ToggleRow(title: String(localized: "Update Automatically"), detail: String(localized: "Checks every 6 hours and installs a new version, then reopens"), isOn: settings.binding(\.automaticUpdates))
+            SettingsRow(title: String(localized: "Last Checked"), detail: updates.lastCheck.map { "\(RelativeTime.text(from: $0.at, now: Date())) · \($0.message)" } ?? String(localized: "Not checked yet")) {
                 if updates.isChecking {
                     Spinner()
                 } else {
-                    RowButton("지금 확인") { Task { await updates.check() } }.disabled(!updates.canUpdate)
+                    RowButton(String(localized: "Check Now")) { Task { await updates.check() } }.disabled(!updates.canUpdate)
                 }
             }
         }

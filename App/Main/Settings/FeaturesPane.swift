@@ -1,7 +1,7 @@
 import SwiftUI
 import ToolsmithKit
 
-/// Settings → 기능: every feature on one line with its switch. A line of a feature that is on
+/// Settings → Features: every feature on one line with its switch. A line of a feature that is on
 /// opens its page.
 struct FeaturesPane: View {
     @ObservedObject var environment: AppEnvironment
@@ -9,8 +9,8 @@ struct FeaturesPane: View {
     @ObservedObject var settings: SettingsStore
 
     var body: some View {
-        SettingsPage(title: "기능", lead: "쓰는 기능만 켜 둡니다. 끈 기능은 백그라운드에서 아무것도 하지 않고, 권한을 묻지 않고, 단축키와 입력창 명령에서도 빠집니다. 켜면 바로 다시 살아납니다.") {
-            SettingsSection(footer: "끈 기능의 기록과 설정은 지우지 않습니다. 다시 켜면 그대로 있습니다. 지우려면 개인정보와 저장 공간에서 지웁니다.") {
+        SettingsPage(title: String(localized: "Features"), lead: String(localized: "Turn on only the features you use. A feature that is off does nothing in the background, asks for no permissions, and disappears from shortcuts and launcher commands. Turn it on and it’s back at once.")) {
+            SettingsSection(footer: String(localized: "Turning a feature off doesn’t delete its history or settings; they’re still there when you turn it back on. To delete them, use Privacy & Storage.")) {
                 ForEach(modules.descriptors) { row($0) }
             }
         }
@@ -35,7 +35,7 @@ struct FeaturesPane: View {
             if module.canDisable {
                 RowSwitch(title: module.title, isOn: settings.moduleBinding(module))
             } else {
-                Badge(text: "항상 켜짐")
+                Badge(text: String(localized: "Always On"))
             }
             Image(systemName: "chevron.right").font(.role(.detail, weight: .semibold)).foregroundStyle(Ink.disabled).accessibilityHidden(true)
         }
@@ -50,21 +50,21 @@ struct FeaturesPane: View {
 
     /// The line under the name: what it does and the permissions it asks for, or what it waits for.
     private func detail(_ module: ModuleDescriptor, missing: [ModuleDescriptor]) -> String {
-        if !missing.isEmpty { return "먼저 \(missing.map { "「\($0.title)」" }.joined(separator: ", ")) 을 켜야 씁니다" }
+        if !missing.isEmpty { return String(localized: "Turn on \(missing.map { String(localized: "“\($0.title)”") }.formatted(.list(type: .and).locale(.app))) first.") }
         let permissions = module.permissions.map(\.title)
-        return permissions.isEmpty ? module.summary : "\(module.summary) · \(permissions.joined(separator: ", ")) 권한"
+        return permissions.isEmpty ? module.summary : String(localized: "\(module.summary) · Permissions: \(permissions.formatted(.list(type: .and).locale(.app)))")
     }
 }
 
 extension ModulePermission {
     var title: String {
         switch self {
-        case .accessibility: return "손쉬운 사용"
-        case .screenRecording: return "화면 기록"
-        case .clipboard: return "다른 앱에서 붙여넣기"
-        case .microphone: return "마이크"
-        case .audioCapture: return "시스템 오디오 녹음"
-        case .location: return "위치"
+        case .accessibility: return String(localized: "Accessibility")
+        case .screenRecording: return String(localized: "Screen Recording")
+        case .clipboard: return String(localized: "Paste from Other Apps")
+        case .microphone: return String(localized: "Microphone")
+        case .audioCapture: return String(localized: "System Audio Recording")
+        case .location: return String(localized: "Location")
         }
     }
 }

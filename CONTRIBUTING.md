@@ -5,7 +5,7 @@ Thanks for helping. A few things make reviews quick:
 - **Build and test before you push**: `scripts/build.sh --test` must pass without warnings, including the design lint (`scripts/lint-design.sh`). CI runs the same on every pull request.
 - **Keep logic testable**: put pure logic (parsing, calculations, rules) in `App/Kit` with XCTest coverage. `App/Main` holds the app, system adapters and SwiftUI views and must not leak into `App/Kit` (no SwiftUI or AppKit UI imports there).
 - **New features plug in as modules**: see [Adding a module](#adding-a-module). The launcher, the settings window and the menu bar only gather what modules declare; adding a feature should not require changing them.
-- **Korean text in the UI, for now**: the interface is Korean. Write user-facing strings in plain Korean, the way the existing ones read. Localization (a String Catalog with English first) is welcome as its own pull request. Code, comments and commit messages may be English or Korean.
+- **English in code, every language in the catalogs**: the app ships English and Korean; see [Text and languages](#text-and-languages). Code, comments and commit messages may be English or Korean.
 - **No administrator rights by default**: the app reads only what macOS allows without root. Anything that needs root goes through the charge helper's small, fixed command set — never by relaunching the app as root.
 - **Minimum macOS is 26**: do not add fallbacks for older systems.
 - **Privacy**: nothing leaves the Mac unless the user asked for it (AI questions) or can turn it off (public IP lookup, update check). No analytics.
@@ -13,7 +13,7 @@ Thanks for helping. A few things make reviews quick:
 
 ## Adding a module
 
-Every feature (clipboard history, window snapping, the system monitor…) is a module the user can switch on and off in Settings → 기능. A new feature is one folder and one line:
+Every feature (clipboard history, window snapping, the system monitor…) is a module the user can switch on and off in Settings → Features. A new feature is one folder and one line:
 
 1. **A folder** `App/Main/<Feature>/` with your code and a `<Feature>Module.swift` that conforms to `AppModule` (`App/Main/Modules/AppModule.swift`). Pure logic goes in `App/Kit/<Feature>/` with tests.
 2. **One line** in `App/Main/Modules/ModuleRegistry.swift`. Its position is the feature's place in the settings and in a new install's menu bar.
@@ -24,7 +24,7 @@ The module declares itself in a `ModuleDescriptor` (`App/Kit/Modules/ModuleDescr
 @MainActor final class TimerModule: AppModule {
     nonisolated static let descriptor = ModuleDescriptor(
         id: "timer",                       // stable: the settings file uses it, never rename
-        title: "타이머", summary: "메뉴 막대에서 남은 시간을 봅니다",
+        title: String(localized: "Timer"), summary: String(localized: "Shows the time left in the menu bar"),
         symbol: "timer", tint: .orange,
         defaultEnabled: false,             // on for a new install?
         requires: [],                      // e.g. [LauncherModule.descriptor.id] if it lives in the launcher
@@ -53,6 +53,18 @@ Rules that keep "off" meaning off:
 - Talk to the rest of the app through `ModuleHost` only. If another module is needed, ask `host.module(OtherModule.self)`, which is nil while it is off.
 - Your settings page is drawn by the app in one shape for every module: the module header (tile, name, summary, on/off switch), then the groups you return from `settingsGroups(in:)`, then a 단축키 group with your commands' shortcuts (`settingsShortcutIDs` narrows it) and a 권한 group from `descriptor.permissions`. Return `SettingsSection`s made of the settings parts (`ToggleRow`, `PickerRow`, `SliderRow`, `FieldRow`, `ListRow`, `SettingsRow` + `RowButton`); do not draw your own header, permission cards or shortcut rows.
 - Development-only flags of your feature go in `<Feature>DevelopmentAids.swift` as `runDevelopmentAid(_:)` inside `#if TOOLSMITH_DEV`. The app delegate has no feature-specific code.
+
+## Text and languages
+
+English is the development language. Code holds English text; the String Catalogs hold every other language: `App/Main/Localizable.xcstrings` for the app, `App/Kit/Localizable.xcstrings` for `ToolsmithKit`, `App/Main/InfoPlist.xcstrings` for the permission prompts. The app follows the Mac's language, or the one chosen in Settings → General (macOS's own per-app `AppleLanguages`, applied when the app reopens).
+
+- In `App/Main`: `Text("…")`, `Button("…")` and other SwiftUI literals are localized by themselves. Text passed as a `String` (the settings parts, descriptors, notices, menus) is `String(localized: "…")`. Launcher commands with a fixed name use `Command(id:, localizedTitle: "…", …)`, which also lets the launcher find them by their name in every language.
+- In `App/Kit`: `localized("…")`, which reads the framework's own catalog. A function that makes text takes `locale: Locale = .app` last, so tests can ask for each language.
+- Numbers, dates, durations and sizes go through Foundation's formatters with `Locale.app`, never hand-built ("3 hr, 12 min" and "3시간 12분" from the same call).
+- Write whole sentences, never fragments joined in code, so each language can order its words. Counts get plural forms in the catalog.
+- Search words (`keywords:`) may hold words of every language. Development-only text (`*DevelopmentAids.swift`, logs) stays plain English.
+
+After a build, `scripts/localization.py sync` adds new strings to the catalogs; translate them there (or in Xcode's catalog editor). `scripts/build.sh` runs `scripts/localization.py check --built`, which fails when Korean is written in code, when a catalog entry lacks a translation, or when the code has a string the catalogs do not.
 
 ## Design system
 

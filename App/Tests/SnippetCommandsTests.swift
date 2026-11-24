@@ -30,7 +30,7 @@ import XCTest
         let source = SnippetCommandSource(store: SnippetStore(fileURL: tempFile("snippets.json")))
         var searched = 0; source.onSearch = { searched += 1 }
         let search = source.commands()[0]
-        XCTAssertEqual(search.id, "snippets.search"); XCTAssertEqual(search.hotkeyID, "snippets.search"); XCTAssertEqual(search.title, "스니펫 검색")
+        XCTAssertEqual(search.id, "snippets.search"); XCTAssertEqual(search.hotkeyID, "snippets.search"); XCTAssertTrue(Set([search.title] + search.keywords).isSuperset(of: ["Search Snippets", "스니펫 검색"]))
         XCTAssertTrue(search.keepsLauncherOpen)
         search.run(); XCTAssertEqual(searched, 1)
     }

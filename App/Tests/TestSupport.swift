@@ -2,6 +2,9 @@ import Foundation
 import XCTest
 @testable import ToolsmithKit
 
+/// Tests that check text ask for it in English, so they pass whatever language the Mac runs in.
+let english = Locale(identifier: "en_US")
+
 func tempFile(_ name: String = "file.json") -> URL {
     let dir = FileManager.default.temporaryDirectory.appendingPathComponent("app-tests-\(UUID().uuidString)")
     try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)

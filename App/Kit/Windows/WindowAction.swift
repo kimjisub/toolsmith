@@ -24,51 +24,61 @@ public enum WindowAction: String, CaseIterable, Sendable {
     /// The command id and the key into the hotkey table.
     public var id: String { "window.\(rawValue)" }
 
-    public var title: String {
+    /// The action's name, from the string catalog. Launcher commands take it as it is, so an action
+    /// is found by its English and its Korean name.
+    public var titleResource: LocalizedStringResource {
         switch self {
-        case .leftHalf: return "왼쪽 절반"
-        case .rightHalf: return "오른쪽 절반"
-        case .topHalf: return "위쪽 절반"
-        case .bottomHalf: return "아래쪽 절반"
-        case .leftThird: return "왼쪽 3분의 1"
-        case .centerThird: return "가운데 3분의 1"
-        case .rightThird: return "오른쪽 3분의 1"
-        case .leftTwoThirds: return "왼쪽 3분의 2"
-        case .rightTwoThirds: return "오른쪽 3분의 2"
-        case .topLeft: return "왼쪽 위"
-        case .topRight: return "오른쪽 위"
-        case .bottomLeft: return "왼쪽 아래"
-        case .bottomRight: return "오른쪽 아래"
-        case .maximize: return "가득 채우기"
-        case .center: return "가운데로"
-        case .nextDisplay: return "다음 모니터로 보내기"
-        case .previousDisplay: return "이전 모니터로 보내기"
-        case .restore: return "이전 크기로 되돌리기"
+        case .leftHalf: return LocalizedStringResource("Left Half", bundle: .kit)
+        case .rightHalf: return LocalizedStringResource("Right Half", bundle: .kit)
+        case .topHalf: return LocalizedStringResource("Top Half", bundle: .kit)
+        case .bottomHalf: return LocalizedStringResource("Bottom Half", bundle: .kit)
+        case .leftThird: return LocalizedStringResource("Left Third", bundle: .kit)
+        case .centerThird: return LocalizedStringResource("Center Third", bundle: .kit)
+        case .rightThird: return LocalizedStringResource("Right Third", bundle: .kit)
+        case .leftTwoThirds: return LocalizedStringResource("Left Two Thirds", bundle: .kit)
+        case .rightTwoThirds: return LocalizedStringResource("Right Two Thirds", bundle: .kit)
+        case .topLeft: return LocalizedStringResource("Top Left", bundle: .kit)
+        case .topRight: return LocalizedStringResource("Top Right", bundle: .kit)
+        case .bottomLeft: return LocalizedStringResource("Bottom Left", bundle: .kit)
+        case .bottomRight: return LocalizedStringResource("Bottom Right", bundle: .kit)
+        case .maximize: return LocalizedStringResource("Maximize", bundle: .kit)
+        case .center: return LocalizedStringResource("Center", bundle: .kit)
+        case .nextDisplay: return LocalizedStringResource("Move to Next Display", bundle: .kit)
+        case .previousDisplay: return LocalizedStringResource("Move to Previous Display", bundle: .kit)
+        case .restore: return LocalizedStringResource("Restore Previous Size", bundle: .kit)
         }
     }
 
-    /// Words the action is found by besides its title.
+    public var title: String { title(locale: .app) }
+
+    public func title(locale: Locale) -> String {
+        var resource = titleResource
+        resource.locale = locale
+        return String(localized: resource)
+    }
+
+    /// Words the action is found by besides its title in each language.
     public var keywords: [String] {
-        let common = ["창", "화면 나누기", "window"]
+        let commonKeywords = ["window", "snap", "창", "화면 나누기"]
         switch self {
-        case .leftHalf: return common + ["left half", "좌측 절반", "반 왼쪽"]
-        case .rightHalf: return common + ["right half", "우측 절반", "반 오른쪽"]
-        case .topHalf: return common + ["top half", "상단 절반"]
-        case .bottomHalf: return common + ["bottom half", "하단 절반"]
-        case .leftThird: return common + ["left third", "삼분의 일 왼쪽"]
-        case .centerThird: return common + ["center third", "삼분의 일 가운데"]
-        case .rightThird: return common + ["right third", "삼분의 일 오른쪽"]
-        case .leftTwoThirds: return common + ["left two thirds", "삼분의 이 왼쪽"]
-        case .rightTwoThirds: return common + ["right two thirds", "삼분의 이 오른쪽"]
-        case .topLeft: return common + ["top left", "좌상단", "귀퉁이"]
-        case .topRight: return common + ["top right", "우상단", "귀퉁이"]
-        case .bottomLeft: return common + ["bottom left", "좌하단", "귀퉁이"]
-        case .bottomRight: return common + ["bottom right", "우하단", "귀퉁이"]
-        case .maximize: return common + ["maximize", "full", "최대화", "전체"]
-        case .center: return common + ["center", "중앙"]
-        case .nextDisplay: return common + ["next display", "monitor", "디스플레이", "화면 이동"]
-        case .previousDisplay: return common + ["previous display", "monitor", "디스플레이", "화면 이동"]
-        case .restore: return common + ["restore", "undo", "원래 크기", "복원"]
+        case .leftHalf: return commonKeywords + ["left half", "좌측 절반", "반 왼쪽"]
+        case .rightHalf: return commonKeywords + ["right half", "우측 절반", "반 오른쪽"]
+        case .topHalf: return commonKeywords + ["top half", "상단 절반"]
+        case .bottomHalf: return commonKeywords + ["bottom half", "하단 절반"]
+        case .leftThird: return commonKeywords + ["left third", "삼분의 일 왼쪽"]
+        case .centerThird: return commonKeywords + ["center third", "삼분의 일 가운데"]
+        case .rightThird: return commonKeywords + ["right third", "삼분의 일 오른쪽"]
+        case .leftTwoThirds: return commonKeywords + ["left two thirds", "삼분의 이 왼쪽"]
+        case .rightTwoThirds: return commonKeywords + ["right two thirds", "삼분의 이 오른쪽"]
+        case .topLeft: return commonKeywords + ["top left", "좌상단", "귀퉁이"]
+        case .topRight: return commonKeywords + ["top right", "우상단", "귀퉁이"]
+        case .bottomLeft: return commonKeywords + ["bottom left", "좌하단", "귀퉁이"]
+        case .bottomRight: return commonKeywords + ["bottom right", "우하단", "귀퉁이"]
+        case .maximize: return commonKeywords + ["maximize", "full", "최대화", "전체"]
+        case .center: return commonKeywords + ["center", "중앙"]
+        case .nextDisplay: return commonKeywords + ["next display", "monitor", "디스플레이", "화면 이동"]
+        case .previousDisplay: return commonKeywords + ["previous display", "monitor", "디스플레이", "화면 이동"]
+        case .restore: return commonKeywords + ["restore", "undo", "원래 크기", "복원"]
         }
     }
 

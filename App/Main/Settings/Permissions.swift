@@ -23,20 +23,20 @@ struct Permission: Identifiable {
 
     @MainActor static func all(location: LocationPermission) -> [Permission] {
         [
-            Permission(kind: .accessibility, title: "손쉬운 사용", purpose: "창 옮기기와 화면 나누기, 고른 항목을 쓰던 앱에 바로 붙여넣기",
+            Permission(kind: .accessibility, title: String(localized: "Accessibility"), purpose: String(localized: "Moving and snapping windows, and pasting what you pick straight into the app you were using"),
                        symbol: "accessibility", color: Tile.blue, required: true) {
                 AccessibilityPermission.prompt()
                 AccessibilityPermission.openSystemSettings()
             },
-            Permission(kind: .screenRecording, title: "화면 기록", purpose: "화면 캡처, 녹화, 글자 읽기. 허락한 뒤 앱을 다시 열어야 적용됩니다",
+            Permission(kind: .screenRecording, title: String(localized: "Screen Recording"), purpose: String(localized: "Screen capture, recording and text recognition. Takes effect after you reopen the app"),
                        symbol: "camera.viewfinder", color: Tile.pink, required: false) {
                 ScreenCapturePermission.request()
                 ScreenCapturePermission.openSystemSettings()
             },
-            Permission(kind: .clipboard, title: "다른 앱에서 붙여넣기", purpose: "복사한 것을 클립보드 기록에 남기기. 기록은 이 맥에만 있습니다",
+            Permission(kind: .clipboard, title: String(localized: "Paste from Other Apps"), purpose: String(localized: "Keeping what you copy in clipboard history. The history stays on this Mac"),
                        symbol: "doc.on.clipboard", color: Tile.green, required: false, grant: nil,
-                       instructions: "시스템 설정 → 개인정보 보호 및 보안 → 다른 앱에서 붙여넣기 에서 「허용」"),
-            Permission(kind: .microphone, title: "마이크", purpose: "녹화에 목소리를 넣을 때만 씁니다",
+                       instructions: String(localized: "System Settings → Privacy & Security → Paste from Other Apps: Allow")),
+            Permission(kind: .microphone, title: String(localized: "Microphone"), purpose: String(localized: "Used only to record your voice with a screen recording"),
                        symbol: "mic.fill", color: Tile.orange, required: false) {
                 // macOS asks only once; after a refusal the switch is in System Settings.
                 if AVCaptureDevice.authorizationStatus(for: .audio) == .notDetermined {
@@ -46,10 +46,10 @@ struct Permission: Identifiable {
                 }
             },
             // macOS has no public way to ask whether this one is granted: the card says where it is.
-            Permission(kind: .audioCapture, title: "시스템 오디오 녹음", purpose: "소리 조절에서 앱 하나의 볼륨, 보낼 곳, 효과를 바꾸고 레벨을 잴 때 씁니다. 처음 쓸 때 macOS 가 묻습니다",
+            Permission(kind: .audioCapture, title: String(localized: "System Audio Recording"), purpose: String(localized: "Used in Sound to change one app’s volume, output and effects, and to measure its level. macOS asks the first time"),
                        symbol: "waveform", color: Tile.pink, required: false, grant: nil,
-                       instructions: "시스템 설정 → 개인정보 보호 및 보안 → 화면 및 시스템 오디오 녹음"),
-            Permission(kind: .location, title: "위치", purpose: "연결된 Wi-Fi 이름을 보여 줄 때만 씁니다. 위치 자체는 읽지 않습니다",
+                       instructions: String(localized: "System Settings → Privacy & Security → Screen & System Audio Recording")),
+            Permission(kind: .location, title: String(localized: "Location"), purpose: String(localized: "Used only to show the name of the connected Wi-Fi network. Your location itself is never read"),
                        symbol: "location.fill", color: Tile.teal, required: false) { location.ask() },
         ]
     }

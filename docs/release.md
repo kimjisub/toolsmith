@@ -24,7 +24,7 @@ Pushes to `main` and pull requests build and test only. A manual run of the work
 
 ## Automatic updates
 
-Installed apps read this repository's latest release through GitHub's public API, 20 seconds after launch and every six hours (Settings → 정보 can turn this off or check now). No token is needed. A newer build is installed only if its sha256 matches `release.json`, it is signed by the same Developer ID team as the running app (`APP_TEAM_ID` in `project.yml`) and Apple notarized it. A running screen recording is never interrupted; the swap waits until it ends. Only builds signed by the team update themselves; development builds and copies you build yourself do not.
+Installed apps read this repository's latest release through GitHub's public API, 20 seconds after launch and every six hours (Settings → About can turn this off or check now). No token is needed. A newer build is installed only if its sha256 matches `release.json`, it is signed by the same Developer ID team as the running app (`APP_TEAM_ID` in `project.yml`) and Apple notarized it. A running screen recording is never interrupted; the swap waits until it ends. Only builds signed by the team update themselves; development builds and copies you build yourself do not.
 
 ## CI secrets
 
