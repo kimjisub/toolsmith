@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import SwiftUI
 import ToolsmithKit
 
@@ -6,6 +7,7 @@ import ToolsmithKit
 @MainActor final class OnboardingWindowController: NSWindowController, NSWindowDelegate {
     let model = OnboardingModel()
     private let settings: SettingsStore
+    private var stepSubscription: AnyCancellable?
 
     init(settings: SettingsStore) {
         self.settings = settings
@@ -26,15 +28,21 @@ import ToolsmithKit
         host.sizingOptions = []
         window.contentView = host
         window.setContentSize(OnboardingView.size)
+        // Remember the page, so a guide cut short by the app quitting resumes there.
+        stepSubscription = model.$step.dropFirst().sink { [weak self] step in
+            guard let self, self.isShowing else { return }
+            self.settings.update { $0.onboardingStep = step }
+        }
     }
 
     @available(*, unavailable) required init?(coder: NSCoder) { fatalError("not used") }
 
     var isShowing: Bool { window?.isVisible == true }
 
-    func show() {
+    /// Opens the guide on `step`: the first page when asked for again, the saved page at launch.
+    func show(from step: OnboardingStep = .welcome) {
         guard let window else { return }
-        model.step = .welcome
+        model.step = step
         model.hotkeyPressed = false
         model.refresh()
         let pointer = NSEvent.mouseLocation
@@ -52,11 +60,22 @@ import ToolsmithKit
     }
 
     private func finish() {
+        complete()
         window?.close()
     }
 
-    /// Closing the window, by the button or the red dot, counts as done: the guide is not forced on anyone twice.
-    func windowWillClose(_ notification: Notification) {
-        settings.update { $0.onboardingCompleted = true }
+    /// The user closing the window (red dot, ⌘W) counts as done: the guide is not forced on anyone
+    /// twice. The app quitting closes the window too, but not through here, so a guide interrupted
+    /// by "Quit & Reopen" or an update stays unfinished and resumes.
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        complete()
+        return true
+    }
+
+    private func complete() {
+        settings.update {
+            $0.onboardingCompleted = true
+            $0.onboardingStep = nil
+        }
     }
 }

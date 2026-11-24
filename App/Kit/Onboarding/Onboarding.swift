@@ -1,12 +1,24 @@
 import Foundation
 
 /// The pages of the first-run guide.
-public enum OnboardingStep: Int, CaseIterable, Sendable {
+public enum OnboardingStep: Int, CaseIterable, Codable, Sendable {
     case welcome, permissions, tour, ai, privacy, done
 
     public var next: OnboardingStep { OnboardingStep(rawValue: rawValue + 1) ?? self }
     public var previous: OnboardingStep { OnboardingStep(rawValue: rawValue - 1) ?? self }
     public var isLast: Bool { self == OnboardingStep.allCases.last }
+}
+
+/// Whether the guide opens by itself at launch, and on which page. macOS quits and reopens the
+/// app when some permissions are granted, and an update relaunches it, so an unfinished guide
+/// resumes on the page it was left on instead of starting over or being lost.
+public enum OnboardingResume {
+    /// nil when the guide is finished (or skipped), or when the app was started with a development
+    /// flag (`--…`); otherwise the saved page, or the first one.
+    public static func stepAtLaunch(completed: Bool, savedStep: OnboardingStep?, arguments: [String]) -> OnboardingStep? {
+        guard !completed, !arguments.dropFirst().contains(where: { $0.hasPrefix("--") }) else { return nil }
+        return savedStep ?? .welcome
+    }
 }
 
 /// What the guide's tour page shows: each feature with the key that opens it right now.
