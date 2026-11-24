@@ -1,0 +1,22 @@
+name: Feature or module idea
+description: Something you would like Toolsmith to do.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you want to do
+      description: The task, not the solution. What do you do today instead?
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: How it could look
+      description: A new module, a change to an existing one, a menu bar item, a panel screen…
+  - type: checkboxes
+    id: build
+    attributes:
+      label: Building it
+      options:
+        - label: I would like to build this myself (see CONTRIBUTING.md, Adding a module)

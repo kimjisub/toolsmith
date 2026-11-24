@@ -1,0 +1,45 @@
+name: Bug report
+description: Something does not work as it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Press …
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Toolsmith version
+      description: Settings → 정보
+      placeholder: "2026.11.0 (123)"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac
+      placeholder: "macOS 26.4, MacBook Pro M3"
+    validations:
+      required: true
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Feature
+      options: [Launcher, Clipboard history, Snippets, Window snapping, Capture and recording, AI answers, System monitor, Screen time, Battery charge limit, Sound, Menu bar and panel, Settings, Other]
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or logs
+      description: Console.app messages from Toolsmith help. Remove anything private first.
