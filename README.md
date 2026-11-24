@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/en/panel-monitor.png" width="340" alt="The menu bar panel showing the system monitor">
-  <img src="docs/images/en/panel-sound.png" width="480" alt="The menu bar panel showing Sound">
+  <img src="docs/images/en/panel-monitor.png" width="300" alt="The menu bar panel showing the system monitor">
+  <img src="docs/images/en/panel-sound.png" width="520" alt="The menu bar panel showing Sound">
 </p>
 <p align="center"><sub>The menu bar panel: the system monitor, and Sound with each app's volume, output and effects.</sub></p>
 

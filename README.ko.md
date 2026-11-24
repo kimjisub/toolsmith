@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/ko/panel-monitor.png" width="340" alt="시스템 모니터를 보여 주는 메뉴 막대 패널">
-  <img src="docs/images/ko/panel-sound.png" width="480" alt="소리 화면을 보여 주는 메뉴 막대 패널">
+  <img src="docs/images/ko/panel-monitor.png" width="300" alt="시스템 모니터를 보여 주는 메뉴 막대 패널">
+  <img src="docs/images/ko/panel-sound.png" width="520" alt="소리 화면을 보여 주는 메뉴 막대 패널">
 </p>
 <p align="center"><sub>메뉴 막대 패널: 시스템 모니터, 그리고 앱마다 볼륨, 보낼 곳, 효과를 바꾸는 소리 화면.</sub></p>
 
