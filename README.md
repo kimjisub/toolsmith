@@ -14,22 +14,33 @@
 </p>
 
 <p align="center">
-  <!-- screenshot: the menu bar panel on the system monitor, details open beside it -->
-  <img src="docs/images/panel-monitor.png" width="820" alt="The menu bar panel showing the system monitor">
+  <img src="docs/images/en/panel-monitor.png" width="340" alt="The menu bar panel showing the system monitor">
+  <img src="docs/images/en/panel-sound.png" width="480" alt="The menu bar panel showing Sound">
 </p>
+<p align="center"><sub>The menu bar panel: the system monitor, and Sound with each app's volume, output and effects.</sub></p>
 
 ## Why
 
 Utility subscriptions bundle dozens of apps. Some of them almost do what you need; others do far more than you need; all of them cost every month. Toolsmith is the other way round: one app, the features as modules you switch on, and the source to change or extend any of them. A feature that is off does nothing at all: no background work, no permission prompts, no shortcuts, nothing in the menus.
 
-> The interface is in Korean for now. Translations are welcome.
+The app speaks English and Korean. It follows your Mac's language, or choose one in Settings → General → Language.
 
 ## Features
 
-Every feature is a module you can turn off in Settings → 기능.
+Every feature is a module you can turn off in Settings → Features.
 
 - **Launcher.** Press <kbd>⌥</kbd> <kbd>Space</kbd> anywhere for a dark glass prompt. Open apps, run any action by name (Korean initial-consonant search works), press <kbd>⌘</kbd> + a number to run a row. Every shortcut can be reassigned.
 - **Clipboard history.** <kbd>⌥</kbd> <kbd>V</kbd> opens everything you copied: text, links, images and files, with previews. Search, pin, paste into the app you were in. Passwords, apps you exclude and copies from your iPhone are never recorded. History stays on your Mac until you clear it or choose a period.
+<p align="center">
+  <img src="docs/images/en/launcher.png" width="560" alt="The launcher finding window layouts">
+</p>
+<p align="center"><sub>The launcher: type part of a name in English or Korean, press ↵ or ⌘ + a number.</sub></p>
+
+<p align="center">
+  <img src="docs/images/en/clipboard.png" width="820" alt="Clipboard history">
+</p>
+<p align="center"><sub>Clipboard history (⌥V): what you copied, newest first, with the app it came from.</sub></p>
+
 - **Snippets.** Save messages you write again and again and paste them into the app in use. Put `{name}` in the text and you are asked for the value when you paste.
 - **Window snapping.** 18 layouts (halves, thirds, quarters, center, next display, restore) from the launcher or shortcuts.
 - **Screen capture and recording.** Area, window, full-screen and scrolling captures, annotation, text recognition, color picker, pixel ruler, MP4 and GIF recording.
@@ -40,9 +51,13 @@ Every feature is a module you can turn off in Settings → 기능.
 
 ### One menu bar panel
 
-Every menu bar item opens the same panel on its feature's page: the monitor, the latest copies, capture actions. Choose which items show, their order, their style (icon, value, graph) and whether they share one slot, with a live preview in Settings → 메뉴 막대.
+Every menu bar item opens the same panel on its feature's page: the monitor, the latest copies, capture actions. Choose which items show, their order, their style (icon, value, graph) and whether they share one slot, with a live preview in Settings → Menu Bar.
 
-<!-- screenshot: Settings → 기능 and Settings → 메뉴 막대 -->
+<p align="center">
+  <img src="docs/images/en/settings-features.png" width="410" alt="Settings, Features">
+  <img src="docs/images/en/settings-menu-bar.png" width="410" alt="Settings, Menu Bar">
+</p>
+<p align="center"><sub>Settings → Features switches whole features on and off; Settings → Menu Bar picks the items, their order and their style.</sub></p>
 
 ## Install
 
@@ -62,7 +77,7 @@ Or by hand:
 2. Open it and drag **Toolsmith** to Applications.
 3. Launch it. A short guide asks for Accessibility (window snapping and pasting) and the optional permissions.
 
-Releases are signed with a Developer ID and notarized by Apple, and update themselves from this repository's releases (Settings → 정보 can turn that off).
+Releases are signed with a Developer ID and notarized by Apple, and update themselves from this repository's releases (Settings → About can turn that off).
 
 ## Privacy
 
