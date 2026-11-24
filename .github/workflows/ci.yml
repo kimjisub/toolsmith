@@ -83,3 +83,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/publish-release.sh "$GITHUB_REPOSITORY"
+
+      # Point the Homebrew cask (kimjisub/homebrew-tap) at this release. The secret is a deploy key
+      # with write access to the tap repository only.
+      - name: Update the Homebrew cask
+        if: env.RELEASING == 'true'
+        env:
+          HOMEBREW_TAP_KEY: ${{ secrets.TAP_DEPLOY_KEY }}
+        run: scripts/update-homebrew-cask.sh

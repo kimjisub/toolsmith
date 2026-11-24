@@ -46,6 +46,16 @@
 
 **macOS 26 이상**, **애플 실리콘** 맥이 필요합니다.
 
+[Homebrew](https://brew.sh) 로 설치:
+
+```sh
+brew tap kimjisub/tap
+brew trust kimjisub/tap   # Homebrew 는 다른 사람의 tap 을 한 번 믿어 달라고 합니다
+brew install --cask toolsmith
+```
+
+직접 설치:
+
 1. [Releases](https://github.com/kimjisub/toolsmith/releases) 에서 최신 `Toolsmith-<버전>.dmg` 를 받습니다.
 2. 열어서 **Toolsmith** 를 응용 프로그램 폴더로 끌어 놓습니다.
 3. 실행하면 짧은 안내가 손쉬운 사용(화면 나누기와 붙여넣기)과 선택 권한을 묻습니다.

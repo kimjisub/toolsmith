@@ -48,6 +48,16 @@ Every menu bar item opens the same panel on its feature's page: the monitor, the
 
 Requires **macOS 26 or later** on **Apple silicon**.
 
+With [Homebrew](https://brew.sh):
+
+```sh
+brew tap kimjisub/tap
+brew trust kimjisub/tap   # Homebrew asks you to trust a third-party tap once
+brew install --cask toolsmith
+```
+
+Or by hand:
+
 1. Download the latest `Toolsmith-<version>.dmg` from [Releases](https://github.com/kimjisub/toolsmith/releases).
 2. Open it and drag **Toolsmith** to Applications.
 3. Launch it. A short guide asks for Accessibility (window snapping and pasting) and the optional permissions.
