@@ -66,7 +66,7 @@ import ToolsmithKit
             store.update { $0.favorites = ["com.apple.Music", "com.apple.Podcasts"] }
             store.updateApp("com.apple.Music") { $0.volume = 0.7; $0.overdrive = 2; $0.magicBoost = true; $0.eq = EQPreset.bassBoost.settings; $0.effects.append(.balance); $0.balance = -0.3 }
             store.updateApp("com.apple.Podcasts") { $0.muted = true; $0.outputUID = "demo-unplugged" }
-            store.saveQuickConfig(name: "회의", system: SystemAudioState())
+            store.saveQuickConfig(name: "Meeting", system: SystemAudioState())
             let mixer = AudioMixer(store: store)
             // Meters would tap every app; a picture does not need them.
             mixer.metersEnabled = arguments.contains("--meters")

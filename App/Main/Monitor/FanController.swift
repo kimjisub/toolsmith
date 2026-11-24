@@ -71,7 +71,7 @@ import ToolsmithKit
                     guard reply != "ok manual" else { return }
                     DispatchQueue.main.async {
                         self.mode = .auto
-                        self.message = reply == "ok overheated" ? "온도가 \(Int(FanLimits.emergencyTemperature))° 를 넘어 자동으로 되돌렸습니다." : "팬 도우미와 연결이 끊겼습니다. 팬이 고정된 채일 수 있으니, 「직접」 을 다시 켰다가 「자동」 으로 돌리거나 맥을 재시동하세요."
+                        self.message = reply == "ok overheated" ? String(localized: "The temperature passed \(Int(FanLimits.emergencyTemperature))°, so the fans went back to automatic.") : String(localized: "Lost the connection to the fan helper. The fans may be stuck at a fixed speed: turn Manual on again and back to Auto, or restart the Mac.")
                         self.updateWatch()
                     }
                 }
@@ -85,12 +85,12 @@ import ToolsmithKit
 
     nonisolated private static func explain(_ reply: String) -> String {
         switch reply {
-        case "error too hot": return "지금은 온도가 높아 팬을 직접 조절할 수 없습니다."
-        case "error no temperature sensor": return "이 맥의 온도를 읽을 수 없어 팬을 직접 조절하지 않습니다."
-        case "error this Mac refused manual fan mode", "error this Mac refused the fan speed": return "이 맥이 팬 직접 조절을 받아들이지 않았습니다."
-        case "error fan range unknown", "error no such fan": return "팬의 회전수 범위를 읽지 못했습니다."
-        case "": return "팬 도우미와 연결하지 못했습니다."
-        default: return "팬을 조절하지 못했습니다 (\(reply))."
+        case "error too hot": return String(localized: "It is too hot right now to control the fans manually.")
+        case "error no temperature sensor": return String(localized: "This Mac’s temperature can’t be read, so the fans are not controlled manually.")
+        case "error this Mac refused manual fan mode", "error this Mac refused the fan speed": return String(localized: "This Mac did not accept manual fan control.")
+        case "error fan range unknown", "error no such fan": return String(localized: "Couldn’t read the fans’ speed range.")
+        case "": return String(localized: "Couldn’t connect to the fan helper.")
+        default: return String(localized: "Couldn’t control the fans (\(reply)).")
         }
     }
 
@@ -124,28 +124,28 @@ import ToolsmithKit
     /// Starts the helper as root. macOS asks for an administrator password. Returns why it failed, if it did.
     nonisolated private static func startHelper() -> String? {
         #if !TOOLSMITH_DEV
-        return "이 빌드에는 팬 조절이 들어 있지 않습니다."
+        return String(localized: "This build does not include fan control.")
         #else
-        guard let executable = Bundle.main.executablePath else { return "앱의 실행 파일을 찾지 못했습니다." }
+        guard let executable = Bundle.main.executablePath else { return "Could not find the app's executable." }
         let escaped = executable.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
         let script = """
             do shell script (quoted form of "\(escaped)") & " --fan-helper \(getuid()) \(ProcessInfo.processInfo.processIdentifier) >/dev/null 2>&1 &" \
-            with prompt "\(AppIdentity.name) 이 팬 속도를 조절하려고 합니다." with administrator privileges
+            with prompt "\(AppIdentity.name) wants to control the fan speed." with administrator privileges
             """
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
         process.arguments = ["-e", script]
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
-        do { try process.run() } catch { return "관리자 권한을 요청하지 못했습니다." }
+        do { try process.run() } catch { return "Could not ask for administrator rights." }
         process.waitUntilExit()
-        guard process.terminationStatus == 0 else { return "관리자 권한을 받지 못해 팬을 조절하지 않았습니다." }
+        guard process.terminationStatus == 0 else { return "No administrator rights, so the fans were not changed." }
         // The helper reads this Mac's sensors before it starts listening.
         for _ in 0..<40 {
             if helperIsUp() { return nil }
             usleep(250_000)
         }
-        return "팬 도우미가 시작되지 않았습니다."
+        return "The fan helper did not start."
         #endif
     }
 }

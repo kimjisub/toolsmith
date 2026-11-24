@@ -23,7 +23,9 @@ public struct SensorSummary: Equatable, Sendable, Identifiable {
     public let peak: Double
     public let readings: [SensorReading]
     public var id: Int { group.rawValue }
-    public var name: String { group.name }
+    public var name: String { name(locale: .app) }
+
+    public func name(locale: Locale) -> String { group.name }
 }
 
 /// What a sensor measures, in the order the list shows groups.
@@ -32,17 +34,19 @@ public enum SensorGroup: Int, CaseIterable, Comparable, Sendable {
 
     public static func < (lhs: SensorGroup, rhs: SensorGroup) -> Bool { lhs.rawValue < rhs.rawValue }
 
-    public var name: String {
+    public var name: String { name(locale: .app) }
+
+    public func name(locale: Locale) -> String {
         switch self {
-        case .cpuPerformance: return "CPU 성능 코어"
-        case .cpuEfficiency: return "CPU 효율 코어"
-        case .gpu: return "그래픽"
-        case .memory: return "메모리"
+        case .cpuPerformance: return localized("CPU Performance Cores", locale: locale)
+        case .cpuEfficiency: return localized("CPU Efficiency Cores", locale: locale)
+        case .gpu: return localized("Graphics", locale: locale)
+        case .memory: return localized("Memory", locale: locale)
         case .ssd: return "SSD"
-        case .battery: return "배터리"
+        case .battery: return localized("Battery", locale: locale)
         case .wifi: return "Wi-Fi"
-        case .thunderbolt: return "썬더볼트"
-        case .airflow: return "공기 흐름"
+        case .thunderbolt: return localized("Thunderbolt", locale: locale)
+        case .airflow: return localized("Airflow", locale: locale)
         }
     }
 }
@@ -50,7 +54,7 @@ public enum SensorGroup: Int, CaseIterable, Comparable, Sendable {
 /// Names the System Management Controller's temperature sensors.
 ///
 /// Sensor keys differ from Mac to Mac, but their first two letters say what they measure. The
-/// numbering within a group follows the keys' order, so "CPU 성능 코어 3" is the third such sensor,
+/// numbering within a group follows the keys' order, so "CPU Performance Cores 3" is the third such sensor,
 /// not necessarily core 3.
 public enum SensorCatalog {
     static let prefixes: [(String, SensorGroup)] = [
@@ -78,7 +82,7 @@ public enum SensorCatalog {
 
     /// `readings` maps keys to °C. Keys this catalog does not know and implausible values are left
     /// out; a group with one sensor gets no number.
-    public static func readings(_ readings: [String: Double]) -> [SensorReading] {
+    public static func readings(_ readings: [String: Double], locale: Locale = .app) -> [SensorReading] {
         var byGroup: [SensorGroup: [(String, Double)]] = [:]
         for (key, value) in readings where plausible.contains(value) {
             guard let group = group(of: key) else { continue }
@@ -87,7 +91,7 @@ public enum SensorCatalog {
         return byGroup.keys.sorted().flatMap { group -> [SensorReading] in
             let items = byGroup[group]!.sorted { $0.0 < $1.0 }
             return items.enumerated().map { index, item in
-                SensorReading(key: item.0, label: items.count == 1 ? group.name : "\(group.name) \(index + 1)", group: group, celsius: item.1)
+                SensorReading(key: item.0, label: items.count == 1 ? group.name(locale: locale) : "\(group.name(locale: locale)) \(index + 1)", group: group, celsius: item.1)
             }
         }
     }

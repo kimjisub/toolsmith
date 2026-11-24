@@ -3,8 +3,8 @@ import ToolsmithKit
 
 /// The clipboard in the launcher: the command that opens the shelf, and the latest copies themselves.
 @MainActor final class ClipboardCommandSource: CommandSource {
-    static let section = CommandSection(id: "clipboard", title: "클립보드", order: 5)
-    static let recentSection = CommandSection(id: "clip-recent", title: "방금 복사한 것", order: 1)
+    static let section = CommandSection(id: "clipboard", title: String(localized: "Clipboard"), order: 5)
+    static let recentSection = CommandSection(id: "clip-recent", title: String(localized: "Just Copied"), order: 1)
     static let openID = "clipboard.open"
     static let defaultHotkeys: [String: KeyCombo] = [openID: KeyCombo(keyCode: 9, modifiers: [.option])]
     /// How many of the latest copies the launcher can find. The shelf searches all of them.
@@ -18,7 +18,7 @@ import ToolsmithKit
 
     nonisolated func commands() -> [Command] {
         MainActor.assumeIsolated {
-            let open = Command(id: Self.openID, title: "클립보드 기록", subtitle: nil,
+            let open = Command(id: Self.openID, localizedTitle: "Clipboard History", subtitle: nil,
                                keywords: ["clipboard", "paste", "복사", "붙여넣기", "히스토리"],
                                section: Self.section, icon: .symbol("doc.on.clipboard"), hotkeyID: Self.openID,
                                run: { [weak self] in self?.openShelf() })
@@ -51,11 +51,11 @@ import ToolsmithKit
             let line = (item.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines).split(separator: "\n").first.map(String.init) ?? ""
             return String(line.prefix(80))
         case .image:
-            if let width = item.width, let height = item.height { return "이미지 \(width)×\(height)" }
-            return "이미지"
+            if let width = item.width, let height = item.height { return String(localized: "Image \(width)×\(height)") }
+            return String(localized: "Image")
         case .file:
-            let name = item.fileURLs.first.map { ($0 as NSString).lastPathComponent } ?? "파일"
-            return item.fileURLs.count > 1 ? "\(name) 외 \(item.fileURLs.count - 1)개" : name
+            let name = item.fileURLs.first.map { ($0 as NSString).lastPathComponent } ?? String(localized: "File")
+            return item.fileURLs.count > 1 ? String(localized: "\(name) and \(item.fileURLs.count - 1) more") : name
         }
     }
 

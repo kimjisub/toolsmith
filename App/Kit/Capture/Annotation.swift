@@ -8,13 +8,13 @@ public enum AnnotationTool: String, CaseIterable, Sendable {
 
     public var title: String {
         switch self {
-        case .select: return "고르기"
-        case .arrow: return "화살표"
-        case .rectangle: return "상자"
-        case .pen: return "펜"
-        case .text: return "글자"
-        case .highlight: return "형광펜"
-        case .mosaic: return "모자이크"
+        case .select: return localized("Select")
+        case .arrow: return localized("Arrow")
+        case .rectangle: return localized("Rectangle")
+        case .pen: return localized("Pen")
+        case .text: return localized("Text")
+        case .highlight: return localized("Highlighter")
+        case .mosaic: return localized("Pixelate")
         }
     }
 

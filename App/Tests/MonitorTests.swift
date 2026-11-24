@@ -19,9 +19,9 @@ final class MonitorTests: XCTestCase {
     }
 
     func testRateText() {
-        XCTAssertEqual(ByteSize.rate(0), "0B/s")
-        XCTAssertEqual(ByteSize.rate(1_500), "1.5KB/s")
-        XCTAssertEqual(ByteSize.rate(2_500_000), "2.5MB/s")
+        XCTAssertEqual(MonitorText.rate(0, locale: english), "0 B/s")
+        XCTAssertEqual(MonitorText.rate(1_500, locale: english), "1.5 KB/s")
+        XCTAssertEqual(MonitorText.rate(2_500_000, locale: english), "2.5 MB/s")
     }
 
     func testHistoryKeepsTheLatest() {

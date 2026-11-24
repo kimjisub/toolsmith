@@ -49,7 +49,7 @@ public struct AudioAppRow: Equatable, Sendable {
 
 public enum AudioApps {
     /// Processes that play for apps they are not inside of, under the name people know.
-    public static let knownNames = ["com.apple.WebKit.GPU": "Safari 와 웹 화면 (WebKit)"]
+    public static let knownNames = ["com.apple.WebKit.GPU": localized("Safari and web views (WebKit)")]
 
     /// How long an app that went quiet stays in the list.
     public static let recentWindow: TimeInterval = 60

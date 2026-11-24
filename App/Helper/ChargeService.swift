@@ -151,7 +151,7 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
     /// Writes what changed (everything when forced), and only keys this Mac has.
     private func write(_ next: ChargeOutput, force: Bool) {
         guard let smc else {
-            lastError = "SMC 를 열 수 없습니다"
+            lastError = "Cannot open the SMC"
             return
         }
         var failed: [String] = []
@@ -161,7 +161,7 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
         if let adapter = keys.adapter, force || next.adapterOff != output.adapterOff {
             if !smc.writeBytes(adapter.key, next.adapterOff ? adapter.on : adapter.off) { failed.append(adapter.key) }
         }
-        lastError = failed.isEmpty ? nil : "SMC 가 \(failed.joined(separator: ", ")) 쓰기를 거절했습니다"
+        lastError = failed.isEmpty ? nil : "The SMC refused to write \(failed.joined(separator: ", "))"
         if failed.isEmpty { output = next }
     }
 

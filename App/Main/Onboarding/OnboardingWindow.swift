@@ -11,7 +11,7 @@ import ToolsmithKit
         self.settings = settings
         let window = NSWindow(contentRect: NSRect(origin: .zero, size: OnboardingView.size),
                               styleMask: [.titled, .closable, .fullSizeContentView], backing: .buffered, defer: false)
-        window.title = "\(AppIdentity.name) 시작하기"
+        window.title = String(localized: "Get Started with \(AppIdentity.name)")
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
@@ -21,7 +21,7 @@ import ToolsmithKit
         window.standardWindowButton(.zoomButton)?.isHidden = true
         super.init(window: window)
         window.delegate = self
-        let host = NSHostingView(rootView: OnboardingView(model: model, settings: settings, onFinish: { [weak self] in self?.finish() }))
+        let host = NSHostingView(rootView: OnboardingView(model: model, settings: settings, onFinish: { [weak self] in self?.finish() }).environment(\.locale, .app))
         // The window decides the size, not the view: left to itself the view adds the title bar's height.
         host.sizingOptions = []
         window.contentView = host

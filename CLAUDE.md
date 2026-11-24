@@ -19,6 +19,12 @@ Toolsmith is a native macOS menu bar app (Swift, SwiftUI + AppKit, macOS 26+) wh
 - Menu bar items all open one panel (`MenuBarPanel`); modules add pages with `panelScreens`. The launcher, the ⌥V clipboard strip, capture overlays and the annotation editor, the settings window and onboarding live outside the panel on purpose.
 - Settings live in one JSON file (`Settings`, schema 2). Old files are migrated when read; never remove a key's decoding without a migration.
 
+## Text and languages
+
+- English in code, Korean in the String Catalogs (`App/Main/*.xcstrings`, `App/Kit/Localizable.xcstrings`); how to write text is in CONTRIBUTING, "Text and languages". `scripts/localization.py check --built` (run by `build.sh`) fails on Korean literals in code (except `keywords:` and lines marked `// not localized:`), untranslated entries and strings missing from the catalogs; `scripts/localization.py sync` adds new strings after a build.
+- The app's language is macOS's per-app `AppleLanguages` preference, read only at launch: Settings → General writes it and offers to reopen. `Locale.app` is the language the text is shown in; formatters and SwiftUI hosting views use it so numbers and dates match the words.
+- A development build takes the language from the command line without touching the saved preference: `Toolsmith -AppleLanguages "(ko)" …`.
+
 ## Design system
 
 - Colors: `App/Kit/Design/Palette.swift` holds the numbers (contrast checked by `PaletteTests`); screens use only the meaning tokens in `App/Main/Theme/Tokens.swift` (`Ink`, `Fill`, `Line`, `Shade`, `Surface`, `Brand`, `Status`, `Tile`, `Tint`).
@@ -35,7 +41,7 @@ Toolsmith is a native macOS menu bar app (Swift, SwiftUI + AppKit, macOS 26+) wh
 - Development signing: with a self-signed code-signing certificate named "Toolsmith Dev" in the login keychain, `build.sh` signs with it. Ad-hoc signatures change every build, and macOS ties Accessibility and Screen Recording grants to the signature.
 - `TOOLSMITH_DEV` is defined only in the `Dev` configuration: development flags (`--show-panel`, `--snapshot-settings`, `--render-tokens`, `--render-menubar`, `--set-modules`, each module's `runDevelopmentAid`) and the stand-in fan helper. `--release` refuses a binary that still contains development flags.
 - Try a development build next to an installed copy with `TOOLSMITH_SUPPORT_DIR=<empty folder>`: settings and histories go there. Keychain items and UserDefaults are still shared (same bundle id).
-- A development build can draw its own windows into pictures without Screen Recording permission (`--snapshot-settings <folder>`, `--snapshot-window <folder> <seconds>`, `--render-menubar <png>`). Use them for screenshots in pull requests.
+- A development build can draw its own windows into pictures without Screen Recording permission (`--snapshot-settings <folder>`, `--snapshot-window <folder> <seconds>`, `--render-menubar <png>`). Use them for screenshots in pull requests. For pictures without personal data, start it with an empty `TOOLSMITH_SUPPORT_DIR`, `--mac-name <name>` (the monitor's heading) and `--clipboard-demo` (made-up copies in the app's language). The README pictures (`docs/images/en`, `docs/images/ko`) were made that way, once per language.
 
 ## Identity and releases
 

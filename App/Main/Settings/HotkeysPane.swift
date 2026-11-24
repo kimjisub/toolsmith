@@ -1,7 +1,7 @@
 import SwiftUI
 import ToolsmithKit
 
-/// Settings → 단축키: every global shortcut of the running features, in their groups.
+/// Settings → Shortcuts: every global shortcut of the running features, in their groups.
 struct HotkeysPane: View {
     @ObservedObject var environment: AppEnvironment
     @ObservedObject var settings: SettingsStore
@@ -11,20 +11,20 @@ struct HotkeysPane: View {
 
     var body: some View {
         let others = HotkeyCatalog.filter(actions.filter { $0.id != HotkeyID.openLauncher }, query: search)
-        SettingsPage(title: "단축키", lead: "줄을 누르고 원하는 키를 누르면 바뀝니다. esc 는 취소, ⌫ 는 단축키 지우기입니다. 꺼 둔 기능의 단축키는 여기에 없고, 다시 켜면 돌아옵니다.") {
+        SettingsPage(title: String(localized: "Shortcuts"), lead: String(localized: "Click a row and press the keys you want. Esc cancels, ⌫ removes the shortcut. Shortcuts of features that are off aren’t listed and come back when you turn them on.")) {
             if environment.modules.isEnabled(LauncherModule.descriptor.id) {
-                SettingsSection(title: "입력창", footer: "다른 모든 것은 입력창에서 시작합니다. 비워 둘 수 없습니다.") {
+                SettingsSection(title: String(localized: "Launcher"), footer: String(localized: "Everything else starts from the launcher, so this one can’t be empty.")) {
                     HotkeyRow(environment: environment, action: HotkeyCatalog.launcher)
                 }
             }
-            TextField("동작 찾기", text: $search).textFieldStyle(.roundedBorder)
+            TextField("Search actions", text: $search).textFieldStyle(.roundedBorder)
             ForEach(HotkeyCatalog.grouped(others), id: \.group) { group in
                 SettingsSection(title: group.group) {
                     ForEach(group.actions) { HotkeyRow(environment: environment, action: $0) }
                 }
             }
             if others.isEmpty {
-                Card { EmptyState(symbol: "command", title: search.isEmpty ? "단축키를 줄 수 있는 동작이 아직 없습니다" : "찾는 동작이 없습니다") }
+                Card { EmptyState(symbol: "command", title: search.isEmpty ? String(localized: "No actions can have a shortcut yet") : String(localized: "No matching actions")) }
             }
         }
         .onDisappear { environment.cancelRecording() }
@@ -50,7 +50,7 @@ struct HotkeysPane: View {
                 try settings.updateHotkeys { try $0.clear(id) }
                 return .done
             } catch {
-                return .message("입력창 단축키는 비울 수 없습니다.")
+                return .message(String(localized: "The launcher shortcut can’t be empty."))
             }
         case .combo(let combo):
             var copy = settings.settings.hotkeys
@@ -59,10 +59,10 @@ struct HotkeysPane: View {
                 settings.update { $0.hotkeys = copy }
                 return .done
             case .invalid:
-                return .message("⌃, ⌥, ⌘ 중 하나를 함께 누르세요.")
+                return .message(String(localized: "Include ⌃, ⌥ or ⌘."))
             case .taken(let ownerID):
                 if ownerID == HotkeyID.openLauncher {
-                    return .message("\(combo.display) 는 입력창 열기의 단축키라 옮길 수 없습니다.")
+                    return .message(String(localized: "\(combo.display) opens the launcher and can’t be moved."))
                 } else if let owner = actions.first(where: { $0.id == ownerID }) {
                     return .askMove(combo, owner)
                 }

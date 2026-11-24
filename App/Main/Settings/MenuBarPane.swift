@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 import ToolsmithKit
 
-/// Settings → 메뉴 막대: a preview of the real menu bar on top, then whether the items share one
+/// Settings → Menu Bar: a preview of the real menu bar on top, then whether the items share one
 /// slot, then every item of the running features: drag to order, a style, a switch.
 struct MenuBarPane: View {
     @ObservedObject var environment: AppEnvironment
@@ -16,17 +16,17 @@ struct MenuBarPane: View {
 
     var body: some View {
         let items = layout.items(available)
-        SettingsPage(title: "메뉴 막대", lead: "켜 둔 기능이 메뉴 막대에 무엇을 보일지 고릅니다. 위가 메뉴 막대의 왼쪽입니다. 항목을 누르면 그 기능이 열리고, 오른쪽 클릭하면 앱 메뉴가 열립니다.") {
+        SettingsPage(title: String(localized: "Menu Bar"), lead: String(localized: "Choose what the features you turned on show in the menu bar. The top of the list is the left of the menu bar. Click an item to open its feature; right-click for the app menu.")) {
             preview
             SettingsSection(footer: layout.combined
-                            ? "모든 항목이 메뉴 막대의 한 칸 안에 나란히 놓입니다. 누른 자리의 항목이 열립니다."
-                            : "항목마다 메뉴 막대에 따로 칸을 둡니다. 순서는 이 목록을 따릅니다.") {
-                ToggleRow(title: "한 칸으로 묶기", detail: "끄면 항목마다 따로 칸이 됩니다", isOn: Binding(
+                            ? String(localized: "All items sit side by side in one menu bar slot. Clicking opens the item under the pointer.")
+                            : String(localized: "Each item gets its own menu bar slot, in the order of this list.")) {
+                ToggleRow(title: String(localized: "Combine into one slot"), detail: String(localized: "When off, each item gets its own slot"), isOn: Binding(
                     get: { layout.combined },
                     set: { on in settings.update { $0.menuBarLayout.combined = on } }))
             }
             VStack(alignment: .leading, spacing: Space.s) {
-                Text("항목").font(.role(.body, weight: .semibold)).padding(.leading, Space.xs)
+                Text("Items").font(.role(.body, weight: .semibold)).padding(.leading, Space.xs)
                 List {
                     ForEach(items, id: \.id) { item in
                         row(item)
@@ -44,7 +44,7 @@ struct MenuBarPane: View {
                 .frame(height: CGFloat(items.count) * Self.rowHeight)
                 .background(Fill.card, in: RoundedRectangle(cornerRadius: Radius.m, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: Radius.m, style: .continuous).strokeBorder(Line.subtle, lineWidth: 1))
-                Text("끌어서 순서를 바꿉니다. 아무것도 보이지 않게 하면 앱 아이콘이 저절로 나타납니다. 꺼 둔 기능의 항목은 기능을 켜면 여기에 다시 나옵니다.")
+                Text("Drag to reorder. If nothing is shown, the app icon appears on its own. Items of features that are off come back here when you turn them on.")
                     .font(.role(.detail)).foregroundStyle(Ink.tertiary).padding(.horizontal, Space.xs).fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -80,7 +80,7 @@ struct MenuBarPane: View {
                         in: RoundedRectangle(cornerRadius: Radius.s, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: Radius.s, style: .continuous).strokeBorder(Line.base, lineWidth: 1))
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("메뉴 막대 미리보기")
+            .accessibilityLabel("Menu bar preview")
         }
     }
 
@@ -100,7 +100,7 @@ struct MenuBarPane: View {
             // One column for the style, so every switch lines up; an item with one style names it there.
             Group {
                 if item.descriptor.styles.count > 1 {
-                    RowMenu(title: "모양", selection: Binding(get: { item.style }, set: { style in
+                    RowMenu(title: String(localized: "Style"), selection: Binding(get: { item.style }, set: { style in
                         settings.update { $0.menuBarLayout.setStyle(item.id, style, among: available) }
                     }), options: item.descriptor.styles, label: \.label)
                     .disabled(!item.visible)

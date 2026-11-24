@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>ko</string>
+	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(APP_NAME)</string>
 	<key>CFBundleExecutable</key>
@@ -27,13 +27,13 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSAudioCaptureUsageDescription</key>
-	<string>소리 조절에서 앱 하나의 볼륨, 보낼 곳, 효과를 바꾸려면 그 앱의 소리를 받아 와야 합니다. 소리는 이 맥 밖으로 나가지도, 저장되지도 않습니다.</string>
+	<string>To change one app's volume, output and effects in Sound, this app needs to receive that app's audio. The audio never leaves this Mac and is never saved.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>화면 녹화에 목소리를 함께 담을 때 마이크를 씁니다.</string>
+	<string>The microphone is used when you record your voice along with a screen recording.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>macOS 는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다.</string>
+	<string>macOS tells only apps with Location access the name of the connected Wi-Fi network. Your location itself is never read.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>macOS 는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다.</string>
+	<string>macOS tells only apps with Location access the name of the connected Wi-Fi network. Your location itself is never read.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(APP_COPYRIGHT)</string>
 </dict>

@@ -32,20 +32,20 @@ struct ScreenTimePane: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xxl) {
-            SettingsLead(text: "5분 넘게 손을 대지 않거나 화면이 잠기거나 꺼지면 세지 않습니다. 마이크나 카메라를 쓰는 화상 회의 중이면 손을 대지 않아도 셉니다.")
+            SettingsLead(text: String(localized: "Time isn’t counted after 5 minutes without input, or while the screen is locked or off. During a video call that uses the microphone or camera, it counts even without input."))
             ScreenTimeContent(report: report)
-            SettingsSection(title: "기록", footer: "기록을 멈추려면 설정의 「기능」 에서 사용 시간을 끕니다. 이미 쌓인 기록은 남습니다.") {
-                SettingsRow(title: "기록 지우기", detail: "지금까지의 사용 시간을 모두 지웁니다") {
-                    RowButton("모두 지우기…", role: .destructive) { confirmingClear = true }
+            SettingsSection(title: String(localized: "History"), footer: String(localized: "To stop recording, turn off Screen Time in Settings → Features. What’s already recorded stays.")) {
+                SettingsRow(title: String(localized: "Clear history"), detail: String(localized: "Deletes all screen time recorded so far")) {
+                    RowButton(String(localized: "Clear All…"), role: .destructive) { confirmingClear = true }
                 }
             }
         }
         .onAppear(perform: refresh)
         .onReceive(timer) { _ in refresh() }
-        .confirmationDialog("사용 시간 기록을 모두 지울까요?", isPresented: $confirmingClear) {
-            Button("모두 지우기", role: .destructive) { screenTime.store?.clearAll(); refresh() }
-            Button("취소", role: .cancel) {}
-        } message: { Text("지운 기록은 되돌릴 수 없습니다.") }
+        .confirmationDialog("Clear all screen time history?", isPresented: $confirmingClear) {
+            Button("Clear All", role: .destructive) { screenTime.store?.clearAll(); refresh() }
+            Button("Cancel", role: .cancel) {}
+        } message: { Text("You can’t undo this.") }
     }
 
     private func refresh() {
@@ -61,8 +61,8 @@ struct ScreenTimeContent: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.m) {
             VStack(alignment: .leading, spacing: Space.xs) {
-                Text("오늘 사용 시간").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
-                Text(report.total > 0 ? DurationText.text(report.total) : "0분").font(.role(.figure, weight: .semibold))
+                Text("Screen time today").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                Text(report.total > 0 ? DurationText.text(report.total) : String(localized: "0 min")).font(.role(.figure, weight: .semibold))
             }
             card {
                 ForEach(report.insights, id: \.self) { line in
@@ -73,13 +73,13 @@ struct ScreenTimeContent: View {
                 }
             }
             card {
-                caption("시간대별")
-                Bars(values: report.hourly, labels: [(0, "0시"), (6, "6시"), (12, "12시"), (18, "18시")], highlightLast: false).frame(height: 70)
+                caption(String(localized: "By hour"))
+                Bars(values: report.hourly, labels: [0, 6, 12, 18].map { ($0, String(localized: "\($0):00")) }, highlightLast: false).frame(height: 70)
             }
             card {
-                caption("앱별")
+                caption(String(localized: "By app"))
                 if report.apps.isEmpty {
-                    Text("아직 기록이 없습니다.").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                    Text("Nothing recorded yet.").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
                 }
                 let top = report.apps.first?.seconds ?? 1
                 ForEach(report.apps.prefix(8)) { app in
@@ -100,12 +100,12 @@ struct ScreenTimeContent: View {
                     }
                 }
                 if report.apps.count > 8 {
-                    Text("외 \(report.apps.count - 8)개").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                    Text("\(report.apps.count - 8) more").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
                 }
             }
             card {
-                caption("최근 7일")
-                Bars(values: report.week, labels: report.week.count > 1 ? [(0, "\(report.week.count - 1)일 전"), (report.week.count - 1, "오늘")] : [], highlightLast: true).frame(height: 70)
+                caption(String(localized: "Last 7 days"))
+                Bars(values: report.week, labels: report.week.count > 1 ? [(0, String(localized: "\(report.week.count - 1) days ago")), (report.week.count - 1, String(localized: "Today"))] : [], highlightLast: true).frame(height: 70)
             }
         }
         .foregroundStyle(Ink.primary)

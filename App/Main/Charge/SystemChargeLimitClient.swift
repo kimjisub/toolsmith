@@ -46,7 +46,7 @@ final class SystemChargeLimitClient {
         // PowerUI crashes below 80, so the value never goes there.
         let value = UInt8(clamping: min(max(limit, 80), 100))
         guard call("setMCLLimit:error:", SetPercent.self)(client, NSSelectorFromString("setMCLLimit:error:"), value, &error) else {
-            return error?.localizedDescription ?? "충전 제한을 바꾸지 못했습니다"
+            return error?.localizedDescription ?? String(localized: "Couldn’t change the charge limit")
         }
         return perform("enableMCL:")
     }
@@ -60,7 +60,7 @@ final class SystemChargeLimitClient {
     private func perform(_ selector: String) -> String? {
         var error: NSError?
         guard call(selector, Action.self)(client, NSSelectorFromString(selector), &error) else {
-            return error?.localizedDescription ?? "충전 제한을 바꾸지 못했습니다"
+            return error?.localizedDescription ?? String(localized: "Couldn’t change the charge limit")
         }
         return nil
     }

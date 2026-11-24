@@ -18,16 +18,16 @@ public enum HistoryRange: Int, CaseIterable, Identifiable, Sendable {
 
     public var label: String {
         switch self {
-        case .tenMinutes: return "10분"
-        case .oneHour: return "1시간"
-        case .threeHours: return "3시간"
-        case .sixHours: return "6시간"
-        case .twelveHours: return "12시간"
-        case .oneDay: return "1일"
-        case .threeDays: return "3일"
-        case .sevenDays: return "7일"
-        case .fourteenDays: return "14일"
-        case .twentyEightDays: return "28일"
+        case .tenMinutes: return localized("10 Minutes")
+        case .oneHour: return localized("1 Hour")
+        case .threeHours: return localized("3 Hours")
+        case .sixHours: return localized("6 Hours")
+        case .twelveHours: return localized("12 Hours")
+        case .oneDay: return localized("1 Day")
+        case .threeDays: return localized("3 Days")
+        case .sevenDays: return localized("7 Days")
+        case .fourteenDays: return localized("14 Days")
+        case .twentyEightDays: return localized("28 Days")
         }
     }
 

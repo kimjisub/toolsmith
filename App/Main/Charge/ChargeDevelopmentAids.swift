@@ -3,7 +3,7 @@ import ToolsmithKit
 
 #if TOOLSMITH_DEV
 extension ChargeModule {
-    /// Development flags this module answers (see CLAUDE.md, 빌드와 확인).
+    /// Development flags this module answers (see CLAUDE.md, "Building and checking").
     func runDevelopmentAid(_ arguments: [String]) {
         if arguments.contains("--print-charge-status"), let charge {
             // Development aid: what battery charge control reports on this Mac and build, and quit.

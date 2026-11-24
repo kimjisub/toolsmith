@@ -53,7 +53,7 @@ import ToolsmithKit
             onPick: { [weak self] id in self?.run(id) }
         )
         .padding(.top, Self.margin)
-        let host = NSHostingView(rootView: view)
+        let host = NSHostingView(rootView: view.environment(\.locale, .app))
         host.sizingOptions = []
         contentView = host
 

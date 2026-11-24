@@ -174,10 +174,10 @@ import ToolsmithKit
         for entry in entries { add(entry.title, entry.symbol, entry.run) }
         if !entries.isEmpty { menu.addItem(.separator()) }
         let environment = self.environment
-        add("설정…", nil, key: ",") { environment.openSettings() }
-        add("\(AppIdentity.name) 정보", nil) { environment.openSettings(.about) }
+        add(String(localized: "Settings…"), nil, key: ",") { environment.openSettings() }
+        add(String(localized: "About \(AppIdentity.name)"), nil) { environment.openSettings(.about) }
         menu.addItem(.separator())
-        add("\(AppIdentity.name) 종료", nil, key: "q") { NSApp.terminate(nil) }
+        add(String(localized: "Quit \(AppIdentity.name)"), nil, key: "q") { NSApp.terminate(nil) }
         slot.statusItem.menu = menu
         button.performClick(nil)
         // Leave the item without a menu, so the next left click does what the item does.

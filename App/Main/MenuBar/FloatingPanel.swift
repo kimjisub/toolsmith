@@ -25,7 +25,7 @@ final class FloatingPanel: NSPanel {
 
     func attach() {
         guard host == nil, let view = makeContent?() else { return }
-        let host = SizeReportingHostingView(rootView: AnyView(AnyView(view).glassSurface(corner: Radius.l)))
+        let host = SizeReportingHostingView(rootView: AnyView(AnyView(view).glassSurface(corner: Radius.l).environment(\.locale, .app)))
         host.sizingOptions = [.intrinsicContentSize]
         host.onInvalidate = { [weak self] in
             DispatchQueue.main.async { self?.onSizeChange?() }

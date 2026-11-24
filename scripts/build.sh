@@ -34,10 +34,16 @@ BUILD_SETTINGS=()
 echo "==> design lint"
 scripts/lint-design.sh
 
+echo "==> localization lint"
+scripts/localization.py lint
+
 echo "==> app ($CONFIG)"
 xcodegen generate --quiet
 xcodebuild -project Toolsmith.xcodeproj -scheme Toolsmith -configuration "$CONFIG" \
   -derivedDataPath build/DerivedData -destination "$DEST" -quiet build ${BUILD_SETTINGS[@]+"${BUILD_SETTINGS[@]}"}
+# Every string the compiler found is in a catalog and translated (see CONTRIBUTING.md, "Text and languages").
+echo "==> localization"
+scripts/localization.py check --built "$CONFIG"
 rm -rf "build/Release"
 mkdir -p build/Release
 cp -R "$PRODUCT" build/Release/

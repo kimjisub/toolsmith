@@ -4,7 +4,7 @@ import ToolsmithKit
 
 /// 스니펫: written lines pasted into the app in use, with variables asked for in the launcher.
 @MainActor final class SnippetsModule: AppModule, ObservableObject {
-    nonisolated static let descriptor = ModuleDescriptor(id: "snippets", title: "스니펫", summary: "자주 쓰는 멘트를 저장해 두고 쓰던 앱에 바로 붙입니다",
+    nonisolated static let descriptor = ModuleDescriptor(id: "snippets", title: String(localized: "Snippets"), summary: String(localized: "Saves text you write often and pastes it into the app you’re using"),
                                              symbol: "text.quote", tint: .teal, requires: [LauncherModule.descriptor.id], permissions: [.accessibility])
     var descriptor: ModuleDescriptor { Self.descriptor }
     unowned let host: ModuleHost
@@ -86,8 +86,8 @@ import ToolsmithKit
             let ownWindowHasKeys = NSApp.windows.contains { $0.isVisible && $0.isKeyWindow }
             guard ownWindowHasKeys || !Paster.pressPaste(into: target) else { return }
             self.host.notify(AccessibilityPermission.isGranted
-                ? "쓰던 앱이 바뀌어 복사만 했습니다. ⌘V 로 붙여 넣으세요."
-                : "복사했습니다. ⌘V 로 붙여 넣으세요. (손쉬운 사용 권한을 주면 바로 붙습니다)")
+                ? String(localized: "The app in use changed, so the text was only copied. Press ⌘V to paste.")
+                : String(localized: "Copied. Press ⌘V to paste. (With Accessibility access it pastes right away.)"))
         }
         pasteWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.14, execute: work)
@@ -99,7 +99,7 @@ import ToolsmithKit
         host.openSettings(.snippets)
     }
 
-    /// Removes a snippet with its shortcut and its place in "최근".
+    /// Removes a snippet with its shortcut and its place in Recent.
     func deleteSnippet(_ id: UUID) {
         guard let snippet = store.snippet(id) else { return }
         store.remove(id)

@@ -8,11 +8,11 @@ enum WindowMoveFailure: Error {
 
     var message: String {
         switch self {
-        case .noPermission: return "창을 옮기려면 손쉬운 사용 권한이 필요합니다. 설정의 권한에서 허락해 주세요."
-        case .noWindow: return "옮길 창이 없습니다."
-        case .notResizable: return "이 창은 크기를 바꿀 수 없습니다."
-        case .singleDisplay: return "모니터가 하나뿐입니다."
-        case .nothingToRestore: return "되돌릴 이전 크기가 없습니다."
+        case .noPermission: return String(localized: "Moving windows needs Accessibility permission. Allow it in Settings → Permissions.")
+        case .noWindow: return String(localized: "There’s no window to move.")
+        case .notResizable: return String(localized: "This window can’t be resized.")
+        case .singleDisplay: return String(localized: "There’s only one display.")
+        case .nothingToRestore: return String(localized: "There’s no earlier size to restore.")
         }
     }
 }

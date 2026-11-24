@@ -177,7 +177,7 @@ struct MixerAppRow: Identifiable, Equatable {
         if next.2 != effects { effects = next.2 }
     }
 
-    /// 「시스템 출력 따라가기」: the alert sounds move to wherever the output went.
+    /// "Follow system output": the alert sounds move to wherever the output went.
     private func followOutputWithEffects() {
         guard configuration.effectsFollowOutput, let output = SystemAudio.defaultDevice(.output), SystemAudio.defaultDevice(.effects) != output else { return }
         SystemAudio.setDefault(.effects, to: output)
@@ -221,7 +221,7 @@ struct MixerAppRow: Identifiable, Equatable {
 
     private func updateSystemError() {
         let next: String? = configuration.system.chain.isNeutral ? nil
-            : SystemAudio.ownProcessObject() == nil ? "\(AppIdentity.name) 을(를) 오디오 시스템에서 찾지 못해 시스템 출력 효과를 켜지 않았습니다. 앱 하나의 소리를 바꾸면 다시 시도합니다."
+            : SystemAudio.ownProcessObject() == nil ? String(localized: "The audio system could not find \(AppIdentity.name), so the system output effects are off. They are tried again when you change an app's sound.")
             : routeErrors[AudioRoutes.systemKey]
         if next != systemError { systemError = next }
     }
@@ -387,7 +387,7 @@ struct MixerAppRow: Identifiable, Equatable {
 
     func moveFavorite(_ key: String, by offset: Int) { change { $0.moveFavorite(key, by: offset) } }
 
-    /// Running apps with a window, for 「즐겨찾기 더하기」, by name.
+    /// Running apps with a window, for "Add Favorite", by name.
     func favoriteCandidates() -> [(key: String, name: String)] {
         let favorites = Set(configuration.favorites)
         var seen: Set<String> = []

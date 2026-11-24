@@ -28,10 +28,10 @@ import ToolsmithKit
     /// The groups of the module's settings page, built from the settings parts only
     /// (`SettingsSection` with `ToggleRow`, `PickerRow`, `SliderRow`, `FieldRow`, …). The page around
     /// them is drawn by the app: the module header with its switch on top, then these groups, then
-    /// a 단축키 group with the module's shortcuts and a 권한 group with its permissions. nil: no
+    /// a Shortcuts group with the module's shortcuts and a Permissions group with its permissions. nil: no
     /// groups of its own.
     func settingsGroups(in environment: AppEnvironment) -> AnyView?
-    /// The shortcuts the page's 단축키 group lists. nil: every shortcut of the module's commands.
+    /// The shortcuts the page's Shortcuts group lists. nil: every shortcut of the module's commands.
     var settingsShortcutIDs: [String]? { get }
 
     func start()

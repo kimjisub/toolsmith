@@ -5,10 +5,10 @@ public enum ClipKind: String, Codable, CaseIterable, Sendable {
 
     public var title: String {
         switch self {
-        case .text: return "글"
-        case .link: return "링크"
-        case .image: return "이미지"
-        case .file: return "파일"
+        case .text: return localized("Text")
+        case .link: return localized("Link")
+        case .image: return localized("Image")
+        case .file: return localized("File")
         }
     }
 }
@@ -64,10 +64,10 @@ public enum ClipRetention: String, Codable, CaseIterable, Sendable {
 
     public var title: String {
         switch self {
-        case .forever: return "영구"
-        case .year: return "1년"
-        case .days90: return "90일"
-        case .days30: return "30일"
+        case .forever: return localized("Forever")
+        case .year: return localized("1 Year")
+        case .days90: return localized("90 Days")
+        case .days30: return localized("30 Days")
         }
     }
 

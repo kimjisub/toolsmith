@@ -17,13 +17,13 @@ import ToolsmithKit
 
     /// `area` is in AppKit screen coordinates.
     func run(area: CGRect) async throws -> CapturedImage {
-        guard !isRunning else { throw CaptureError.failed("이미 스크롤 캡처 중입니다") }
+        guard !isRunning else { throw CaptureError.failed(String(localized: "A scrolling capture is already running.")) }
         // Scrolling for the user means sending scroll events, which needs the Accessibility permission.
         guard AccessibilityPermission.isGranted else {
             AccessibilityPermission.prompt()
-            throw CaptureError.failed("스크롤 캡처는 손쉬운 사용 권한이 있어야 대신 스크롤할 수 있습니다. 설정의 일반에서 허락해 주세요.")
+            throw CaptureError.failed(String(localized: "Scrolling capture needs Accessibility permission to scroll for you. Allow it in General in Settings."))
         }
-        guard let primary = NSScreen.screens.first else { throw CaptureError.failed("화면이 없습니다") }
+        guard let primary = NSScreen.screens.first else { throw CaptureError.failed(String(localized: "There is no display.")) }
         isRunning = true
         cancelled = false
         escMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
@@ -65,7 +65,7 @@ import ToolsmithKit
             previousRows = rows
         }
 
-        guard let stitched = Self.stack(pieces) else { throw CaptureError.failed("이어 붙이지 못했습니다") }
+        guard let stitched = Self.stack(pieces) else { throw CaptureError.failed(String(localized: "Couldn’t stitch the pieces together.")) }
         return CapturedImage(image: stitched, scale: scale)
     }
 

@@ -44,20 +44,20 @@ struct ShelfView: View {
 
     private var header: some View {
         HStack(spacing: Space.l) {
-            Text("클립보드")
+            Text("Clipboard")
                 .font(.role(.secondary, weight: .medium))
                 .padding(.horizontal, Space.m)
                 .padding(.vertical, Space.xs)
                 .background(Fill.selected, in: Capsule())
-            GradientQueryField(text: $model.query, placeholder: "복사했던 것 찾기", role: .heading, capturesNavigation: true, onCommand: onCommand)
+            GradientQueryField(text: $model.query, placeholder: String(localized: "Search what you copied"), role: .heading, capturesNavigation: true, onCommand: onCommand)
                 .frame(maxWidth: 360)
             Spacer(minLength: Space.s)
             HStack(spacing: Space.xs) {
                 ForEach(Array(ShelfModel.filters.enumerated()), id: \.offset) { _, filter in
-                    chip(filter?.title ?? "전체", selected: model.kind == filter) { model.kind = filter }
+                    chip(filter?.title ?? String(localized: "All"), selected: model.kind == filter) { model.kind = filter }
                 }
                 Line.subtle.frame(width: 1, height: 16).padding(.horizontal, Space.s)
-                chip("고정한 것", selected: model.pinnedOnly) { model.pinnedOnly.toggle() }
+                chip(String(localized: "Pinned"), selected: model.pinnedOnly) { model.pinnedOnly.toggle() }
             }
         }
         .padding(.horizontal, Space.l)
@@ -104,7 +104,7 @@ struct ShelfView: View {
 
     private var empty: some View {
         let searching = !model.query.trimmingCharacters(in: .whitespaces).isEmpty || model.kind != nil || model.pinnedOnly
-        return Text(searching ? "찾는 것이 없습니다" : "아직 복사한 것이 없습니다. 무언가를 복사하면 여기에 쌓입니다.")
+        return Text(searching ? "No matches" : "Nothing copied yet. Whatever you copy appears here.")
             .font(.role(.body))
             .foregroundStyle(Ink.tertiary)
             .frame(maxWidth: .infinity)
@@ -117,17 +117,17 @@ struct ShelfView: View {
                 Image(systemName: "exclamationmark.circle").foregroundStyle(Status.warning)
                 Text(banner).foregroundStyle(Status.warning)
             } else if model.lastDeleted != nil {
-                KeyCap(label: "⌘"); KeyCap(label: "Z"); Text("지운 것 되돌리기")
+                KeyCap(label: "⌘"); KeyCap(label: "Z"); Text("Undo delete")
             } else {
-                KeyCap(label: "↵"); Text("쓰던 앱에 붙여넣기")
-                KeyCap(label: "⇧").padding(.leading, Space.m); KeyCap(label: "↵"); Text("서식 없이")
-                KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "1"); Text("~"); KeyCap(label: "9"); Text("바로 붙여넣기")
+                KeyCap(label: "↵"); Text("Paste into app")
+                KeyCap(label: "⇧").padding(.leading, Space.m); KeyCap(label: "↵"); Text("Without formatting")
+                KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "1"); Text(verbatim: "~"); KeyCap(label: "9"); Text("Paste directly")
             }
             Spacer()
-            KeyCap(label: "⇥"); Text("종류")
-            KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "P"); Text("고정")
-            KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "⌫"); Text("지우기")
-            KeyCap(label: "esc").padding(.leading, Space.m); Text("닫기")
+            KeyCap(label: "⇥"); Text("Kind")
+            KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "P"); Text("Pin")
+            KeyCap(label: "⌘").padding(.leading, Space.m); KeyCap(label: "⌫"); Text("Delete")
+            KeyCap(label: "esc").padding(.leading, Space.m); Text("Close")
         }
         .font(.role(.detail))
         .foregroundStyle(Ink.tertiary)
@@ -190,7 +190,7 @@ struct ClipCard: View {
                 .font(.role(.secondary)).foregroundStyle(Ink.primary).lineSpacing(2)
         case .link:
             VStack(alignment: .leading, spacing: Space.xs) {
-                Text(URLComponents(string: (item.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines))?.host ?? "링크")
+                Text(URLComponents(string: (item.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines))?.host ?? String(localized: "Link"))
                     .font(.role(.body, weight: .medium)).foregroundStyle(Brand.lavender).lineLimit(1)
                 Text(item.text ?? "").font(.role(.detail)).foregroundStyle(Ink.tertiary).lineLimit(4)
             }
@@ -198,7 +198,7 @@ struct ClipCard: View {
             if let url = store.blobURL(for: item), let image = ThumbnailCache.image(at: url) {
                 PreviewImage(image: image)
             } else {
-                Text("이미지를 찾을 수 없습니다").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                Text("The image can no longer be found").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
             }
         case .file where FilePreview.previewable(item.fileURLs):
             if item.fileURLs.count == 1 {
@@ -219,20 +219,20 @@ struct ClipCard: View {
                         Text((path as NSString).lastPathComponent).font(.role(.secondary)).foregroundStyle(Ink.primary).lineLimit(1).truncationMode(.middle)
                     }
                 }
-                if item.fileURLs.count > 4 { Text("외 \(item.fileURLs.count - 4)개").font(.role(.detail)).foregroundStyle(Ink.tertiary) }
+                if item.fileURLs.count > 4 { Text("\(item.fileURLs.count - 4) more").font(.role(.detail)).foregroundStyle(Ink.tertiary) }
             }
         }
     }
 
     private var detail: String {
         switch item.kind {
-        case .text: return "\(item.text?.count ?? 0)자"
-        case .link: return "링크"
+        case .text: return String(localized: "\(item.text?.count ?? 0) characters")
+        case .link: return String(localized: "Link")
         case .image:
             if let width = item.width, let height = item.height { return "\(width) × \(height) · \(ByteSize.text(item.bytes))" }
             return ByteSize.text(item.bytes)
         case .file:
-            guard item.fileURLs.count == 1, let path = item.fileURLs.first else { return "파일 \(item.fileURLs.count)개" }
+            guard item.fileURLs.count == 1, let path = item.fileURLs.first else { return String(localized: "\(item.fileURLs.count) files") }
             let name = (path as NSString).lastPathComponent
             if let size = FilePreview.pixelSize(path) { return "\(size.width) × \(size.height) · \(name)" }
             return name

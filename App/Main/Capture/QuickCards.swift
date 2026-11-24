@@ -39,7 +39,7 @@ struct QuickCard: Identifiable {
         hasShadow = false
         isReleasedWhenClosed = false
         animationBehavior = .none
-        let host = NSHostingView(rootView: QuickCardStack(model: model, panel: self))
+        let host = NSHostingView(rootView: QuickCardStack(model: model, panel: self).environment(\.locale, .app))
         host.sizingOptions = []
         contentView = host
     }
@@ -128,15 +128,15 @@ private struct QuickCardView: View {
                 Shade.strong
                 VStack(spacing: Space.s) {
                     HStack(spacing: Space.s) {
-                        button("복사", "doc.on.doc") { panel?.onCopy?(card) }
-                        button(card.saved ? "저장됨" : "저장", card.saved ? "checkmark" : "square.and.arrow.down") {
+                        button(String(localized: "Copy"), "doc.on.doc") { panel?.onCopy?(card) }
+                        button(card.saved ? String(localized: "Saved") : String(localized: "Save"), card.saved ? "checkmark" : "square.and.arrow.down") {
                             if panel?.onSave?(card) != nil { panel?.markSaved(card.id) }
                         }
                     }
                     HStack(spacing: Space.s) {
-                        button("편집", "pencil.tip.crop.circle") { panel?.onEdit?(card, panel?.screen) }
-                        button("고정", "pin") { panel?.onPin?(card); panel?.close(card.id) }
-                        button("글자", "text.viewfinder") { panel?.onText?(card) }
+                        button(String(localized: "Edit"), "pencil.tip.crop.circle") { panel?.onEdit?(card, panel?.screen) }
+                        button(String(localized: "Pin"), "pin") { panel?.onPin?(card); panel?.close(card.id) }
+                        button(String(localized: "Text"), "text.viewfinder") { panel?.onText?(card) }
                     }
                 }
                 VStack {
@@ -147,7 +147,7 @@ private struct QuickCardView: View {
                                 .background(Line.base, in: Circle())
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("닫기")
+                        .accessibilityLabel("Close")
                     }
                     Spacer()
                 }
@@ -236,7 +236,7 @@ private final class PinImageView: NSImageView {
         wantsLayer = true
         layer?.cornerRadius = 6
         layer?.masksToBounds = true
-        toolTip = "두 번 누르거나 esc 로 닫기"
+        toolTip = String(localized: "Double-click or press esc to close")
     }
 
     @available(*, unavailable) required init?(coder: NSCoder) { fatalError("not used") }

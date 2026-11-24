@@ -57,7 +57,7 @@ struct AIAnswerView: View {
             if turn.isStreaming {
                 HStack(spacing: Space.s) {
                     Spinner()
-                    Text(turn.answer.isEmpty ? "웹을 찾아보는 중…" : "답하는 중…").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
+                    Text(turn.answer.isEmpty ? "Searching the web…" : "Answering…").font(.role(.secondary)).foregroundStyle(Ink.tertiary)
                 }
             }
             if let error = turn.error {
@@ -73,7 +73,7 @@ struct AIAnswerView: View {
                             if let url = WebLink.url(citation.url) { Self.openBehind(url) }
                         } label: {
                             HStack(spacing: Space.xs) {
-                                Text("\(index + 1)").font(.role(.caption, weight: .semibold, design: .monospaced)).foregroundStyle(Ink.tertiary)
+                                Text(verbatim: "\(index + 1)").font(.role(.caption, weight: .semibold, design: .monospaced)).foregroundStyle(Ink.tertiary)
                                 Text(citation.title).font(.role(.detail)).lineLimit(1)
                             }
                             .foregroundStyle(Ink.secondary)

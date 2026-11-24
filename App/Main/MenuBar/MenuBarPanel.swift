@@ -181,11 +181,11 @@ private struct MenuBarPanelView: View {
             Image(systemName: screen.symbol).font(.role(.body, weight: .semibold)).foregroundStyle(Brand.accent)
             Text(screen.title).font(.role(.emphasis, weight: .semibold)).lineLimit(1)
             Spacer(minLength: Space.s)
-            IconButton(symbol: model.pinned ? "pin.fill" : "pin", label: model.pinned ? "고정 풀기" : "열어 두기", selected: model.pinned) {
+            IconButton(symbol: model.pinned ? "pin.fill" : "pin", label: model.pinned ? String(localized: "Unpin") : String(localized: "Keep Open"), selected: model.pinned) {
                 model.pinned.toggle()
             }
             if let pane = screen.settings {
-                IconButton(symbol: "gearshape", label: "\(screen.title) 설정") {
+                IconButton(symbol: "gearshape", label: String(localized: "\(screen.title) Settings")) {
                     panel.hide()
                     environment.openSettings(pane)
                 }
@@ -212,17 +212,17 @@ private struct MenuBarPanelView: View {
     private var footer: some View {
         HStack(spacing: Space.xs) {
             if environment.modules.isEnabled(LauncherModule.descriptor.id) {
-                FooterButton(title: "입력창", symbol: "command") {
+                FooterButton(title: String(localized: "Launcher"), symbol: "command") {
                     panel.hide()
                     environment.panel.show()
                 }
             }
             Spacer()
-            FooterButton(title: "설정", symbol: "gearshape") {
+            FooterButton(title: String(localized: "Settings"), symbol: "gearshape") {
                 panel.hide()
                 environment.openSettings(nil)
             }
-            FooterButton(title: "종료", symbol: "power") { NSApp.terminate(nil) }
+            FooterButton(title: String(localized: "Quit"), symbol: "power") { NSApp.terminate(nil) }
         }
         .padding(.horizontal, Space.s)
         .padding(.vertical, Space.xs)

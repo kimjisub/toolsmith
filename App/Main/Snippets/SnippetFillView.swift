@@ -94,7 +94,7 @@ struct SnippetFillView: View {
                        caretColor: NSColor.white.withAlphaComponent(0.9),
                        textColor: NSColor.white.withAlphaComponent(0.94),
                        focusKey: Self.focusKey(session: fill.session, index: index),
-                       accessibilityLabel: "\(variable.name) 값",
+                       accessibilityLabel: String(localized: "Value for \(variable.name)"),
                        onFocus: { model.setFillFocus(index) }, onCommand: onCommand)
         }
         .padding(.horizontal, Space.l)
@@ -145,14 +145,14 @@ struct SnippetFillView: View {
 
     private var hint: some View {
         HStack(spacing: Space.xs) {
-            if emptyCount > 0 { Text("빈 칸 \(emptyCount)개 · ↵ 를 누르면 비운 채로 붙습니다") }
+            if emptyCount > 0 { Text("\(emptyCount) empty fields · ↵ pastes with them left blank") }
             Spacer()
             KeyCap(label: "⇥")
-            Text("다음 칸")
+            Text("Next field")
             KeyCap(label: "↵").padding(.leading, Space.s)
-            Text("붙이기")
+            Text("Paste")
             KeyCap(label: "esc").padding(.leading, Space.s)
-            Text(fill.returnsToList ? "돌아가기" : "닫기")
+            Text(fill.returnsToList ? "Back" : "Close")
         }
         .font(.role(.detail))
         .foregroundStyle(Ink.tertiary)

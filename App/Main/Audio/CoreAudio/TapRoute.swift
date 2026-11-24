@@ -12,11 +12,11 @@ enum TapRouteError: Error {
 
     var message: String {
         switch self {
-        case .tap(let status): return "앱 소리를 받아 오지 못했습니다 (\(status))"
-        case .device(let status): return "소리 경로를 만들지 못했습니다 (\(status))"
-        case .format: return "이 출력 장치의 소리 형식은 다룰 수 없습니다"
-        case .start(let status): return "소리 경로를 시작하지 못했습니다 (\(status))"
-        case .noOutput: return "출력 장치를 찾지 못했습니다"
+        case .tap(let status): return String(localized: "Couldn’t receive the app’s audio (\(status))")
+        case .device(let status): return String(localized: "Couldn’t create the audio route (\(status))")
+        case .format: return String(localized: "This output device’s audio format isn’t supported")
+        case .start(let status): return String(localized: "Couldn’t start the audio route (\(status))")
+        case .noOutput: return String(localized: "Couldn’t find the output device")
         }
     }
 }
@@ -123,7 +123,7 @@ final class TapRoute {
 
         let clock = outputs.first
         var composition: [String: Any] = [
-            kAudioAggregateDeviceNameKey: "\(AppIdentity.name) 소리 경로",
+            kAudioAggregateDeviceNameKey: "\(AppIdentity.name) Audio Route",
             kAudioAggregateDeviceUIDKey: SystemAudio.routeUIDPrefix + UUID().uuidString,
             kAudioAggregateDeviceIsPrivateKey: true,
             kAudioAggregateDeviceIsStackedKey: false,
