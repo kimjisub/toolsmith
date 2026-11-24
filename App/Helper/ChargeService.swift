@@ -3,14 +3,16 @@ import IOKit.ps
 import IOKit.pwr_mgt
 import ToolsmithKit
 
-/// Keeps the battery where the user asked: stops charging at the limit (or runs from the battery
-/// when the Mac cannot stop charging), pauses on request, and gives everything back on the way out.
-/// All work happens on the main queue.
+/// Keeps the battery where the user asked: stops charging at the limit and holds there on the
+/// adapter, runs from the battery only when asked to discharge, charges to full once on request, and
+/// gives everything back on the way out. All work happens on the main queue.
 final class ChargeService: NSObject, ChargeHelperProtocol {
     private let smc = SMC()
     private let keys: ChargeKeys
     private var settings: ChargeSettings
     private var output = ChargeOutput.normal
+    private var activity = ChargeActivity.charging
+    private var holding = false
     private var lastError: String?
     private var timer: Timer?
     private var powerPort: IONotificationPortRef?
@@ -76,7 +78,7 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
             IOAllowPowerChange(rootPort, token)
         case PowerMessage.systemWillSleep:
             sleeping = true
-            write(ChargeDecision.forSleep(output), force: false)
+            write(ChargePlanner.forSleep(output), force: false)
             IOAllowPowerChange(rootPort, token)
         case PowerMessage.systemHasPoweredOn:
             sleeping = false
@@ -105,17 +107,17 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
         }
     }
 
-    func setPaused(_ paused: Bool, reply: @escaping (Data) -> Void) {
+    func setDischarging(_ discharging: Bool, reply: @escaping (Data) -> Void) {
         DispatchQueue.main.async {
-            self.settings.paused = paused && self.keys.canPause
+            self.settings.request = discharging ? .discharge : .none
             self.saveAndApply()
             reply(self.report())
         }
     }
 
-    func setDischarging(_ discharging: Bool, reply: @escaping (Data) -> Void) {
+    func setTopUp(_ toppingUp: Bool, reply: @escaping (Data) -> Void) {
         DispatchQueue.main.async {
-            self.settings.discharging = discharging && self.keys.canDischarge
+            self.settings.request = toppingUp ? .topUp : .none
             self.saveAndApply()
             reply(self.report())
         }
@@ -139,13 +141,16 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
     private func apply(force: Bool = false) {
         // Between the sleep notice and the sleep itself the adapter stays as it was put.
         guard !sleeping else { return }
-        let level = Self.level() ?? .nan
-        if settings.discharging, ChargeDecision.dischargeDone(level: level, settings: settings) {
-            settings.discharging = false
+        let battery = Self.battery()
+        let plan = ChargePlanner.plan(ChargeInput(level: battery?.level ?? .nan, onAdapter: battery?.onAdapter ?? false, limit: settings.limit,
+                                                  request: settings.request, abilities: ChargeAbilities(keys: keys), wasHolding: holding))
+        if plan.request != settings.request {
+            settings.request = plan.request
             Self.save(settings)
         }
-        let next = ChargeDecision.decide(level: level, settings: settings, keys: keys, current: output)
-        write(next, force: force)
+        holding = plan.holding
+        activity = plan.activity
+        write(plan.output, force: force)
     }
 
     /// Writes what changed (everything when forced), and only keys this Mac has.
@@ -167,12 +172,12 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
 
     private func report() -> Data {
         let status = ChargeStatus(settings: settings, output: output, canPause: keys.canPause, canDischarge: keys.canDischarge,
-                                  level: Self.level(), error: lastError)
+                                  level: Self.battery()?.level, error: lastError, activity: activity)
         return (try? JSONEncoder().encode(status)) ?? Data()
     }
 
-    /// The internal battery's level (0…100), or nil.
-    private static func level() -> Double? {
+    /// The internal battery's level (0…100) and whether the adapter powers the Mac, or nil.
+    private static func battery() -> (level: Double, onAdapter: Bool)? {
         guard let info = IOPSCopyPowerSourcesInfo()?.takeRetainedValue(),
               let list = IOPSCopyPowerSourcesList(info)?.takeRetainedValue() as? [CFTypeRef] else { return nil }
         for source in list {
@@ -180,14 +185,14 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
                   description[kIOPSTypeKey] as? String == kIOPSInternalBatteryType,
                   let current = description[kIOPSCurrentCapacityKey] as? Int, let maximum = description[kIOPSMaxCapacityKey] as? Int,
                   maximum > 0 else { continue }
-            return Double(current) / Double(maximum) * 100
+            return (Double(current) / Double(maximum) * 100, description[kIOPSPowerSourceStateKey] as? String == kIOPSACPowerValue)
         }
         return nil
     }
 
     private static func loadSettings() -> ChargeSettings {
         guard let data = try? Data(contentsOf: stateFile), let settings = try? JSONDecoder().decode(ChargeSettings.self, from: data) else { return .defaults }
-        return ChargeSettings(limit: settings.limit, paused: settings.paused, discharging: settings.discharging)
+        return settings
     }
 
     private static func save(_ settings: ChargeSettings) {

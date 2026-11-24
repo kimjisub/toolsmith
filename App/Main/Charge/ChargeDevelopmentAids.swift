@@ -14,5 +14,31 @@ extension ChargeModule {
             exit(0)
         }
     }
+
+    /// `--charge-demo <state>`: a made-up charge state for pictures (charging, holding, held-above,
+    /// discharging, topping-up, on-battery, cannot-hold). While it is set the controller reads and
+    /// writes nothing.
+    static func demoSnapshot(_ arguments: [String]) -> ChargeSnapshot? {
+        guard let index = arguments.firstIndex(of: "--charge-demo"), index + 1 < arguments.count else { return nil }
+        switch arguments[index + 1] {
+        case "charging":
+            return ChargeSnapshot(activity: .charging, level: 62, onAdapter: true, limit: 80, abilities: .system, batteryWatts: 41.6)
+        case "holding":
+            return ChargeSnapshot(activity: .holding, level: 80, onAdapter: true, limit: 80, abilities: .system, batteryWatts: 0)
+        case "held-above":
+            return ChargeSnapshot(activity: .holding, level: 95, onAdapter: true, limit: 80, abilities: .system, batteryWatts: 0)
+        case "discharging":
+            return ChargeSnapshot(activity: .discharging, level: 91, onAdapter: true, limit: 80, abilities: .system, batteryWatts: -18.4)
+        case "topping-up":
+            return ChargeSnapshot(activity: .toppingUp, level: 86, onAdapter: true, limit: 80, abilities: .system, batteryWatts: 35.2)
+        case "on-battery":
+            return ChargeSnapshot(activity: .onBattery, level: 74, onAdapter: false, limit: 80, abilities: .system, batteryWatts: -9.7)
+        case "cannot-hold":
+            return ChargeSnapshot(activity: .charging, level: 88, onAdapter: true, limit: 80,
+                                  abilities: ChargeAbilities(canHold: false, canDischarge: true), batteryWatts: 22.0)
+        default:
+            return nil
+        }
+    }
 }
 #endif

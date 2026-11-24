@@ -7,6 +7,11 @@ import ToolsmithKit
 /// later on Apple silicon) that is what it drives: the firmware keeps it even asleep, and nothing
 /// needs installing. Elsewhere it installs the administrator helper (a launchd daemon registered
 /// with SMAppService) and talks to it over XPC.
+///
+/// Both follow `ChargePlanner`: below the limit the battery charges, at or above it it is held on
+/// the adapter, and it runs down only when the user asks to discharge. macOS's limit runs a battery
+/// above it down to it, so while holding above the user's limit, macOS is given the battery's own
+/// level (`SystemChargeMemory`) and the user's limit is kept by the app.
 @MainActor final class ChargeController: ObservableObject {
     enum State: Equatable {
         /// macOS's own charge limit is in charge.
@@ -19,6 +24,8 @@ import ToolsmithKit
         /// Registered, waiting for the user to allow it in System Settings → General → Login Items.
         case needsApproval
         case running
+        /// The helper runs but is older than this app (its version); it needs updating.
+        case outdated(Int)
         /// The helper runs but this Mac's controller offers no key it knows.
         case unsupportedMac
         case failed(String)
@@ -29,22 +36,65 @@ import ToolsmithKit
     @Published private(set) var busy = false
     @Published private(set) var system: SystemChargeLimitState?
     @Published private(set) var systemError: String?
+    /// What the screens show; nil until something controls the charge.
+    @Published private(set) var snapshot: ChargeSnapshot?
 
     private let systemClient = SystemChargeLimitClient()
     private let service = SMAppService.daemon(plistName: ChargeHelperIdentity.plistName)
     private var connection: NSXPCConnection?
+    private var memoryDocument = JSONDocument<SystemChargeMemory>(fileURL: SettingsStore.supportDirectory
+        .appendingPathComponent("charge", isDirectory: true).appendingPathComponent("system-limit.json"))
+    private var memory = SystemChargeMemory()
+    private var timer: Timer?
+    #if TOOLSMITH_DEV
+    /// A made-up state for pictures: nothing is read from or written to the Mac while it is set.
+    private var demo: ChargeSnapshot?
+    private var isDemo: Bool { demo != nil }
+    #else
+    private let isDemo = false
+    #endif
 
-    init() { refresh() }
+    init() {
+        memory = memoryDocument.load() ?? SystemChargeMemory()
+        #if TOOLSMITH_DEV
+        // Set before anything is read, so a development build drawing pictures never writes a limit.
+        if let made = ChargeModule.demoSnapshot(CommandLine.arguments) {
+            demo = made
+            snapshot = made
+            state = .system
+        }
+        #endif
+    }
 
-    /// Looks again at the helper's registration and, when it runs, at its report.
+    /// Follows the battery while the module runs: the hold target trails the level, a discharge ends
+    /// at the limit. macOS's limit and the helper keep the charge on their own in between.
+    func start() {
+        refresh()
+        guard timer == nil else { return }
+        let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in Task { @MainActor in self?.refresh() } }
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+    }
+
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+        connection?.invalidate()
+        connection = nil
+    }
+
+    /// Looks again at the helper's registration and, when it runs, at its report; with macOS's limit,
+    /// makes and applies the plan.
     func refresh() {
-        guard BatteryReader.battery() != nil else { state = .noBattery; return }
+        guard !isDemo else { return }
+        guard BatteryReader.battery() != nil else { state = .noBattery; snapshot = nil; return }
         if let systemClient {
             // A failed read keeps the last value rather than falling back to a helper this Mac does not need.
             if let read = systemClient.read() { system = read }
             if system != nil {
                 state = .system
                 releaseLeftoverHelper()
+                applySystemPlan()
                 return
             }
         }
@@ -99,6 +149,27 @@ import ToolsmithKit
         if service.status == .enabled { call({ $0.restoreDefaults(reply: $1) }, then: finish) } else { finish() }
     }
 
+    /// Replaces a running helper older than this app. Unregistering stops it (it gives charging back
+    /// as it exits); registering again starts the copy inside this app. The approval in Login Items
+    /// stays, since the helper's identity does not change.
+    func updateHelper() {
+        guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
+        busy = true
+        connection?.invalidate()
+        connection = nil
+        Task { @MainActor in
+            do {
+                try await service.unregister()
+                try service.register()
+            } catch {
+                if service.status != .requiresApproval { state = .failed(String(localized: "Couldn’t update the helper: \(error.localizedDescription)")) }
+            }
+            status = nil
+            busy = false
+            refresh()
+        }
+    }
+
     func openLoginItems() { SMAppService.openSystemSettingsLoginItems() }
 
     /// Whether a helper from before is still registered (on a Mac that no longer needs it).
@@ -106,49 +177,97 @@ import ToolsmithKit
 
     // MARK: What the controls show, whichever does the work
 
-    /// The limit in effect, or nil when the battery charges to full.
-    var limit: Int? {
-        if state == .system { return system?.effectiveLimit }
-        return status?.settings.limit
-    }
-
     /// The limits the user can pick; 100 stands for none.
     var choices: [Int] {
         if state == .system { return system?.choices ?? SystemChargeLimitState.fallbackChoices }
         return [50, 60, 70, 80, 85, 90, 95, 100]
     }
 
-    var canControl: Bool { state == .system || state == .running }
-    var canTopUp: Bool { state == .system }
-    var toppingUp: Bool { system?.mode == .toppingUp }
-    var canPause: Bool { state == .running && status?.canPause == true }
-    var canDischarge: Bool { state == .running && status?.canDischarge == true }
-    var paused: Bool { status?.settings.paused ?? false }
-    var discharging: Bool { status?.settings.discharging ?? false }
+    var canControl: Bool { isDemo || state == .system || state == .running }
+
     var error: String? { state == .system ? systemError : status?.error }
 
     func setLimit(_ percent: Int?) {
+        guard !isDemo else { return }
         if state == .system {
-            updateSystem { $0.set(limit: percent ?? 100) }
+            memory.limit = percent.flatMap { $0 >= 100 ? nil : $0 }
+            applySystemPlan()
         } else {
             call { $0.setLimit(percent ?? 0, reply: $1) }
         }
     }
 
-    /// Charges to full this once; the limit comes back when it is full or unplugged.
-    func topUp() { updateSystem { $0.topUp() } }
-    func resumeLimit() { updateSystem { $0.resume() } }
-
-    private func updateSystem(_ change: (SystemChargeLimitClient) -> String?) {
-        guard let systemClient else { return }
-        systemError = change(systemClient)
-        system = systemClient.read() ?? system
+    /// Runs the battery down to the limit while plugged in; ends there by itself.
+    func setDischarging(_ on: Bool) {
+        guard !isDemo else { return }
+        if state == .system {
+            if on, system?.mode == .toppingUp { systemError = systemClient?.resume() }
+            memory.discharging = on
+            readSystem()
+            applySystemPlan()
+        } else {
+            call { $0.setDischarging(on, reply: $1) }
+        }
     }
 
-    func setPaused(_ paused: Bool) { call { $0.setPaused(paused, reply: $1) } }
-    func setDischarging(_ discharging: Bool) { call { $0.setDischarging(discharging, reply: $1) } }
+    /// Charges to full this once; the limit comes back when it is full or unplugged.
+    func setToppingUp(_ on: Bool) {
+        guard !isDemo else { return }
+        if state == .system {
+            guard let systemClient else { return }
+            memory.discharging = false
+            systemError = on ? systemClient.topUp() : systemClient.resume()
+            readSystem()
+            applySystemPlan()
+        } else {
+            call { $0.setTopUp(on, reply: $1) }
+        }
+    }
 
-    // MARK: XPC
+    // MARK: macOS's own limit
+
+    private func readSystem() {
+        system = systemClient?.read() ?? system
+    }
+
+    /// Plans from the battery and macOS's limit as they are, writes macOS's limit if the plan needs
+    /// another value, and keeps what the app must remember.
+    private func applySystemPlan() {
+        guard let systemClient, let current = system, let battery = BatteryReader.battery() else { return }
+        let before = memory
+        memory = memory.reconciled(with: current)
+        let plan = ChargePlanner.plan(memory.input(level: battery.level, onAdapter: battery.onAdapter, state: current))
+        memory.discharging = plan.request == .discharge
+        memory.holding = plan.holding
+        if let value = SystemChargeMemory.write(for: plan, state: current) {
+            let failure = systemClient.set(limit: value)
+            systemError = failure
+            if failure == nil { memory.written = value }
+            readSystem()
+        }
+        if memory != before { memoryDocument.save(memory) }
+        snapshot = ChargeSnapshot(activity: plan.activity, level: battery.level, onAdapter: battery.onAdapter, limit: memory.limit,
+                                  abilities: .system, batteryWatts: BatteryReader.batteryWatts())
+    }
+
+    // MARK: The helper
+
+    private func helperReported(_ status: ChargeStatus?) {
+        self.status = status
+        guard let status, state != .system else { return }
+        if status.version < ChargeHelperIdentity.version {
+            state = .outdated(status.version)
+            snapshot = nil
+            return
+        }
+        state = status.canPause || status.canDischarge ? .running : .unsupportedMac
+        let battery = BatteryReader.battery()
+        let activity = status.activity ?? (battery?.onAdapter == true ? .charging : .onBattery)
+        snapshot = state == .running
+            ? ChargeSnapshot(activity: activity, level: battery?.level ?? status.level, onAdapter: battery?.onAdapter ?? false,
+                             limit: status.settings.limit, abilities: status.abilities, batteryWatts: BatteryReader.batteryWatts())
+            : nil
+    }
 
     private func call(_ send: @escaping (ChargeHelperProtocol, @escaping (Data) -> Void) -> Void, then done: (@MainActor () -> Void)? = nil) {
         let connection = self.connection ?? makeConnection()
@@ -156,6 +275,7 @@ import ToolsmithKit
             Task { @MainActor in
                 self?.connection = nil
                 self?.state = .failed(String(localized: "Couldn’t connect to the helper: \(error.localizedDescription)"))
+                self?.snapshot = nil
                 done?()
             }
         }
@@ -163,11 +283,7 @@ import ToolsmithKit
         send(helper) { [weak self] data in
             let status = try? JSONDecoder().decode(ChargeStatus.self, from: data)
             Task { @MainActor in
-                guard let self else { return }
-                self.status = status
-                if let status, self.state != .system {
-                    self.state = status.canPause || status.canDischarge ? .running : .unsupportedMac
-                }
+                self?.helperReported(status)
                 done?()
             }
         }

@@ -38,3 +38,53 @@ public struct SystemChargeLimitState: Equatable, Sendable {
         }
     }
 }
+
+/// What the app keeps beside macOS's own limit. macOS holds one number; while the battery is held
+/// above the user's limit that number is the held level, so the user's limit lives here.
+public struct SystemChargeMemory: Codable, Equatable, Sendable {
+    /// The user's limit (80…99), or nil to charge to full.
+    public var limit: Int?
+    public var discharging = false
+    public var holding = false
+    /// The last value written to macOS's limit (100 for none).
+    public var written: Int?
+
+    public init(limit: Int? = nil, discharging: Bool = false, holding: Bool = false, written: Int? = nil) {
+        self.limit = limit
+        self.discharging = discharging
+        self.holding = holding
+        self.written = written
+    }
+
+    /// Takes in what macOS reports. A value this app did not write was set in System Settings (or
+    /// another app) and becomes the user's limit; a limit switched off there means no limit. The
+    /// first time, macOS's limit is the user's.
+    public func reconciled(with state: SystemChargeLimitState) -> SystemChargeMemory {
+        var next = self
+        switch state.mode {
+        case .toppingUp:
+            break
+        case .off:
+            next = SystemChargeMemory(written: written)
+        case .on where written != state.limit:
+            next = SystemChargeMemory(limit: state.effectiveLimit, written: state.limit)
+        case .on:
+            break
+        }
+        return next
+    }
+
+    public func input(level: Double, onAdapter: Bool, state: SystemChargeLimitState) -> ChargeInput {
+        ChargeInput(level: level, onAdapter: onAdapter, limit: limit,
+                    request: state.mode == .toppingUp ? .topUp : discharging ? .discharge : .none,
+                    abilities: .system, wasHolding: holding, previousTarget: written)
+    }
+
+    /// The value macOS's limit should have under this plan, or nil when it is right already (a
+    /// top-up runs, which macOS ends by itself, or no limit is wanted and macOS's is off).
+    public static func write(for plan: ChargePlan, state: SystemChargeLimitState) -> Int? {
+        guard plan.request != .topUp, plan.target != nil || state.mode != .off else { return nil }
+        let wanted = plan.target ?? 100
+        return state.mode == .on && state.limit == wanted ? nil : wanted
+    }
+}

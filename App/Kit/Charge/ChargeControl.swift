@@ -12,8 +12,9 @@ public enum ChargeHelperIdentity {
     /// launchd label, Mach service name and the plist's base name are all this.
     public static let machService = helperBundleID
     public static let plistName = "\(helperBundleID).plist"
-    /// Bumped when the helper's vocabulary changes; the app reinstalls an older helper.
-    public static let version = 1
+    /// Bumped when the helper's vocabulary changes; the app offers to update an older helper.
+    /// 2: holds above the limit instead of leaving the adapter, `setTopUp` replaced `setPaused`.
+    public static let version = 2
 
     /// A code signing requirement: Apple-anchored, this identifier, signed by our team.
     public static func requirement(identifier: String) -> String {
@@ -65,37 +66,45 @@ public struct ChargeKeys: Equatable, Sendable {
 
     public var canPause: Bool { !inhibit.isEmpty }
     public var canDischarge: Bool { adapter != nil }
-    /// A limit can be held by stopping the charge, or, without that, by leaving the adapter.
-    public var canLimit: Bool { canPause || canDischarge }
 }
 
 /// What the user asked for. Saved by the helper so it holds across restarts.
 public struct ChargeSettings: Codable, Equatable, Sendable {
     /// 50…100, or nil for no limit.
     public var limit: Int?
-    public var paused = false
     public var discharging = false
+    public var toppingUp = false
 
-    public init(limit: Int? = nil, paused: Bool = false, discharging: Bool = false) {
+    public init(limit: Int? = nil, discharging: Bool = false, toppingUp: Bool = false) {
         self.limit = ChargeLimit.clamp(limit)
-        self.paused = paused
         self.discharging = discharging
+        self.toppingUp = toppingUp
     }
 
     public static let defaults = ChargeSettings()
+
+    /// The one-off in effect; a top-up wins over a discharge.
+    public var request: ChargeRequest {
+        get { toppingUp ? .topUp : discharging ? .discharge : .none }
+        set {
+            toppingUp = newValue == .topUp
+            discharging = newValue == .discharge
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey { case limit, discharging, toppingUp }
+
+    /// Files from helper version 1 have no `toppingUp` (and a `paused` that is no longer used).
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(limit: try container.decodeIfPresent(Int.self, forKey: .limit),
+                  discharging: try container.decodeIfPresent(Bool.self, forKey: .discharging) ?? false,
+                  toppingUp: try container.decodeIfPresent(Bool.self, forKey: .toppingUp) ?? false)
+    }
 }
 
 public enum ChargeLimit {
     public static let range = 50...100
-    /// How far under the limit the level must fall before charging starts again, so the
-    /// controller is not switched at every percent. Holding by leaving the adapter drains the
-    /// battery, so that band is wider: fewer, longer cycles.
-    public static let hysteresis = 2.0
-    public static let adapterHysteresis = 5.0
-
-    public static func hysteresis(for keys: ChargeKeys) -> Double {
-        keys.canPause ? hysteresis : adapterHysteresis
-    }
     /// Below this the battery always charges and the adapter always stays on, whatever was asked.
     public static let safetyFloor = 15.0
 
@@ -120,40 +129,6 @@ public struct ChargeOutput: Equatable, Sendable {
     public static let normal = ChargeOutput(inhibit: false, adapterOff: false)
 }
 
-public enum ChargeDecision {
-    /// The next state, from the battery level (0…100), the settings, what the Mac can do, and the
-    /// current state (kept between the limit and the hysteresis band below it).
-    public static func decide(level: Double, settings: ChargeSettings, keys: ChargeKeys, current: ChargeOutput) -> ChargeOutput {
-        guard level.isFinite, level > ChargeLimit.safetyFloor else { return .normal }
-        var holding = false
-        if let limit = settings.limit.map(Double.init) {
-            let wasHolding = keys.canPause ? current.inhibit : current.adapterOff
-            if level >= limit {
-                holding = true
-            } else if level > limit - ChargeLimit.hysteresis(for: keys) {
-                holding = wasHolding
-            }
-        }
-        let discharging = settings.discharging && !dischargeDone(level: level, settings: settings)
-        // Without a way to stop the charge, a limit is held by running from the battery.
-        let inhibit = keys.canPause && (settings.paused || holding)
-        let adapterOff = keys.canDischarge && (discharging || (holding && !keys.canPause))
-        return ChargeOutput(inhibit: inhibit, adapterOff: adapterOff)
-    }
-
-    /// Discharging runs the battery down to the limit (or, with no limit, to the safety floor) and
-    /// then ends by itself.
-    public static func dischargeDone(level: Double, settings: ChargeSettings) -> Bool {
-        level <= Double(settings.limit ?? 0) || level <= ChargeLimit.safetyFloor
-    }
-
-    /// Before the Mac sleeps nothing watches the level, so the adapter goes back on (a stopped
-    /// charge is safe to keep: the battery cannot overfill or drain because of it).
-    public static func forSleep(_ output: ChargeOutput) -> ChargeOutput {
-        ChargeOutput(inhibit: output.inhibit, adapterOff: false)
-    }
-}
-
 /// The helper's report, sent to the app as JSON.
 public struct ChargeStatus: Codable, Equatable, Sendable {
     public var version: Int
@@ -164,9 +139,11 @@ public struct ChargeStatus: Codable, Equatable, Sendable {
     public var level: Double?
     /// Why the last write failed, if it did.
     public var error: String?
+    /// What the battery is doing; nil from a helper older than version 2.
+    public var activity: ChargeActivity?
 
     public init(version: Int = ChargeHelperIdentity.version, settings: ChargeSettings, output: ChargeOutput,
-                canPause: Bool, canDischarge: Bool, level: Double?, error: String? = nil) {
+                canPause: Bool, canDischarge: Bool, level: Double?, error: String? = nil, activity: ChargeActivity? = nil) {
         self.version = version
         self.settings = settings
         self.output = output
@@ -174,7 +151,10 @@ public struct ChargeStatus: Codable, Equatable, Sendable {
         self.canDischarge = canDischarge
         self.level = level
         self.error = error
+        self.activity = activity
     }
+
+    public var abilities: ChargeAbilities { ChargeAbilities(canHold: canPause, canDischarge: canDischarge) }
 }
 
 extension ChargeOutput: Codable {}
@@ -184,8 +164,9 @@ extension ChargeOutput: Codable {}
     func status(reply: @escaping (Data) -> Void)
     /// 0 turns the limit off; other values are clamped to 50…100.
     func setLimit(_ percent: Int, reply: @escaping (Data) -> Void)
-    func setPaused(_ paused: Bool, reply: @escaping (Data) -> Void)
     func setDischarging(_ discharging: Bool, reply: @escaping (Data) -> Void)
+    /// Charges to 100% once; ends by itself when full or unplugged. Version 2 and later.
+    func setTopUp(_ toppingUp: Bool, reply: @escaping (Data) -> Void)
     /// Charging on, adapter on, no limit: as Apple ships the Mac.
     func restoreDefaults(reply: @escaping (Data) -> Void)
 }

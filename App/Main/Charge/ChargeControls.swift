@@ -1,42 +1,25 @@
 import SwiftUI
 import ToolsmithKit
 
-/// The charge limit, whoever enforces it: where the battery stands against the limit, the limits to
-/// pick from, charging to full this once, and (helper only) pausing and discharging. Shown in the
-/// settings and in the monitor's battery details.
+/// The charge limit, whoever enforces it: what the battery is doing now (charging, held, discharging
+/// or topping up), the level against the limit, the limits to pick from, and the two one-offs
+/// (discharge to the limit, charge to 100% once). Shown in the settings, the menu bar panel and the
+/// monitor's battery details.
 struct ChargeControls: View {
     @ObservedObject var charge: ChargeController
-    /// The battery now, for the gauge and the one-line state.
-    let battery: BatteryInfo?
     var tint: Color = Brand.lavender
     var compact = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: compact ? 10 : 12) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(headline).font(.role(compact ? .secondary : .body, weight: .medium))
-                Spacer(minLength: Space.s)
-                Text(activity).font(.role(.detail)).foregroundStyle(Ink.tertiary).lineLimit(1)
-            }
-            ChargeGauge(level: battery?.level, limit: charge.toppingUp ? nil : charge.limit, tint: tint)
-            LimitPicker(choices: charge.choices, selected: charge.toppingUp ? nil : (charge.limit ?? 100), tint: tint) { charge.setLimit($0 >= 100 ? nil : $0) }
-            if charge.canTopUp, charge.limit != nil || charge.toppingUp {
-                topUpRow
-            }
-            if charge.canPause {
-                LabeledSwitch(title: String(localized: "Pause Charging Now"), isOn: Binding(get: { charge.paused }, set: { charge.setPaused($0) }))
-            }
-            if charge.canDischarge {
-                LabeledSwitch(title: dischargeTitle, isOn: Binding(get: { charge.discharging }, set: { charge.setDischarging($0) }))
-            }
-            if !compact {
-                Text(note).font(.role(.detail)).foregroundStyle(Ink.tertiary).fixedSize(horizontal: false, vertical: true)
-            }
-            if let error = charge.error {
-                Text(error).font(.role(.detail)).foregroundStyle(Status.warning).fixedSize(horizontal: false, vertical: true)
+        VStack(alignment: .leading, spacing: compact ? Space.s : Space.m) {
+            if let snapshot = charge.snapshot {
+                ChargeStateView(snapshot: snapshot, tint: tint, compact: compact,
+                                choices: charge.choices, error: charge.error,
+                                onLimit: { charge.setLimit($0 >= 100 ? nil : $0) },
+                                onDischarge: { charge.setDischarging($0) },
+                                onTopUp: { charge.setToppingUp($0) })
             }
         }
-        .font(.role(.secondary))
         .task {
             // macOS's limit can also change in System Settings, and a top-up ends by itself.
             while !Task.isCancelled {
@@ -45,54 +28,112 @@ struct ChargeControls: View {
             }
         }
     }
+}
 
-    private var topUpRow: some View {
-        HStack(spacing: Space.s) {
-            Image(systemName: charge.toppingUp ? "bolt.fill" : "bolt").foregroundStyle(tint).frame(width: 14)
-            Text(charge.toppingUp ? String(localized: "Charging to 100% this once") : String(localized: "Going out? Charge to full this once"))
-                .font(.role(.detail)).foregroundStyle(Ink.tertiary).lineLimit(1).minimumScaleFactor(0.85)
-            Spacer(minLength: Space.xs)
-            RowButton(charge.toppingUp ? String(localized: "Limit Again") : String(localized: "Charge to 100%")) { charge.toppingUp ? charge.resumeLimit() : charge.topUp() }
+/// The charge state drawn from a snapshot alone, so a development build can draw any state.
+struct ChargeStateView: View {
+    let snapshot: ChargeSnapshot
+    var tint: Color = Brand.lavender
+    var compact = false
+    let choices: [Int]
+    var error: String?
+    let onLimit: (Int) -> Void
+    let onDischarge: (Bool) -> Void
+    let onTopUp: (Bool) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: compact ? Space.s : Space.m) {
+            header
+            ChargeGauge(level: snapshot.level, limit: snapshot.activity == .toppingUp ? nil : snapshot.limit, tint: color)
+            if snapshot.abilities.canHold || snapshot.abilities.canDischarge {
+                VStack(alignment: .leading, spacing: Space.xs) {
+                    Text("Limit").font(.role(.detail)).foregroundStyle(Ink.tertiary)
+                    LimitPicker(choices: choices, selected: snapshot.limit ?? 100, tint: tint, onPick: onLimit)
+                }
+            }
+            actions
+            Text(ChargeSummary.explanation(snapshot)).font(.role(.detail)).foregroundStyle(Ink.tertiary)
+                .fixedSize(horizontal: false, vertical: true)
+            if let error {
+                Text(error).font(.role(.detail)).foregroundStyle(Status.warning).fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 
-    private var headline: String {
-        if charge.toppingUp { return String(localized: "Charge limit paused") }
-        return charge.limit.map { String(localized: "Charging up to \($0)%") } ?? String(localized: "No charge limit")
-    }
-
-    /// What the battery is doing now, in the limit's terms.
-    private var activity: String {
-        guard let battery else { return "" }
-        let level = "\(Int(battery.level.rounded()))%"
-        return "\(level) · \(state(battery))"
-    }
-
-    private func state(_ battery: BatteryInfo) -> String {
-        if battery.isCharging { return String(localized: "Charging") }
-        if battery.onAdapter {
-            if charge.paused { return String(localized: "Charging paused") }
-            guard let limit = charge.limit else { return String(localized: "Adapter connected") }
-            if battery.level > Double(limit) + 1 { return String(localized: "Lowering to \(limit)%") }
-            // Well under the limit and still not charging: something else (a weak adapter) holds it.
-            return battery.level < Double(limit) - ChargeLimit.adapterHysteresis - 1 ? String(localized: "Adapter connected, not charging") : String(localized: "Held at the limit")
+    private var header: some View {
+        HStack(alignment: .center, spacing: Space.m) {
+            IconTile(symbol: Self.symbol(snapshot.activity), color: color, size: compact ? IconSize.tile : IconSize.tileLarge)
+            VStack(alignment: .leading, spacing: Space.xs) {
+                Text(ChargeSummary.headline(snapshot)).font(.role(compact ? .body : .emphasis, weight: .semibold)).lineLimit(1)
+                Text(subline).font(.role(.detail)).foregroundStyle(Ink.tertiary).lineLimit(1)
+            }
+            Spacer(minLength: Space.s)
+            if let percent = snapshot.percent {
+                VStack(alignment: .trailing, spacing: Space.xs) {
+                    Text(verbatim: "\(percent)%").font(.role(compact ? .heading : .title, weight: .semibold, design: .rounded)).monospacedDigit()
+                    if let watts = flowText {
+                        Text(watts).font(.role(.caption, design: .rounded)).foregroundStyle(Ink.tertiary).monospacedDigit()
+                    }
+                }
+            }
         }
-        return String(localized: "On battery")
     }
 
-    private var dischargeTitle: String {
-        charge.limit.map { String(localized: "Use the battery down to \($0)% while plugged in") } ?? String(localized: "Use the battery while plugged in")
+    /// The limit and the adapter, in one sentence per case so each language orders its words.
+    private var subline: String {
+        switch (snapshot.limit, snapshot.onAdapter) {
+        case (let limit?, true): return String(localized: "Limit \(limit)% · Adapter connected")
+        case (let limit?, false): return String(localized: "Limit \(limit)% · Adapter not connected")
+        case (nil, true): return String(localized: "No limit · Adapter connected")
+        case (nil, false): return String(localized: "No limit · Adapter not connected")
+        }
     }
 
-    private var note: String {
-        if charge.state == .system {
-            return String(localized: "Uses macOS’s own charge limit. It is the same value as System Settings → Battery and is kept while the Mac sleeps. If the battery is fuller than the limit, it slowly runs down to the limit while plugged in. macOS does not allow limits below 80%.")
+    /// Watts in or out of the battery: what tells holding (about 0) from charging and discharging.
+    private var flowText: String? {
+        guard let watts = snapshot.batteryWatts, watts.isFinite else { return nil }
+        let size = MonitorText.watts(abs(watts))
+        if watts > 0.3 { return String(localized: "Battery +\(size)") }
+        if watts < -0.3 { return String(localized: "Battery −\(size)") }
+        return String(localized: "Battery idle")
+    }
+
+    @ViewBuilder private var actions: some View {
+        let discharging = snapshot.activity == .discharging
+        let toppingUp = snapshot.activity == .toppingUp
+        let showDischarge = discharging || snapshot.canDischarge
+        let showTopUp = toppingUp || snapshot.canTopUp
+        if showDischarge || showTopUp {
+            HStack(spacing: Space.s) {
+                if showDischarge, let limit = snapshot.limit {
+                    ActionChip(title: discharging ? String(localized: "Stop Discharging") : String(localized: "Discharge to \(limit)%"),
+                               symbol: "arrow.down.to.line", on: discharging, tint: Status.warning) { onDischarge(!discharging) }
+                }
+                if showTopUp {
+                    ActionChip(title: toppingUp ? String(localized: "Back to the Limit") : String(localized: "Charge to 100% Once"),
+                               symbol: "bolt.fill", on: toppingUp, tint: Status.success) { onTopUp(!toppingUp) }
+                }
+            }
         }
-        let band = Int(charge.status.map { $0.canPause ? ChargeLimit.hysteresis : ChargeLimit.adapterHysteresis } ?? ChargeLimit.hysteresis)
-        if charge.canPause {
-            return String(localized: "Charging stops when the battery reaches this level and starts again when it drops \(band) percentage points below.")
+    }
+
+    private var color: Color {
+        switch snapshot.activity {
+        case .charging, .toppingUp: return Status.success
+        case .holding: return tint
+        case .discharging: return Status.warning
+        case .onBattery: return Tile.gray
         }
-        return String(localized: "This Mac cannot pause charging by itself, so at this level the adapter is disconnected for a while and the Mac runs on battery until it drops \(band) percentage points below, then charges again. The adapter is reconnected before the Mac sleeps.")
+    }
+
+    static func symbol(_ activity: ChargeActivity) -> String {
+        switch activity {
+        case .charging: return "battery.100.bolt"
+        case .holding: return "powerplug.fill"
+        case .discharging: return "arrow.down.to.line"
+        case .toppingUp: return "bolt.fill"
+        case .onBattery: return "battery.75"
+        }
     }
 }
 
