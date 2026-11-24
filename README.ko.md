@@ -102,10 +102,14 @@ Xcode 프로젝트는 `project.yml` 에서 만들어집니다. 순수 로직은 
 
 기능 하나는 폴더 하나와 `ModuleRegistry` 한 줄입니다. 설정 칸, 단축키, 권한 목록, 메뉴 막대는 모듈이 밝힌 것에서 저절로 따라옵니다. 모듈 안내와 디자인 시스템은 [CONTRIBUTING.md](CONTRIBUTING.md) 에 있습니다.
 
+## 메인테이너
+
+Toolsmith는 [김지섭](https://github.com/kimjisub)과 [이원준](https://github.com/workoutplz)이 함께 만들고 관리합니다.
+
 ## 기여
 
 이슈와 풀 리퀘스트를 환영합니다. [CONTRIBUTING.md](CONTRIBUTING.md) 를 보세요. 보안 문제는 [SECURITY.md](SECURITY.md) 에 적힌 대로 비공개로 알려 주세요.
 
 ## 라이선스
 
-[MIT](LICENSE) © 2026 Jisub Kim
+[MIT](LICENSE) © 2026 Jisub Kim, Wonjun Lee
