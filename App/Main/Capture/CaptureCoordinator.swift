@@ -21,7 +21,7 @@ import ToolsmithKit
     init() {
         cards.onCopy = { [weak self] card in
             Self.copy(card.capture)
-            self?.notify("그림을 복사했습니다.")
+            self?.notify(String(localized: "Image copied."))
         }
         cards.onSave = { [weak self] card in self?.save(card.capture) }
         cards.onPin = { card in PinWindow.show(card.capture) }
@@ -38,7 +38,7 @@ import ToolsmithKit
     func captureScrolling() {
         if scroller.isRunning { return scroller.finishEarly() }
         guard checkPermission() else { return }
-        overlay.begin(.area, hint: "스크롤할 영역을 끌어서 고르기 · 찍는 동안 esc 로 끝내기") { [weak self] result in
+        overlay.begin(.area, hint: String(localized: "Drag to select the area to scroll · esc to finish while capturing")) { [weak self] result in
             guard let self, case .area(let rect)? = result else { return }
             Task {
                 // Let the overlay leave the screen first. Nothing of ours is shown while it runs,
@@ -47,7 +47,7 @@ import ToolsmithKit
                 do {
                     let image = try await self.scroller.run(area: rect)
                     await self.deliver(image)
-                    self.notify("스크롤 캡처를 마쳤습니다. 세로 \(Int(image.pointSize.height))pt.")
+                    self.notify(String(localized: "Scrolling capture finished. \(Int(image.pointSize.height)) pt tall."))
                 } catch {
                     self.report(error)
                 }
@@ -65,7 +65,7 @@ import ToolsmithKit
     func recordArea(_ format: RecordingFormat) {
         if recorder.isRecording { return stopRecording() }
         guard checkPermission() else { return }
-        overlay.begin(.area, hint: format == .gif ? "GIF 로 녹화할 영역을 끌어서 고르기 · esc 취소" : "녹화할 영역을 끌어서 고르기 · esc 취소") { [weak self] result in
+        overlay.begin(.area, hint: format == .gif ? String(localized: "Drag to select the area to record as GIF · esc to cancel") : String(localized: "Drag to select the area to record · esc to cancel")) { [weak self] result in
             guard case .area(let rect)? = result else { return }
             self?.beginRecording(selection: rect, format: format)
         }
@@ -94,7 +94,7 @@ import ToolsmithKit
 
     func stopRecording() {
         guard recorder.isRecording else {
-            notify("녹화 중이 아닙니다.")
+            notify(String(localized: "Not recording."))
             return
         }
         let format = recorder.format
@@ -114,13 +114,13 @@ import ToolsmithKit
                 let ext = format == .gif ? "gif" : "mp4"
                 let destination = CaptureFileName.uniqueURL(in: folder, name: CaptureFileName.name(date: Date(), ext: ext))
                 if format == .gif {
-                    self.notify("GIF 로 바꾸는 중…")
+                    self.notify(String(localized: "Converting to GIF…"))
                     try await ScreenRecorder.makeGIF(from: movie, to: destination)
                     try? FileManager.default.removeItem(at: movie)
                 } else {
                     try FileManager.default.moveItem(at: movie, to: destination)
                 }
-                self.finishRecording(at: destination, note: "\(folder.lastPathComponent) 에 저장하고 파일을 복사했습니다")
+                self.finishRecording(at: destination, note: String(localized: "Saved to \(folder.lastPathComponent) and copied the file"))
             } catch {
                 self.rescue(movie, after: error)
             }
@@ -142,7 +142,7 @@ import ToolsmithKit
         let destination = CaptureFileName.uniqueURL(in: desktop, name: CaptureFileName.name(date: Date(), ext: "mp4"))
         do {
             try FileManager.default.moveItem(at: movie, to: destination)
-            finishRecording(at: destination, note: "원하신 형식이나 폴더로 저장하지 못해 데스크탑에 영상으로 저장했습니다")
+            finishRecording(at: destination, note: String(localized: "Couldn’t save in the chosen format or folder, so the video was saved to the Desktop"))
         } catch {
             report(error)
         }
@@ -152,7 +152,7 @@ import ToolsmithKit
 
     func captureArea() {
         guard checkPermission() else { return }
-        overlay.begin(.area, hint: "끌어서 영역 고르기 · Space 창 고르기 · esc 취소", canSwitchMode: true) { [weak self] result in self?.shoot(result) }
+        overlay.begin(.area, hint: String(localized: "Drag to select an area · Space to pick a window · esc to cancel"), canSwitchMode: true) { [weak self] result in self?.shoot(result) }
     }
 
     func captureWindow() {
@@ -168,7 +168,7 @@ import ToolsmithKit
     /// Reads the text in an area and copies it.
     func recognizeText() {
         guard checkPermission() else { return }
-        overlay.begin(.area, hint: "글자를 읽을 영역을 끌어서 고르기 · esc 취소") { [weak self] result in
+        overlay.begin(.area, hint: String(localized: "Drag to select the area to read text from · esc to cancel")) { [weak self] result in
             guard let self, case .area(let rect)? = result else { return }
             Task {
                 // Let the overlay leave the screen before the picture is taken.
@@ -196,17 +196,17 @@ import ToolsmithKit
         let text = settings().colorFormat.text(rgb)
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
-        notify("\(text) 을 복사했습니다.")
+        notify(String(localized: "Copied \(text)."))
     }
 
     /// Drag out a rectangle to read its size; the size is copied.
     func measure() {
-        overlay.begin(.measure, hint: "끌어서 크기 재기 · esc 닫기") { [weak self] result in
+        overlay.begin(.measure, hint: String(localized: "Drag to measure · esc to close")) { [weak self] result in
             guard let self, case .area(let rect)? = result else { return }
             let text = CaptureGeometry.sizeLabel(rect.size)
             NSPasteboard.general.clearContents()
             NSPasteboard.general.setString(text, forType: .string)
-            self.notify("\(text) (포인트) 을 복사했습니다.")
+            self.notify(String(localized: "Copied \(text) (points)."))
         }
     }
 
@@ -244,7 +244,7 @@ import ToolsmithKit
     }
 
     private func report(_ error: Error) {
-        notify((error as? CaptureError)?.message ?? "화면을 찍지 못했습니다: \(error.localizedDescription)")
+        notify((error as? CaptureError)?.message ?? String(localized: "Couldn’t capture the screen: \(error.localizedDescription)"))
         if case CaptureError.noPermission = error { onNeedsPermission() }
     }
 
@@ -252,12 +252,12 @@ import ToolsmithKit
         Task {
             let text = await TextRecognizer.recognize(capture.image).trimmingCharacters(in: .whitespacesAndNewlines)
             guard !text.isEmpty else {
-                self.notify("글자를 찾지 못했습니다.")
+                self.notify(String(localized: "No text found."))
                 return
             }
             NSPasteboard.general.clearContents()
             NSPasteboard.general.setString(text, forType: .string)
-            self.notify("글자 \(text.count)자를 복사했습니다.")
+            self.notify(String(localized: "Copied \(text.count) characters of text."))
         }
     }
 
@@ -285,17 +285,17 @@ import ToolsmithKit
     @discardableResult func save(_ capture: CapturedImage) -> URL? {
         let folder = Self.folder(settings())
         guard let data = capture.pngData else {
-            notify("그림을 저장하지 못했습니다.")
+            notify(String(localized: "Couldn’t save the image."))
             return nil
         }
         do {
             try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
             let url = CaptureFileName.uniqueURL(in: folder, name: CaptureFileName.name(date: Date(), ext: "png"))
             try data.write(to: url, options: .atomic)
-            notify("\(folder.lastPathComponent) 에 저장했습니다.")
+            notify(String(localized: "Saved to \(folder.lastPathComponent)."))
             return url
         } catch {
-            notify("저장하지 못했습니다: \(error.localizedDescription)")
+            notify(String(localized: "Couldn’t save: \(error.localizedDescription)"))
             return nil
         }
     }
@@ -308,7 +308,7 @@ import ToolsmithKit
 
 /// The capture features as launcher commands.
 @MainActor final class CaptureCommandSource: CommandSource {
-    static let section = CommandSection(id: "capture", title: "캡처", order: 3)
+    static let section = CommandSection(id: "capture", title: String(localized: "Capture"), order: 3)
     static let stopID = "capture.record.stop"
     static let defaultHotkeys: [String: KeyCombo] = [
         "capture.area": KeyCombo(keyCode: 21, modifiers: [.option, .shift]),     // ⌥⇧4
@@ -321,22 +321,22 @@ import ToolsmithKit
     nonisolated func commands() -> [Command] {
         MainActor.assumeIsolated {
             let coordinator = self.coordinator
-            @MainActor func command(_ id: String, _ title: String, _ symbol: String, _ keywords: [String], _ run: @escaping @MainActor () -> Void) -> Command {
-                Command(id: id, title: title, subtitle: nil, keywords: keywords + ["캡처", "capture", "screenshot", "스크린샷"],
+            @MainActor func command(_ id: String, _ title: LocalizedStringResource, _ symbol: String, keywords: [String], _ run: @escaping @MainActor () -> Void) -> Command {
+                Command(id: id, localizedTitle: title, subtitle: nil, keywords: keywords + ["캡처", "capture", "screenshot", "스크린샷"],
                         section: Self.section, icon: .symbol(symbol), hotkeyID: id, run: run)
             }
             return [
-                command("capture.area", "영역 캡처", "rectangle.dashed", ["area", "부분"]) { coordinator.captureArea() },
-                command("capture.window", "창 캡처", "macwindow", ["window"]) { coordinator.captureWindow() },
-                command("capture.screen", "전체 화면 캡처", "display", ["fullscreen", "전체"]) { coordinator.captureScreen() },
-                command("capture.scroll", "스크롤 캡처", "arrow.up.and.down.text.horizontal", ["scroll", "긴 페이지", "전체 페이지", "long"]) { coordinator.captureScrolling() },
-                command("capture.ocr", "글자 인식해 복사", "text.viewfinder", ["ocr", "text", "텍스트", "글자 읽기"]) { coordinator.recognizeText() },
-                command("capture.color", "색 고르기", "eyedropper", ["color", "picker", "컬러", "스포이드", "색상"]) { coordinator.pickColor() },
-                command("capture.measure", "크기 재기", "ruler", ["measure", "size", "ruler", "자", "치수"]) { coordinator.measure() },
-                command("capture.record.area", "영역 녹화", "record.circle", ["record", "video", "영상", "동영상", "mp4"]) { coordinator.recordArea(.video) },
-                command("capture.record.screen", "전체 화면 녹화", "record.circle.fill", ["record", "video", "영상", "동영상"]) { coordinator.recordScreen() },
-                command("capture.record.gif", "영역 GIF 녹화", "photo.stack", ["record", "gif", "움짤"]) { coordinator.recordArea(.gif) },
-                command(Self.stopID, "녹화 끝내기", "stop.circle", ["stop", "record", "정지", "중지"]) { coordinator.stopRecording() },
+                command("capture.area", "Capture Area", "rectangle.dashed", keywords: ["area", "부분"]) { coordinator.captureArea() },
+                command("capture.window", "Capture Window", "macwindow", keywords: ["window"]) { coordinator.captureWindow() },
+                command("capture.screen", "Capture Full Screen", "display", keywords: ["fullscreen", "전체"]) { coordinator.captureScreen() },
+                command("capture.scroll", "Scrolling Capture", "arrow.up.and.down.text.horizontal", keywords: ["scroll", "긴 페이지", "전체 페이지", "long"]) { coordinator.captureScrolling() },
+                command("capture.ocr", "Copy Text from Screen", "text.viewfinder", keywords: ["ocr", "text", "텍스트", "글자 읽기"]) { coordinator.recognizeText() },
+                command("capture.color", "Pick Color", "eyedropper", keywords: ["color", "picker", "컬러", "스포이드", "색상"]) { coordinator.pickColor() },
+                command("capture.measure", "Measure", "ruler", keywords: ["measure", "size", "ruler", "자", "치수"]) { coordinator.measure() },
+                command("capture.record.area", "Record Area", "record.circle", keywords: ["record", "video", "영상", "동영상", "mp4"]) { coordinator.recordArea(.video) },
+                command("capture.record.screen", "Record Full Screen", "record.circle.fill", keywords: ["record", "video", "영상", "동영상"]) { coordinator.recordScreen() },
+                command("capture.record.gif", "Record Area as GIF", "photo.stack", keywords: ["record", "gif", "움짤"]) { coordinator.recordArea(.gif) },
+                command(Self.stopID, "Stop Recording", "stop.circle", keywords: ["stop", "record", "정지", "중지"]) { coordinator.stopRecording() },
             ]
         }
     }

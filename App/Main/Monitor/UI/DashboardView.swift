@@ -18,25 +18,25 @@ struct DashboardView: View {
                     detail: [s.cpuMHz.map(MonitorText.frequency), s.temperatures.cpu.map(MonitorText.temperature)].compactMap { $0 }.joined(separator: " · ")) {
                     Sparkline(values: zip(monitor.cpuUserHistory.values, monitor.cpuSystemHistory.values).map { $0 + $1 }, ceiling: 100)
                 }
-                row(.memory, symbol: "memorychip", title: "메모리", value: MonitorText.whole(s.memory.usedPercent), unit: "%",
-                    detail: "압력 \(MonitorText.percent(s.memory.pressure)) · \(MonitorText.memory(s.memory.used)) 사용") {
+                row(.memory, symbol: "memorychip", title: String(localized: "Memory"), value: MonitorText.whole(s.memory.usedPercent), unit: "%",
+                    detail: String(localized: "Pressure \(MonitorText.percent(s.memory.pressure)) · \(MonitorText.memory(s.memory.used))")) {
                     Sparkline(values: monitor.memoryHistory.values, ceiling: 100)
                 }
-                row(.sensors, symbol: "bolt", title: "전력과 온도", value: s.power.system.map { MonitorText.whole($0) } ?? "-", unit: "W",
+                row(.sensors, symbol: "bolt", title: String(localized: "Power and Temperature"), value: s.power.system.map { MonitorText.whole($0) } ?? "-", unit: "W",
                     detail: [s.temperatures.cpu.map { "CPU " + MonitorText.temperature($0) }, fanText].compactMap { $0 }.joined(separator: " · ")) {
                     Sparkline(values: monitor.powerHistory.values)
                 }
-                row(.disk, symbol: "internaldrive", title: s.volume.name, value: ByteSize.text(Int(s.volume.available)), unit: "남음",
-                    detail: "읽기 \(MonitorText.rate(s.diskReadRate)) · 쓰기 \(MonitorText.rate(s.diskWriteRate))") {
+                row(.disk, symbol: "internaldrive", title: s.volume.name, value: ByteSize.text(Int(s.volume.available)), unit: String(localized: "free"),
+                    detail: String(localized: "R \(MonitorText.rate(s.diskReadRate)) · W \(MonitorText.rate(s.diskWriteRate))")) {
                     MeterBar(fraction: s.volume.usedFraction).frame(width: 92)
                 }
-                row(.network, symbol: "arrow.up.arrow.down", title: "네트워크 다운로드", value: MonitorText.rate(s.downloadRate), unit: "",
-                    detail: "업로드 \(MonitorText.rate(s.uploadRate))") {
+                row(.network, symbol: "arrow.up.arrow.down", title: String(localized: "Network Download"), value: MonitorText.rate(s.downloadRate), unit: "",
+                    detail: String(localized: "Upload \(MonitorText.rate(s.uploadRate))")) {
                     DualSparkline(down: monitor.downloadHistory.values, up: monitor.uploadHistory.values)
                 }
                 if let battery = s.battery {
-                    row(.battery, symbol: battery.isCharging ? "battery.100.bolt" : "battery.75", title: "배터리", value: MonitorText.whole(battery.level), unit: "%",
-                        detail: [battery.isCharging ? "충전 중" : battery.onAdapter ? "어댑터 연결됨" : "배터리 사용 중", battery.health.map { "건강 " + MonitorText.percent($0) }]
+                    row(.battery, symbol: battery.isCharging ? "battery.100.bolt" : "battery.75", title: String(localized: "Battery"), value: MonitorText.whole(battery.level), unit: "%",
+                        detail: [battery.isCharging ? String(localized: "Charging") : battery.onAdapter ? String(localized: "Plugged in") : String(localized: "On battery"), battery.health.map { String(localized: "Health \(MonitorText.percent($0))") }]
                             .compactMap { $0 }.joined(separator: " · ")) {
                         MeterBar(fraction: battery.level / 100, fill: AnyShapeStyle(battery.level < 20 ? MonitorStyle.hot : MonitorStyle.tertiary)).frame(width: 92)
                     }
@@ -51,14 +51,24 @@ struct DashboardView: View {
     private var fanText: String? {
         guard !s.fans.isEmpty else { return nil }
         let rpm = s.fans.map(\.rpm).filter(\.isFinite).max() ?? 0
-        return rpm < 1 ? "팬 멈춤" : "팬 \(MonitorText.whole(rpm)) rpm"
+        return rpm < 1 ? String(localized: "Fans stopped") : String(localized: "Fan \(MonitorText.whole(rpm)) rpm")
+    }
+
+    /// The Mac's name. A development build takes a stand-in after --mac-name, for screenshots.
+    private static var macName: String {
+        #if TOOLSMITH_DEV
+        if let index = CommandLine.arguments.firstIndex(of: "--mac-name"), index + 1 < CommandLine.arguments.count {
+            return CommandLine.arguments[index + 1]
+        }
+        #endif
+        return Host.current().localizedName ?? String(localized: "This Mac")
     }
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(Host.current().localizedName ?? "이 맥").font(.role(.emphasis, weight: .semibold)).lineLimit(1)
+            Text(Self.macName).font(.role(.emphasis, weight: .semibold)).lineLimit(1)
             Spacer()
-            if s.uptime > 0 { Text("가동 시간 \(UptimeText.text(s.uptime))").font(.role(.detail)).foregroundStyle(MonitorStyle.quiet) }
+            if s.uptime > 0 { Text("Up \(UptimeText.text(s.uptime))").font(.role(.detail)).foregroundStyle(MonitorStyle.quiet) }
         }
         .padding(.horizontal, Space.l)
         .padding(.top, Space.l)
@@ -81,7 +91,7 @@ struct DashboardView: View {
                     Text(value).font(.role(.title, weight: .medium, design: .rounded)).monospacedDigit().lineLimit(1)
                     if !unit.isEmpty { Text(unit).font(.role(.detail, design: .rounded)).foregroundStyle(MonitorStyle.quiet) }
                 }
-                if !detail.isEmpty { Text(detail).font(.role(.detail)).foregroundStyle(MonitorStyle.quiet).lineLimit(1) }
+                if !detail.isEmpty { Text(detail).font(.role(.detail)).foregroundStyle(MonitorStyle.quiet).lineLimit(1).minimumScaleFactor(0.8) }
             }
             Spacer(minLength: Space.s)
             trailing().frame(width: 92, height: 30)

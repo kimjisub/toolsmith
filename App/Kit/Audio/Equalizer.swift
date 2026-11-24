@@ -53,14 +53,14 @@ public enum EQPreset: String, CaseIterable, Identifiable, Sendable {
 
     public var title: String {
         switch self {
-        case .flat: return "평평하게"
-        case .bassBoost: return "저음 강조"
-        case .bassCut: return "저음 줄임"
-        case .trebleBoost: return "고음 강조"
-        case .vocal: return "목소리"
-        case .loudness: return "라우드니스"
-        case .podcast: return "팟캐스트"
-        case .laptop: return "노트북 스피커"
+        case .flat: return localized("Flat")
+        case .bassBoost: return localized("Bass Boost")
+        case .bassCut: return localized("Bass Cut")
+        case .trebleBoost: return localized("Treble Boost")
+        case .vocal: return localized("Vocal")
+        case .loudness: return localized("Loudness")
+        case .podcast: return localized("Podcast")
+        case .laptop: return localized("Laptop Speakers")
         }
     }
 

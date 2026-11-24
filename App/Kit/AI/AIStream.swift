@@ -66,7 +66,7 @@ public struct AIStreamParser {
         guard let json = try? JSONSerialization.jsonObject(with: Data(payload.utf8)) as? [String: Any] else { return [] }
 
         if let error = json["error"] as? [String: Any] {
-            return [.error(error["message"] as? String ?? "AI 가 답하다가 멈췄습니다.")]
+            return [.error(error["message"] as? String ?? localized("The AI stopped while answering."))]
         }
         var events: [AIStreamEvent] = []
         for choice in json["choices"] as? [[String: Any]] ?? [] {
@@ -105,12 +105,13 @@ public enum AIRequest {
     public static let defaultModel = "anthropic/claude-haiku-5.5"
 
     /// How the answer should read. Asked from a launcher: short, usable at once, sources named.
+    /// Written for the model, not shown to people, so it is not localized: the model answers in the question's language.
     public static let systemPrompt = """
-        너는 맥 런처 입력창에서 바로 답하는 도우미다. 웹 검색 결과에 근거해 최신 정보로 답한다. \
-        질문한 언어로 답하고, 한국어 질문에는 한국어로 답한다. 결론부터 짧게 쓰고 꼭 필요한 근거만 붙인다. \
-        인사, 되묻기, 군더더기 없이 바로 쓸 수 있는 답을 준다. 출처는 문장 끝에 [사이트이름](주소) 형식으로 단다. \
-        검색으로 확인하지 못한 것은 추측하지 말고 확인하지 못했다고 말한다. \
-        제목(#), 표, 코드 블록은 쓰지 않고 문장과 짧은 목록으로만 쓴다.
+        You are an assistant answering right inside a Mac launcher's prompt. Answer from web search results with up-to-date information. \
+        Answer in the language of the question. Lead with the conclusion, keep it short, and add only the evidence that is needed. \
+        Give an answer that can be used at once: no greetings, no questions back, no filler. Cite sources at the end of the sentence as [site name](address). \
+        Do not guess what the search could not confirm; say that it could not be confirmed. \
+        Do not use headings (#), tables or code blocks; write only sentences and short lists.
         """
 
     public static func body(model: String, system: String, messages: [AIMessage]) -> Data {
@@ -125,17 +126,17 @@ public enum AIRequest {
     }
 
     /// One line a person can act on, for a request that failed before any answer came.
-    public static func errorMessage(status: Int, body: Data) -> String {
+    public static func errorMessage(status: Int, body: Data, locale: Locale = .app) -> String {
         switch status {
-        case 401: return "OpenRouter 키가 맞지 않습니다. 설정의 AI 검색에서 다시 넣어 주세요."
-        case 402: return "OpenRouter 크레딧이 부족합니다."
-        case 429: return "요청이 너무 많습니다. 잠시 뒤에 다시 물어 주세요."
+        case 401: return localized("The OpenRouter key is not valid. Enter it again in Settings → AI Answers.", locale: locale)
+        case 402: return localized("Your OpenRouter credits have run out.", locale: locale)
+        case 429: return localized("Too many requests. Ask again in a moment.", locale: locale)
         default:
             if let json = try? JSONSerialization.jsonObject(with: body) as? [String: Any],
                let error = json["error"] as? [String: Any], let message = error["message"] as? String, !message.isEmpty {
                 return message
             }
-            return "AI 가 답하지 못했습니다 (\(status))."
+            return localized("The AI could not answer (\(status)).", locale: locale)
         }
     }
 }

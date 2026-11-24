@@ -73,7 +73,7 @@ import ToolsmithKit
             try service.register()
         } catch {
             // Registering an approved-but-pending item reports an error; the status says what to do.
-            if service.status != .requiresApproval { state = .failed("도우미를 설치하지 못했습니다: \(error.localizedDescription)") }
+            if service.status != .requiresApproval { state = .failed(String(localized: "Couldn’t install the helper: \(error.localizedDescription)")) }
         }
         refresh()
         if state == .needsApproval { SMAppService.openSystemSettingsLoginItems() }
@@ -89,7 +89,7 @@ import ToolsmithKit
             do {
                 try self.service.unregister()
             } catch {
-                self.state = .failed("도우미를 지우지 못했습니다: \(error.localizedDescription)")
+                self.state = .failed(String(localized: "Couldn’t remove the helper: \(error.localizedDescription)"))
             }
             self.status = nil
             self.busy = false
@@ -155,7 +155,7 @@ import ToolsmithKit
         let proxy = connection.remoteObjectProxyWithErrorHandler { [weak self] error in
             Task { @MainActor in
                 self?.connection = nil
-                self?.state = .failed("도우미에 연결하지 못했습니다: \(error.localizedDescription)")
+                self?.state = .failed(String(localized: "Couldn’t connect to the helper: \(error.localizedDescription)"))
                 done?()
             }
         }

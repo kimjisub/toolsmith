@@ -58,11 +58,11 @@ import UserNotifications
         self.timer = timer
     }
 
-    /// `automatic` is the launch and six-hourly check; 「지금 확인」 is not.
+    /// `automatic` is the launch and six-hourly check; Check Now is not.
     func check(automatic: Bool = false) async {
         guard !isChecking else { return }
         guard canUpdate else {
-            record("개발 빌드는 업데이트를 확인하지 않습니다.")
+            record(String(localized: "Development builds don’t check for updates."))
             return
         }
         isChecking = true
@@ -74,24 +74,24 @@ import UserNotifications
             do {
                 release = try await updater.latest()
             } catch {
-                record("확인하지 못했습니다: \(error.localizedDescription) 다음에 다시 확인합니다.")
+                record(String(localized: "Couldn’t check: \(error.localizedDescription) Will try again at the next check."))
                 return
             }
             switch UpdateDecision.decide(release, currentVersion: Self.currentVersion, currentBuild: Self.currentBuild,
                                          failed: failedRelease, automatic: automatic) {
             case .upToDate:
-                record("최신 버전입니다.")
+                record(String(localized: "You’re up to date."))
             case .skipFailed:
-                record("\(release.version) 은 받지 못했던 버전이라 자동으로 다시 받지 않습니다. 「지금 확인」 으로 다시 받을 수 있습니다.")
+                record(String(localized: "\(release.version) failed before, so it won’t be downloaded again automatically. Use Check Now to try again."))
             case .download:
-                record("\(release.version) 을 받는 중입니다.")
+                record(String(localized: "Downloading \(release.version)…"))
                 do {
                     let app = try await updater.download(release)
                     failedRelease = nil
                     pending = (release, app)
                     installPendingIfFree()
                 } catch {
-                    fail(release, reason: "받지 못했습니다: \(error.localizedDescription)")
+                    fail(release, reason: String(localized: "Couldn’t download: \(error.localizedDescription)"))
                 }
             }
         }
@@ -100,7 +100,7 @@ import UserNotifications
     private func installPendingIfFree() {
         guard let pending else { return }
         if isBusy() {
-            record("\(pending.release.version) 이 준비됐습니다. 녹화가 끝나면 바꿉니다.")
+            record(String(localized: "\(pending.release.version) is ready. It will be installed when the recording ends."))
             DispatchQueue.main.asyncAfter(deadline: .now() + 30) { [weak self] in self?.installPendingIfFree() }
             return
         }
@@ -125,20 +125,12 @@ import UserNotifications
             }
         } catch {
             pending = nil
-            fail(release, reason: "\(release.version) 으로 바꾸지 못했습니다(\(target.deletingLastPathComponent().path) 에 쓸 수 없음).")
+            fail(release, reason: String(localized: "Couldn’t install \(release.version) (\(target.deletingLastPathComponent().path) isn’t writable)."))
             return
         }
         pending = nil
-        record("\(release.version) 으로 바꿨습니다. 다시 켭니다.")
-        let script = """
-            while kill -0 \(ProcessInfo.processInfo.processIdentifier) 2>/dev/null; do sleep 0.2; done
-            open "$1"; rm -rf "$2"
-            """
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
-        process.arguments = ["-c", script, "relaunch", target.path, aside.path]
-        try? process.run()
-        NSApp.terminate(nil)
+        record(String(localized: "Installed \(release.version). Reopening."))
+        Relaunch.now(opening: target, removing: aside)
     }
 
     /// The release that failed last, kept across launches.
@@ -149,7 +141,7 @@ import UserNotifications
 
     private func fail(_ release: AppRelease, reason: String) {
         failedRelease = FailedRelease(release)
-        record("\(reason) 자동으로 다시 받지 않습니다.")
+        record(String(localized: "\(reason) It won’t be downloaded again automatically."))
         Self.notifyFailure(version: release.version, reason: reason)
     }
 
@@ -159,8 +151,8 @@ import UserNotifications
             let center = UNUserNotificationCenter.current()
             guard (try? await center.requestAuthorization(options: [.alert])) == true else { return }
             let content = UNMutableNotificationContent()
-            content.title = "\(AppIdentity.name) \(version) 업데이트 실패"
-            content.body = "\(reason) 자동으로 다시 받지 않으니, 설정 › 정보 › 업데이트의 「지금 확인」 으로 다시 받아 주세요."
+            content.title = String(localized: "\(AppIdentity.name) \(version) update failed")
+            content.body = String(localized: "\(reason) It won’t be downloaded again automatically. To try again, use Check Now in Settings › About › Updates.")
             try? await center.add(UNNotificationRequest(identifier: "update.failed", content: content, trigger: nil))
         }
     }

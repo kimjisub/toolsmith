@@ -42,7 +42,7 @@ enum KernelReader {
         let levels = sysctlInt("hw.nperflevels") ?? 0
         return (0..<levels).compactMap { level in
             guard let count = sysctlInt("hw.perflevel\(level).logicalcpu"), count > 0 else { return nil }
-            return CoreCluster(name: sysctlString("hw.perflevel\(level).name") ?? "코어", count: count)
+            return CoreCluster(name: sysctlString("hw.perflevel\(level).name") ?? String(localized: "Cores"), count: count)
         }
     }
 

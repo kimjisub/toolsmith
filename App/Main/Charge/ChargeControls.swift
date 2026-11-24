@@ -24,7 +24,7 @@ struct ChargeControls: View {
                 topUpRow
             }
             if charge.canPause {
-                LabeledSwitch(title: "지금 충전 보류", isOn: Binding(get: { charge.paused }, set: { charge.setPaused($0) }))
+                LabeledSwitch(title: String(localized: "Pause Charging Now"), isOn: Binding(get: { charge.paused }, set: { charge.setPaused($0) }))
             }
             if charge.canDischarge {
                 LabeledSwitch(title: dischargeTitle, isOn: Binding(get: { charge.discharging }, set: { charge.setDischarging($0) }))
@@ -49,46 +49,50 @@ struct ChargeControls: View {
     private var topUpRow: some View {
         HStack(spacing: Space.s) {
             Image(systemName: charge.toppingUp ? "bolt.fill" : "bolt").foregroundStyle(tint).frame(width: 14)
-            Text(charge.toppingUp ? "이번만 100%까지 충전하는 중" : "외출 전이라면 이번만 끝까지")
+            Text(charge.toppingUp ? String(localized: "Charging to 100% this once") : String(localized: "Going out? Charge to full this once"))
                 .font(.role(.detail)).foregroundStyle(Ink.tertiary).lineLimit(1).minimumScaleFactor(0.85)
             Spacer(minLength: Space.xs)
-            RowButton(charge.toppingUp ? "다시 제한" : "100%까지 충전") { charge.toppingUp ? charge.resumeLimit() : charge.topUp() }
+            RowButton(charge.toppingUp ? String(localized: "Limit Again") : String(localized: "Charge to 100%")) { charge.toppingUp ? charge.resumeLimit() : charge.topUp() }
         }
     }
 
     private var headline: String {
-        if charge.toppingUp { return "충전 제한 잠시 꺼짐" }
-        return charge.limit.map { "\($0)%까지만 충전" } ?? "충전 제한 없음"
+        if charge.toppingUp { return String(localized: "Charge limit paused") }
+        return charge.limit.map { String(localized: "Charging up to \($0)%") } ?? String(localized: "No charge limit")
     }
 
     /// What the battery is doing now, in the limit's terms.
     private var activity: String {
         guard let battery else { return "" }
         let level = "\(Int(battery.level.rounded()))%"
-        if battery.isCharging { return "\(level) · 충전 중" }
+        return "\(level) · \(state(battery))"
+    }
+
+    private func state(_ battery: BatteryInfo) -> String {
+        if battery.isCharging { return String(localized: "Charging") }
         if battery.onAdapter {
-            if charge.paused { return "\(level) · 충전 보류 중" }
-            guard let limit = charge.limit else { return "\(level) · 어댑터 연결됨" }
-            if battery.level > Double(limit) + 1 { return "\(level) · \(limit)%까지 내리는 중" }
+            if charge.paused { return String(localized: "Charging paused") }
+            guard let limit = charge.limit else { return String(localized: "Adapter connected") }
+            if battery.level > Double(limit) + 1 { return String(localized: "Lowering to \(limit)%") }
             // Well under the limit and still not charging: something else (a weak adapter) holds it.
-            return battery.level < Double(limit) - ChargeLimit.adapterHysteresis - 1 ? "\(level) · 어댑터 연결됨, 충전 안 함" : "\(level) · 제한에서 멈춤"
+            return battery.level < Double(limit) - ChargeLimit.adapterHysteresis - 1 ? String(localized: "Adapter connected, not charging") : String(localized: "Held at the limit")
         }
-        return "\(level) · 배터리 사용 중"
+        return String(localized: "On battery")
     }
 
     private var dischargeTitle: String {
-        charge.limit.map { "어댑터를 꽂은 채 \($0)%까지 배터리로 쓰기" } ?? "어댑터를 꽂은 채 배터리로 쓰기"
+        charge.limit.map { String(localized: "Use the battery down to \($0)% while plugged in") } ?? String(localized: "Use the battery while plugged in")
     }
 
     private var note: String {
         if charge.state == .system {
-            return "macOS 의 충전 제한을 그대로 씁니다. 시스템 설정 → 배터리 의 값과 같고, 맥이 잠자는 동안에도 지켜집니다. 제한보다 많이 차 있으면 어댑터를 꽂은 채 제한까지 천천히 내려갑니다. macOS 는 80% 아래를 허용하지 않습니다."
+            return String(localized: "Uses macOS’s own charge limit. It is the same value as System Settings → Battery and is kept while the Mac sleeps. If the battery is fuller than the limit, it slowly runs down to the limit while plugged in. macOS does not allow limits below 80%.")
         }
         let band = Int(charge.status.map { $0.canPause ? ChargeLimit.hysteresis : ChargeLimit.adapterHysteresis } ?? ChargeLimit.hysteresis)
         if charge.canPause {
-            return "배터리가 이만큼 차면 충전을 멈추고, \(band)%p 아래로 내려가면 다시 충전합니다."
+            return String(localized: "Charging stops when the battery reaches this level and starts again when it drops \(band) percentage points below.")
         }
-        return "이 맥은 충전만 멈추는 방법이 없어, 이만큼 차면 어댑터를 잠시 끊고 배터리로 쓰다가 \(band)%p 아래로 내려가면 다시 충전합니다. 잠자기 전에는 어댑터를 다시 잇습니다."
+        return String(localized: "This Mac cannot pause charging by itself, so at this level the adapter is disconnected for a while and the Mac runs on battery until it drops \(band) percentage points below, then charges again. The adapter is reconnected before the Mac sleeps.")
     }
 }
 
@@ -127,7 +131,7 @@ struct ChargeGauge: View {
     }
 }
 
-/// The limits as a row of choices; 100 reads as "없음".
+/// The limits as a row of choices; 100 reads as "None".
 struct LimitPicker: View {
     let choices: [Int]
     let selected: Int?
@@ -139,7 +143,7 @@ struct LimitPicker: View {
             ForEach(choices, id: \.self) { value in
                 let on = value == selected
                 Button { onPick(value) } label: {
-                    Text(value >= 100 ? "없음" : "\(value)%")
+                    Text(value >= 100 ? String(localized: "None") : "\(value)%")
                         .font(.role(.detail, weight: on ? .semibold : .regular).monospacedDigit())
                         .frame(maxWidth: .infinity, minHeight: 22)
                         .foregroundStyle(on ? Ink.onAccent : Ink.secondary)

@@ -3,16 +3,16 @@ import Combine
 import SwiftUI
 import ToolsmithKit
 
-/// 소리 조절: the Mac's output, input and alert devices, and every app's own volume, boost, output
+/// Sound: the Mac's output, input and alert devices, and every app's own volume, boost, output
 /// and effects, as a screen of the menu bar panel. Switched off, every route is taken down, so each
 /// app plays as macOS plays it.
 @MainActor final class AudioModule: AppModule {
     nonisolated static let screenID = "audio"
     nonisolated static let volumeItemID = "audio.volume"
     nonisolated static let descriptor = ModuleDescriptor(
-        id: screenID, title: "소리 조절", summary: "출력, 입력, 알림음 장치와 앱마다의 볼륨, 보낼 곳, 효과를 바꿉니다",
+        id: screenID, title: String(localized: "Sound"), summary: String(localized: "Change the output, input and alert devices, and each app's volume, output and effects"),
         symbol: "speaker.wave.2.fill", tint: .pink, permissions: [.audioCapture],
-        menuBarItems: [MenuBarItemDescriptor(id: volumeItemID, moduleID: screenID, title: "출력 볼륨", symbol: "speaker.wave.2.fill",
+        menuBarItems: [MenuBarItemDescriptor(id: volumeItemID, moduleID: screenID, title: String(localized: "Output Volume"), symbol: "speaker.wave.2.fill",
                                              styles: [.icon, .iconAndValue], defaultStyle: .icon, defaultVisible: true)])
     var descriptor: ModuleDescriptor { Self.descriptor }
 
@@ -35,11 +35,11 @@ import ToolsmithKit
     var commandSources: [CommandSource] { [commands] }
 
     var appMenuItems: [AppMenuEntry] {
-        [AppMenuEntry(title: "소리 조절", symbol: "speaker.wave.2") { [weak self] in self?.open() }]
+        [AppMenuEntry(title: String(localized: "Sound"), symbol: "speaker.wave.2") { [weak self] in self?.open() }]
     }
 
     var panelScreens: [PanelScreen] {
-        [PanelScreen(id: Self.screenID, title: "소리", symbol: Self.descriptor.symbol, width: MixerStyle.width,
+        [PanelScreen(id: Self.screenID, title: String(localized: "Sound"), symbol: Self.descriptor.symbol, width: MixerStyle.width,
                      settings: .module(Self.screenID),
                      content: { [weak self] in
                          guard let self else { return AnyView(EmptyView()) }
@@ -67,9 +67,9 @@ import ToolsmithKit
         let symbol = muted ? "speaker.slash.fill" : volume < 0.01 ? "speaker.fill" : volume < 0.34 ? "speaker.wave.1.fill"
             : volume < 0.67 ? "speaker.wave.2.fill" : "speaker.wave.3.fill"
         let percent = AudioGain.percentText(volume)
-        let spoken = muted ? "출력 음소거" : "출력 볼륨 \(percent)"
+        let spoken = muted ? String(localized: "Output muted") : String(localized: "Output volume \(percent)")
         guard style == .iconAndValue, output.volume != nil else { return MenuBarGlyph(pieces: [.symbol(symbol)], spoken: spoken) }
-        return MenuBarGlyph(pieces: [.symbol(symbol), .text(muted ? "끔" : percent)], spoken: spoken)
+        return MenuBarGlyph(pieces: [.symbol(symbol), .text(muted ? String(localized: "Off") : percent)], spoken: spoken)
     }
 
     func settingsGroups(in environment: AppEnvironment) -> AnyView? {
@@ -91,6 +91,10 @@ import ToolsmithKit
     #if TOOLSMITH_DEV
     func runDevelopmentAid(_ arguments: [String]) {
         if let index = arguments.firstIndex(of: "--expand"), index + 1 < arguments.count { pendingExpanded = arguments[index + 1] }
+        if arguments.contains("--audio-demo") {
+            AudioDevelopmentAids.showDemo(on: mixer)
+            if pendingExpanded == nil { pendingExpanded = AudioDevelopmentAids.demoExpandedApp }
+        }
         if arguments.contains("--show-mixer") { DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in self?.open() } }
         AudioDevelopmentAids.run(arguments)
     }

@@ -35,7 +35,7 @@ struct TrackSlider: View {
         .frame(height: 22)
         .opacity(enabled ? 1 : 0.5)
         .accessibilityElement()
-        .accessibilityValue(Text("\(Int(((value - range.lowerBound) / (range.upperBound - range.lowerBound) * 100).rounded()))%"))
+        .accessibilityValue(Text(verbatim: "\(Int(((value - range.lowerBound) / (range.upperBound - range.lowerBound) * 100).rounded()))%"))
         .accessibilityAdjustableAction { direction in
             let step = (range.upperBound - range.lowerBound) / 20
             onChange(min(max(value + (direction == .increment ? step : -step), range.lowerBound), range.upperBound))
@@ -58,7 +58,7 @@ struct TrackSwitch: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(.isToggle)
-        .accessibilityValue(Text(isOn ? "켜짐" : "꺼짐"))
+        .accessibilityValue(isOn ? Text("On") : Text("Off"))
     }
 }
 

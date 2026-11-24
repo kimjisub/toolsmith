@@ -35,7 +35,7 @@ import ToolsmithKit
                                  self?.model.select(id)
                                  self?.pasteSelected(plain: false)
                              })
-        let host = NSHostingView(rootView: view)
+        let host = NSHostingView(rootView: view.environment(\.locale, .app))
         host.sizingOptions = []
         contentView = host
     }

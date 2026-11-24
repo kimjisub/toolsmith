@@ -38,8 +38,8 @@ enum CaptureError: Error {
 
     var message: String {
         switch self {
-        case .noPermission: return "화면을 찍으려면 화면 기록 권한이 필요합니다. 설정의 캡처에서 허락해 주세요."
-        case .failed(let reason): return "화면을 찍지 못했습니다: \(reason)"
+        case .noPermission: return String(localized: "Capturing the screen needs Screen Recording permission. Allow it in Capture in Settings.")
+        case .failed(let reason): return String(localized: "Couldn’t capture the screen: \(reason)")
         }
     }
 }
@@ -48,7 +48,7 @@ enum CaptureError: Error {
     /// `rect` is in AppKit screen coordinates.
     static func area(_ rect: CGRect) async throws -> CapturedImage {
         guard ScreenCapturePermission.isGranted else { throw CaptureError.noPermission }
-        guard let primary = NSScreen.screens.first else { throw CaptureError.failed("화면이 없습니다") }
+        guard let primary = NSScreen.screens.first else { throw CaptureError.failed(String(localized: "There is no display.")) }
         // Preferred: the display's content without our own windows (preview cards, pinned captures).
         let center = CGPoint(x: rect.midX, y: rect.midY)
         if let screen = NSScreen.screens.first(where: { $0.frame.contains(center) }),
@@ -82,7 +82,7 @@ enum CaptureError: Error {
     static func screenUnderPointer() async throws -> CapturedImage {
         let pointer = NSEvent.mouseLocation
         guard let screen = NSScreen.screens.first(where: { $0.frame.contains(pointer) }) ?? NSScreen.main else {
-            throw CaptureError.failed("화면이 없습니다")
+            throw CaptureError.failed(String(localized: "There is no display."))
         }
         return try await area(screen.frame)
     }
@@ -93,7 +93,7 @@ enum CaptureError: Error {
         do {
             let content = try await SCShareableContent.excludingDesktopWindows(true, onScreenWindowsOnly: true)
             guard let window = content.windows.first(where: { $0.windowID == id }) else {
-                throw CaptureError.failed("그 창을 찾지 못했습니다")
+                throw CaptureError.failed(String(localized: "That window could not be found."))
             }
             let filter = SCContentFilter(desktopIndependentWindow: window)
             let scale = CGFloat(filter.pointPixelScale)

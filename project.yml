@@ -3,6 +3,8 @@ options:
   deploymentTarget:
     macOS: "26.0"
   createIntermediateGroups: true
+  # English is the development language; Korean comes from the string catalogs (*.xcstrings).
+  developmentLanguage: en
   groupSortPosition: top
 
 # Dev is Release plus the development aids. Release and Debug never define TOOLSMITH_DEV, so a build
@@ -32,6 +34,10 @@ settings:
     # rejects our own embedded framework. The release script re-signs with the Developer ID.
     ENABLE_HARDENED_RUNTIME: NO
     DEAD_CODE_STRIPPING: YES
+    # The compiler writes every localizable literal it sees into .stringsdata files, which
+    # scripts/localization.py compares with the string catalogs.
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
   configs:
     # Development builds only: the command-line aids and the stand-in fan helper.
     Dev:

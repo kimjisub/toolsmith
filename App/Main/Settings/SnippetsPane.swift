@@ -1,7 +1,7 @@
 import SwiftUI
 import ToolsmithKit
 
-/// Settings → 스니펫: the list of snippets on the left, the one being written on the right.
+/// Settings → Snippets: the list of snippets on the left, the one being written on the right.
 struct SnippetsPane: View {
     @ObservedObject var environment: AppEnvironment
     @ObservedObject var module: SnippetsModule
@@ -22,9 +22,9 @@ struct SnippetsPane: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xxl) {
-            SettingsLead(text: "{이름} 처럼 중괄호로 변수를 넣으면 붙일 때 값을 물어 채워 줍니다. 스니펫은 이 맥에만 저장되고 다른 곳으로 보내지 않습니다.")
+            SettingsLead(text: String(localized: "Put a variable in braces, like {name}, and you’re asked for its value when you paste. Snippets are saved only on this Mac and never sent anywhere."))
             if store.loadFailed {
-                Notice(text: "저장된 스니펫 파일을 읽지 못해 빈 상태로 열었습니다. 원래 파일은 지우지 않고 같은 폴더에 snippets.broken.json 으로 남겨 두었습니다.")
+                Notice(text: String(localized: "The saved snippets file couldn’t be read, so the list opened empty. The original file was kept in the same folder as snippets.broken.json."))
             }
             if snippets.isEmpty, !isDraft {
                 emptyState
@@ -38,21 +38,21 @@ struct SnippetsPane: View {
         .onAppear(perform: appear)
         .onChange(of: module.draftRequested) { _, requested in if requested { startDraft() } }
         .onDisappear { environment.cancelRecording() }
-        .confirmationDialog("「\(selected?.name ?? "")」 스니펫을 지울까요?", isPresented: $confirmingDelete) {
-            Button("지우기", role: .destructive, action: deleteSelected)
-            Button("취소", role: .cancel) {}
+        .confirmationDialog("Delete the snippet “\(selected?.name ?? "")”?", isPresented: $confirmingDelete) {
+            Button("Delete", role: .destructive, action: deleteSelected)
+            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("스니펫과 함께 걸어 둔 단축키도 지워지며, 되돌릴 수 없습니다.")
+            Text("Its shortcut is deleted too. You can’t undo this.")
         }
     }
 
     // MARK: Empty
 
     private var emptyState: some View {
-        SettingsSection(title: "예시", footer: "중괄호로 감싼 곳은 붙일 때 값을 묻습니다.") {
-            EmptyState(symbol: "text.quote", title: "아직 스니펫이 없습니다",
-                       detail: "자주 쓰는 멘트를 추가하면 입력창이나 단축키로 바로 붙일 수 있습니다.",
-                       action: ("스니펫 추가", startDraft))
+        SettingsSection(title: String(localized: "Example"), footer: String(localized: "Anything in braces asks for a value when you paste.")) {
+            EmptyState(symbol: "text.quote", title: String(localized: "No Snippets Yet"),
+                       detail: String(localized: "Add text you write again and again, then paste it from the launcher or with a shortcut."),
+                       action: (String(localized: "Add Snippet"), startDraft))
             ContentRow {
                 VStack(alignment: .leading, spacing: Space.s) {
                     Text(Self.exampleName).font(.role(.body, weight: .semibold))
@@ -63,8 +63,8 @@ struct SnippetsPane: View {
         }
     }
 
-    private static let exampleName = "첫 연락 인사"
-    private static let exampleBody = "{이름}님 안녕하세요, {내 이름}입니다.\n{포지션:백엔드} 포지션으로 연락드립니다."
+    private static var exampleName: String { String(localized: "First contact") }
+    private static var exampleBody: String { String(localized: "Hi {name}, this is {my name}.\nI’m reaching out about the {position:backend} role.") }
 
     // MARK: List
 
@@ -72,13 +72,13 @@ struct SnippetsPane: View {
         VStack(alignment: .leading, spacing: Space.s) {
             Card(padding: Space.xs) {
                 VStack(spacing: Space.xs) {
-                if isDraft { listRow(title: name.isEmpty ? "새 스니펫" : name, detail: "", selected: true) {} }
+                if isDraft { listRow(title: name.isEmpty ? String(localized: "New Snippet") : name, detail: "", selected: true) {} }
                 ForEach(snippets) { snippet in
                     listRow(title: snippet.name, detail: snippet.firstLine, selected: !isDraft && snippet.id == selection) { select(snippet) }
                 }
                 }
             }
-            RowButton("스니펫 추가", action: startDraft).disabled(isDraft)
+            RowButton(String(localized: "Add Snippet"), action: startDraft).disabled(isDraft)
         }
     }
 
@@ -101,18 +101,18 @@ struct SnippetsPane: View {
 
     private var editor: some View {
         VStack(alignment: .leading, spacing: Space.l) {
-            SettingsSection(title: "이름") {
-                TextField("예: 첫 연락 인사", text: $name)
+            SettingsSection(title: String(localized: "Name")) {
+                TextField("e.g. First contact", text: $name)
                     .textFieldStyle(.plain)
                     .font(.role(.body))
                     .focused($nameFocused)
                     .padding(.horizontal, Space.l)
                     .padding(.vertical, Space.m)
             }
-            SettingsSection(title: "내용", footer: Self.help) {
+            SettingsSection(title: String(localized: "Content"), footer: Self.help) {
                 ZStack(alignment: .topLeading) {
                     if text.isEmpty {
-                        Text("붙여 넣을 멘트를 적으세요. {이름} 처럼 중괄호로 감싸면 붙일 때 값을 묻습니다.")
+                        Text("Write the text to paste. Wrap a word in braces, like {name}, to be asked for it when you paste.")
                             .font(.role(.body)).foregroundStyle(Ink.tertiary)
                             .padding(.horizontal, Space.xs).padding(.vertical, 1)
                             .allowsHitTesting(false)
@@ -130,32 +130,31 @@ struct SnippetsPane: View {
                 Text(status).font(.role(.secondary)).foregroundStyle(Status.warning).padding(.horizontal, Space.xs)
             }
             if let snippet = selected, !isDraft {
-                SettingsSection(title: "단축키") {
-                    HotkeyRow(environment: environment, action: HotkeyAction(id: snippet.commandID, title: snippet.name, group: "스니펫", detail: snippet.firstLine),
-                              title: "단축키", detail: "변수가 없으면 바로 붙고, 있으면 값을 묻는 화면이 뜹니다")
+                SettingsSection(title: String(localized: "Shortcut")) {
+                    HotkeyRow(environment: environment, action: HotkeyAction(id: snippet.commandID, title: snippet.name, group: String(localized: "Snippets"), detail: snippet.firstLine),
+                              title: String(localized: "Shortcut"), detail: String(localized: "Pastes right away when there are no variables; otherwise asks for their values first"))
                 }
-                RowButton("지우기…", role: .destructive) { confirmingDelete = true }
+                RowButton(String(localized: "Delete…"), role: .destructive) { confirmingDelete = true }
             }
         }
         .onChange(of: name) { _, _ in save() }
         .onChange(of: text) { _, _ in save() }
     }
 
-    private static let help = """
-    {이름} 은 붙일 때 값을 묻고, {이름:기본값} 처럼 쓰면 기본값이 미리 채워집니다.
-    중괄호 글자 자체를 넣고 싶으면 {{ 와 }} 처럼 두 번 겹쳐 씁니다.
-    """
+    private static var help: String {
+        String(localized: "{name} asks for a value when you paste; {name:default} fills in a default.\nTo type a brace itself, double it: {{ and }}.")
+    }
 
     /// What the text will ask for.
     private var detected: String {
         let template = SnippetTemplate(text)
-        return template.variables.isEmpty ? "변수가 없습니다." : "묻는 것: " + template.variables.map(\.name).joined(separator: ", ")
+        return template.variables.isEmpty ? String(localized: "No variables.") : String(localized: "Asks for: \(template.variables.map(\.name).joined(separator: ", "))")
     }
 
     /// Why what is on screen is not what is saved, if so.
     private var status: String? {
-        if isDraft { return "아직 저장되지 않았습니다. 이름과 내용을 모두 쓰면 저장됩니다." }
-        if selected != nil, !isValid { return "이름이나 내용이 비어 있어 저장되지 않았습니다. 둘 다 채워야 저장됩니다." }
+        if isDraft { return String(localized: "Not saved yet. It’s saved once it has both a name and text.") }
+        if selected != nil, !isValid { return String(localized: "Not saved: the name or the text is empty. Fill in both to save.") }
         return nil
     }
 

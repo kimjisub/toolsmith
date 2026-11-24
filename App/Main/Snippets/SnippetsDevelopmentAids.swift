@@ -13,19 +13,19 @@ extension SnippetsModule {
             self.host.panel.show()
             if arguments.contains("--snippet-demo") {
                 // Development aid: the fill screen of a made-up snippet (nothing is saved).
-                let demo = Snippet(id: UUID(), name: "첫 연락 인사",
-                                   body: "{이름}님 안녕하세요, {내 이름:김지섭}입니다.\n{회사}에서 지난번 말씀하신 {주제:회의} 자료를 보내 드립니다.",
+                let demo = Snippet(id: UUID(), name: "First hello",
+                                   body: "Hi {name}, this is {my name:Alex}.\nHere are the {topic:meeting} notes from {company} you asked about last time.",
                                    createdAt: Date(), updatedAt: Date())
                 self.host.model.beginFill(SnippetFill(snippet: demo, returnsToList: true))
-                self.host.model.setFillValue("김", at: 0)
+                self.host.model.setFillValue("Sa", at: 0)
             }
             if arguments.contains("--snippet-search-demo") {
                 // Development aid: the snippet search over made-up snippets (in a temporary file).
                 let snippets = self
-                for (name, body) in [("첫 연락 인사", "{이름}님 안녕하세요, {내 이름:김지섭}입니다."),
-                                     ("회의 일정 안내", "{이름}님, 회의 일정을 안내드립니다."),
-                                     ("연락 감사 인사", "답변 주셔서 감사합니다."),
-                                     ("자료 요청", "검토 자료를 {마감} 까지 부탁드립니다.")] {
+                for (name, body) in [("First hello", "Hi {name}, this is {my name:Alex}."),
+                                     ("Meeting schedule", "Hi {name}, here is the schedule for our meeting."),
+                                     ("Thanks for replying", "Thank you for getting back to me."),
+                                     ("Request for documents", "Could you send the review documents by {deadline}?")] {
                     _ = snippets.store.add(name: name, body: body)
                 }
                 snippets.snippetsChanged()

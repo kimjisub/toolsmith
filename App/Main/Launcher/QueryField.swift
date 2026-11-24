@@ -28,7 +28,7 @@ struct QueryField: NSViewRepresentable {
     var textColor: NSColor = .clear
     /// Tells this field apart from the others in the window, for giving it the keyboard.
     var focusKey: String?
-    var accessibilityLabel = "무엇을 할까요"
+    var accessibilityLabel = String(localized: "What would you like to do?")
     /// Called when the field takes the keyboard (a click on it).
     var onFocus: (() -> Void)?
     var onCommand: (QueryCommand) -> Void

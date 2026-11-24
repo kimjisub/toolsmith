@@ -14,45 +14,45 @@ struct ClipboardPane: View {
     private static let manyItems = 20_000
 
     private var sizeNote: String? {
-        if stats.count > Self.manyItems { return "기록이 \(stats.count)개로 많이 쌓여 검색이 느려질 수 있습니다. 필요하면 보관 기간을 줄이거나 지울 수 있습니다." }
-        if stats.bytes > Self.largeBytes { return "기록이 꽤 커졌습니다. 필요하면 보관 기간을 줄이거나 지울 수 있습니다." }
+        if stats.count > Self.manyItems { return String(localized: "The history holds \(stats.count) items, which can slow down search. You can shorten how long items are kept, or clear it.") }
+        if stats.bytes > Self.largeBytes { return String(localized: "The history has grown quite large. You can shorten how long items are kept, or clear it.") }
         return nil
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xxl) {
-            SettingsLead(text: "⌥V 로 기록 띠를 열어 찾고 다시 붙입니다. 기록은 어디로도 보내지 않습니다.")
+            SettingsLead(text: String(localized: "Press ⌥V to open the history strip, find something and paste it again. The history is never sent anywhere."))
             if !ClipboardMonitor.canRead {
-                Notice(text: "macOS 가 다른 앱에서 복사한 내용을 읽지 못하게 막고 있습니다. 시스템 설정 → 개인정보 보호 및 보안 → 다른 앱에서 붙여넣기 에서 \(AppIdentity.name) 을 「허용」 으로 바꿔 주세요.")
+                Notice(text: String(localized: "macOS is blocking what you copy in other apps. In System Settings → Privacy & Security → Paste from Other Apps, set \(AppIdentity.name) to Allow."))
             }
-            SettingsSection(title: "기록", footer: sizeNote) {
-                ToggleRow(title: "기록 잠시 멈추기", detail: "켜 두는 동안 복사한 것은 쌓이지 않습니다", isOn: settings.binding(\.clipboardPaused))
-                PickerRow(title: "보관 기간", detail: "고정한 것은 기간과 상관없이 남습니다", selection: Binding(get: { settings.settings.clipRetention }, set: { value in
+            SettingsSection(title: String(localized: "History"), footer: sizeNote) {
+                ToggleRow(title: String(localized: "Pause History"), detail: String(localized: "While this is on, what you copy isn’t recorded"), isOn: settings.binding(\.clipboardPaused))
+                PickerRow(title: String(localized: "Keep History"), detail: String(localized: "Pinned items stay regardless"), selection: Binding(get: { settings.settings.clipRetention }, set: { value in
                     settings.update { $0.clipRetention = value }
                     clipboard.purge()
                     refresh()
                 }), options: ClipRetention.allCases, label: \.title)
-                SettingsRow(title: "저장된 기록", detail: "\(stats.count)개 · \(ByteSize.text(stats.bytes))") {
-                    RowButton("모두 지우기…", role: .destructive) { confirmingClear = true }
+                SettingsRow(title: String(localized: "Saved History"), detail: "\(String(localized: "\(stats.count) items")) · \(ByteSize.text(stats.bytes))") {
+                    RowButton(String(localized: "Clear All…"), role: .destructive) { confirmingClear = true }
                 }
             }
-            SettingsSection(title: "기록하지 않을 앱", footer: "비밀번호 관리 앱처럼 이 앱들이 앞에 있을 때 복사한 것은 쌓이지 않습니다. 비밀번호로 표시된 복사는 앱과 상관없이 쌓이지 않습니다.") {
+            SettingsSection(title: String(localized: "Apps Not Recorded"), footer: String(localized: "What you copy while one of these apps is in front, like a password manager, isn’t recorded. Copies marked as passwords are never recorded, whatever the app.")) {
                 ForEach(settings.settings.clipIgnoredApps, id: \.self) { bundleID in
                     ListRow(icon: AppIconCache.icon(bundleID: bundleID), title: Self.name(of: bundleID), subtitle: bundleID,
-                            removeLabel: "\(Self.name(of: bundleID)) 빼기") {
+                            removeLabel: String(localized: "Remove \(Self.name(of: bundleID))")) {
                         settings.update { $0.clipIgnoredApps.removeAll { $0 == bundleID } }
                     }
                 }
-                ActionsRow { RowButton("앱 추가…", action: addApp) }
+                ActionsRow { RowButton(String(localized: "Add App…"), action: addApp) }
             }
         }
         .onAppear(perform: refresh)
-        .confirmationDialog("클립보드 기록을 지울까요?", isPresented: $confirmingClear) {
-            Button("고정한 것만 남기고 지우기", role: .destructive) { clipboard.clear(keepPinned: true); refresh() }
-            Button("전부 지우기", role: .destructive) { clipboard.clear(keepPinned: false); refresh() }
-            Button("취소", role: .cancel) {}
+        .confirmationDialog("Clear clipboard history?", isPresented: $confirmingClear) {
+            Button("Clear All but Pinned", role: .destructive) { clipboard.clear(keepPinned: true); refresh() }
+            Button("Clear Everything", role: .destructive) { clipboard.clear(keepPinned: false); refresh() }
+            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("지운 기록은 되돌릴 수 없습니다.")
+            Text("You can’t undo this.")
         }
     }
 
@@ -68,7 +68,7 @@ struct ClipboardPane: View {
         panel.allowedContentTypes = [.application]
         panel.directoryURL = URL(fileURLWithPath: "/Applications")
         panel.allowsMultipleSelection = true
-        panel.prompt = "추가"
+        panel.prompt = String(localized: "Add")
         guard panel.runModal() == .OK else { return }
         let ids = panel.urls.compactMap { Bundle(url: $0)?.bundleIdentifier }
         settings.update { current in

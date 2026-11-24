@@ -148,10 +148,10 @@ final class AIStreamTests: XCTestCase {
     }
 
     func testHTTPErrorMessages() {
-        XCTAssertEqual(AIRequest.errorMessage(status: 401, body: Data()), "OpenRouter 키가 맞지 않습니다. 설정의 AI 검색에서 다시 넣어 주세요.")
-        XCTAssertEqual(AIRequest.errorMessage(status: 402, body: Data()), "OpenRouter 크레딧이 부족합니다.")
-        XCTAssertEqual(AIRequest.errorMessage(status: 429, body: Data()), "요청이 너무 많습니다. 잠시 뒤에 다시 물어 주세요.")
+        XCTAssertEqual(AIRequest.errorMessage(status: 401, body: Data(), locale: english), "The OpenRouter key is not valid. Enter it again in Settings → AI Answers.")
+        XCTAssertEqual(AIRequest.errorMessage(status: 402, body: Data(), locale: english), "Your OpenRouter credits have run out.")
+        XCTAssertEqual(AIRequest.errorMessage(status: 429, body: Data(), locale: english), "Too many requests. Ask again in a moment.")
         XCTAssertEqual(AIRequest.errorMessage(status: 400, body: Data(#"{"error":{"code":400,"message":"Invalid model specified"}}"#.utf8)), "Invalid model specified")
-        XCTAssertEqual(AIRequest.errorMessage(status: 503, body: Data("oops".utf8)), "AI 가 답하지 못했습니다 (503).")
+        XCTAssertEqual(AIRequest.errorMessage(status: 503, body: Data("oops".utf8), locale: english), "The AI could not answer (503).")
     }
 }

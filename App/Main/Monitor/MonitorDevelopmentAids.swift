@@ -4,7 +4,7 @@ import ToolsmithKit
 
 #if TOOLSMITH_DEV
 extension MonitorModule {
-    /// Development flags this module answers (see CLAUDE.md, 빌드와 확인).
+    /// Development flags this module answers (see CLAUDE.md, "Building and checking").
     func runDevelopmentAid(_ arguments: [String]) {
         // Development aid: print what the system sampler reads on this Mac, twice a second apart, and quit.
         if CommandLine.arguments.contains("--print-system-sample") {

@@ -210,30 +210,30 @@ final class ClipboardPolicyTests: XCTestCase {
 
 final class RelativeTimeTests: XCTestCase {
     let now = Date(timeIntervalSince1970: 1_800_000_000)
-    private func ago(_ seconds: TimeInterval) -> String { RelativeTime.text(from: now.addingTimeInterval(-seconds), now: now) }
+    private func ago(_ seconds: TimeInterval) -> String { RelativeTime.text(from: now.addingTimeInterval(-seconds), now: now, locale: english) }
 
     func testSteps() {
-        XCTAssertEqual(ago(5), "방금")
-        XCTAssertEqual(ago(59), "방금")
-        XCTAssertEqual(ago(60), "1분 전")
-        XCTAssertEqual(ago(14 * 60), "14분 전")
-        XCTAssertEqual(ago(3_600), "1시간 전")
-        XCTAssertEqual(ago(23 * 3_600), "23시간 전")
-        XCTAssertEqual(ago(24 * 3_600), "1일 전")
-        XCTAssertEqual(ago(29 * 86_400), "29일 전")
-        XCTAssertEqual(ago(30 * 86_400), "1개월 전")
-        XCTAssertEqual(ago(364 * 86_400), "12개월 전")
-        XCTAssertEqual(ago(365 * 86_400), "1년 전")
-        XCTAssertEqual(ago(-30), "방금")       // a clock that moved back
+        XCTAssertEqual(ago(5), "Just now")
+        XCTAssertEqual(ago(59), "Just now")
+        XCTAssertEqual(ago(60), "1 minute ago")
+        XCTAssertEqual(ago(14 * 60), "14 minutes ago")
+        XCTAssertEqual(ago(3_600), "1 hour ago")
+        XCTAssertEqual(ago(23 * 3_600), "23 hours ago")
+        XCTAssertEqual(ago(24 * 3_600), "1 day ago")
+        XCTAssertEqual(ago(29 * 86_400), "29 days ago")
+        XCTAssertEqual(ago(30 * 86_400), "1 month ago")
+        XCTAssertEqual(ago(364 * 86_400), "12 months ago")
+        XCTAssertEqual(ago(365 * 86_400), "1 year ago")
+        XCTAssertEqual(ago(-30), "Just now")       // a clock that moved back
     }
 }
 
 final class ByteSizeTests: XCTestCase {
     func testText() {
-        XCTAssertEqual(ByteSize.text(0), "0B")
-        XCTAssertEqual(ByteSize.text(999), "999B")
-        XCTAssertEqual(ByteSize.text(1_500), "1.5KB")
-        XCTAssertEqual(ByteSize.text(2_000_000), "2MB")
-        XCTAssertEqual(ByteSize.text(5_300_000_000), "5.3GB")
+        XCTAssertEqual(ByteSize.text(0, locale: english), "0 B")
+        XCTAssertEqual(ByteSize.text(999, locale: english), "999 B")
+        XCTAssertEqual(ByteSize.text(1_500, locale: english), "1.5 KB")
+        XCTAssertEqual(ByteSize.text(2_000_000, locale: english), "2 MB")
+        XCTAssertEqual(ByteSize.text(5_300_000_000, locale: english), "5.3 GB")
     }
 }

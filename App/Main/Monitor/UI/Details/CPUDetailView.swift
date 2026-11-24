@@ -13,20 +13,20 @@ struct CPUDetailView: View {
                 PanelHeader(title: "CPU", symbol: "cpu")
                 HStack(alignment: .bottom) {
                     Figure(value: MonitorText.whole(s.cpu.total), unit: "%",
-                           caption: "사용자 \(MonitorText.percent(s.cpu.user)) · 시스템 \(MonitorText.percent(s.cpu.system))")
+                           caption: String(localized: "User \(MonitorText.percent(s.cpu.user)) · System \(MonitorText.percent(s.cpu.system))"))
                     Spacer()
                     Sparkline(values: zip(monitor.cpuUserHistory.values, monitor.cpuSystemHistory.values).map { $0 + $1 }, ceiling: 100)
                         .frame(width: 130, height: 40)
                 }
             }
             if !s.cores.isEmpty { cores }
-            UsageList(title: "많이 쓰는 앱", symbol: "list.number", entries: processes.cpu, format: { String(format: "%.1f%%", $0) })
+            UsageList(title: String(localized: "Top Apps"), symbol: "list.number", entries: processes.cpu, format: { String(format: "%.1f%%", $0) })
             HistoryBlock(topic: .gpu, selection: selection) {
                 PanelHeader(title: "GPU", symbol: "square.stack.3d.up")
-                Figure(value: s.gpu.map { MonitorText.whole($0) } ?? "-", unit: "%", caption: "그래픽 처리 장치 사용")
-                TableRow(label: "쓰는 메모리", value: s.gpuMemory.map { MonitorText.memory($0) } ?? "-")
-                TableRow(label: "온도", value: s.temperatures.gpu.map(MonitorText.temperature) ?? "-")
-                TableRow(label: "주파수", value: s.gpuMHz.map(MonitorText.frequency) ?? "-")
+                Figure(value: s.gpu.map { MonitorText.whole($0) } ?? "-", unit: "%", caption: String(localized: "Graphics Processor Usage"))
+                TableRow(label: String(localized: "Memory in Use"), value: s.gpuMemory.map { MonitorText.memory($0) } ?? "-")
+                TableRow(label: String(localized: "Temperature"), value: s.temperatures.gpu.map(MonitorText.temperature) ?? "-")
+                TableRow(label: String(localized: "Frequency"), value: s.gpuMHz.map(MonitorText.frequency) ?? "-")
                 if !processes.gpu.isEmpty {
                     Line.subtle.frame(height: 1)
                     ForEach(processes.gpu) { entry in
@@ -40,9 +40,9 @@ struct CPUDetailView: View {
                 }
             }
             Panel {
-                TableRow(label: "평균 부하", value: s.loadAverage.map { String(format: "%.2f", $0) }.joined(separator: "  "))
-                    .help("1분, 5분, 15분 동안 실행을 기다린 작업 수의 평균")
-                TableRow(label: "가동 시간", value: UptimeText.text(s.uptime))
+                TableRow(label: String(localized: "Load Average"), value: s.loadAverage.map { String(format: "%.2f", $0) }.joined(separator: "  "))
+                    .help("Average number of tasks waiting to run over 1, 5 and 15 minutes")
+                TableRow(label: String(localized: "Uptime"), value: UptimeText.text(s.uptime))
             }
         }
     }
@@ -51,7 +51,7 @@ struct CPUDetailView: View {
     private var cores: some View {
         let colors = [MonitorStyle.primary, MonitorStyle.secondary, MonitorStyle.tertiary]
         return Panel {
-            PanelHeader(title: "코어 \(s.cores.count)개", symbol: "square.grid.3x3")
+            PanelHeader(title: String(localized: "\(s.cores.count) Cores"), symbol: "square.grid.3x3")
             CoreBars(values: s.cores, kinds: s.coreCluster).frame(height: 44)
             ForEach(Array(s.clusters.enumerated()), id: \.offset) { cluster, info in
                 let usages = s.cores.indices.filter { $0 < s.coreCluster.count && s.coreCluster[$0] == cluster }.map { s.cores[$0] }

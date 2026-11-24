@@ -13,7 +13,7 @@ struct ClipboardPanelScreen: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if items.isEmpty {
-                EmptyState(symbol: "doc.on.clipboard", title: "아직 복사한 것이 없습니다", detail: "무언가를 복사하면 여기에 쌓입니다.")
+                EmptyState(symbol: "doc.on.clipboard", title: String(localized: "Nothing Copied Yet"), detail: String(localized: "Whatever you copy appears here."))
             } else {
                 VStack(spacing: Space.xs) {
                     ForEach(items) { item in ClipRow(item: item) { onPaste(item) } }
@@ -22,9 +22,9 @@ struct ClipboardPanelScreen: View {
             }
             Line.subtle.frame(height: 1)
             HStack {
-                Text("누르면 쓰던 앱에 붙여 넣습니다").textRole(.detail).foregroundStyle(Ink.tertiary)
+                Text("Click to paste into the app you were using").textRole(.detail).foregroundStyle(Ink.tertiary)
                 Spacer(minLength: Space.s)
-                RowButton("기록 전체 보기", action: onOpenShelf)
+                RowButton(String(localized: "Show All History"), action: onOpenShelf)
             }
             .padding(.horizontal, Space.l)
             .padding(.vertical, Space.s)

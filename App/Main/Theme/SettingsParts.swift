@@ -6,7 +6,7 @@ import ToolsmithKit
 // card, and rows with the label on the left and one control on the right. Every page, the app's
 // own and every module's, is assembled from these only.
 
-/// A page of the app's own (일반, 단축키…): its name, an optional lead, then its groups.
+/// A page of the app's own (General, Shortcuts…): its name, an optional lead, then its groups.
 /// A module's page uses `ModuleSettingsScreen` instead, which puts the module header on top.
 struct SettingsPage<Content: View>: View {
     let title: String
@@ -202,7 +202,7 @@ struct ListRow: View {
     }
 }
 
-/// A row of buttons that act on the whole group ("앱 추가…").
+/// A row of buttons that act on the whole group ("Add App…").
 struct ActionsRow<Content: View>: View {
     @ViewBuilder var content: Content
     var body: some View {
@@ -239,7 +239,7 @@ struct ModuleHeader: View {
                     Text(module.title).font(.role(.heading, weight: .semibold))
                     Text(module.summary).font(.role(.detail)).foregroundStyle(Ink.tertiary).fixedSize(horizontal: false, vertical: true)
                     if !waitingFor.isEmpty {
-                        Text("먼저 \(waitingFor.map { "「\($0)」" }.joined(separator: ", ")) 을 켜야 씁니다")
+                        Text("Turn on \(waitingFor.map { String(localized: "“\($0)”") }.formatted(.list(type: .and).locale(.app))) first.")
                             .font(.role(.detail)).foregroundStyle(Status.warning)
                     }
                 }
@@ -247,7 +247,7 @@ struct ModuleHeader: View {
                 if module.canDisable {
                     RowSwitch(title: module.title, isOn: $isOn)
                 } else {
-                    Badge(text: "항상 켜짐")
+                    Badge(text: String(localized: "Always On"))
                 }
             }
         }

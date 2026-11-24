@@ -74,12 +74,12 @@ public enum AppUpdateError: LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .noRelease: return "올라온 릴리스가 없습니다."
-        case .server(let status): return "업데이트 서버가 응답하지 않았습니다(\(status))."
-        case .checksumMismatch: return "받은 파일이 릴리스에 올라온 파일과 다릅니다."
-        case .notSigned(let detail): return "받은 앱의 서명을 확인하지 못했습니다: \(detail)"
-        case .missingApp: return "받은 파일 안에 앱이 없습니다."
-        case .toolFailed(let tool): return "받은 파일을 확인하지 못했습니다(\(tool))."
+        case .noRelease: return localized("No release has been published.")
+        case .server(let status): return localized("The update server did not respond (\(status)).")
+        case .checksumMismatch: return localized("The downloaded file does not match the one in the release.")
+        case .notSigned(let detail): return localized("Could not verify the downloaded app's signature: \(detail)")
+        case .missingApp: return localized("The downloaded file contains no app.")
+        case .toolFailed(let tool): return localized("Could not check the downloaded file (\(tool)).")
         }
     }
 }
@@ -220,7 +220,7 @@ public struct AppUpdater: Sendable {
         do {
             try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", app.path])
         } catch {
-            throw AppUpdateError.notSigned("서명이 손상되었습니다")
+            throw AppUpdateError.notSigned(localized("The signature is damaged"))
         }
         // codesign checks the requirement itself; its printed details include the app's path, which
         // the app's own folder name could forge.
@@ -229,12 +229,12 @@ public struct AppUpdater: Sendable {
         do {
             try run("/usr/bin/codesign", ["--verify", "--deep", "--strict", "-R", requirement, app.path])
         } catch {
-            throw AppUpdateError.notSigned("이 앱을 만든 개발자의 Developer ID 서명이 아닙니다")
+            throw AppUpdateError.notSigned(localized("It is not signed with the Developer ID of this app's developer"))
         }
         do {
             try run("/usr/sbin/spctl", ["--assess", "--type", "execute", app.path])
         } catch {
-            throw AppUpdateError.notSigned("애플 공증을 통과하지 못했습니다")
+            throw AppUpdateError.notSigned(localized("It did not pass Apple's notarization"))
         }
     }
 

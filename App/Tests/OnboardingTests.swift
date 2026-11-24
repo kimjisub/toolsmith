@@ -20,8 +20,8 @@ final class OnboardingTests: XCTestCase {
     }
 
     func testTourListsTheFeaturesWithTheirKeys() {
-        let tour = OnboardingTour.items(hotkeys: .defaults.seeded())
-        XCTAssertEqual(tour.map(\.title), ["화면 나누기", "클립보드 기록", "화면 캡처", "AI 검색", "시스템 모니터", "사용 시간"])
+        let tour = OnboardingTour.items(hotkeys: .defaults.seeded(), locale: english)
+        XCTAssertEqual(tour.map(\.title), ["Window Snapping", "Clipboard History", "Screen Capture", "AI Answers", "System Monitor", "Screen Time"])
         XCTAssertEqual(tour[0].keys, "⌃⌥←")                              // the key actually set, not a fixed string
         XCTAssertEqual(tour[1].keys, "⌥V")
         XCTAssertEqual(tour[2].keys, "⌥⇧4")

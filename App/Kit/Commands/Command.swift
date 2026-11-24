@@ -36,7 +36,7 @@ public struct Command: Identifiable {
     /// A shortcut that works only while the launcher is open ("⌘,"), shown when no global one is set.
     public let launcherShortcut: String?
     /// False for things that are not commands in the user's mind (a clipboard entry), so running
-    /// one does not put it in the "최근" list.
+    /// one does not put it in the Recent list.
     public let tracksUsage: Bool
     /// True when running the command does not close the launcher: the launcher goes on to
     /// something else in place (a snippet whose variables are filled in there).
@@ -56,6 +56,18 @@ public struct Command: Identifiable {
         self.tracksUsage = tracksUsage
         self.keepsLauncherOpen = keepsLauncherOpen
         self.run = run
+    }
+
+    /// A command whose title comes from a string catalog. It shows in the app's language and is
+    /// found by its title in every language the app ships ("Left half" and "왼쪽 절반" alike).
+    public init(id: String, localizedTitle: LocalizedStringResource, subtitle: String?, keywords: [String], section: CommandSection,
+                icon: CommandIcon, hotkeyID: String?, launcherShortcut: String? = nil, tracksUsage: Bool = true, keepsLauncherOpen: Bool = false, run: @escaping @MainActor () -> Void) {
+        var shown = localizedTitle
+        shown.locale = .app
+        let title = String(localized: shown)
+        self.init(id: id, title: title, subtitle: subtitle, keywords: keywords + Localized.everyLanguage(localizedTitle).filter { $0 != title },
+                  section: section, icon: icon, hotkeyID: hotkeyID, launcherShortcut: launcherShortcut, tracksUsage: tracksUsage,
+                  keepsLauncherOpen: keepsLauncherOpen, run: run)
     }
 }
 

@@ -105,17 +105,17 @@ struct OnboardingView: View {
         case .welcome:
             Split {
                 AppIconImage(size: 72).padding(.bottom, -Space.xs)
-                Copy(eyebrow: "시작", title: "키 하나로\n전부 부릅니다",
-                     lead: "앱을 열고, 창을 나누고, 복사했던 것을 찾고, 화면을 찍고, 묻습니다. 어느 앱 위에서든.")
+                Copy(eyebrow: String(localized: "Welcome"), title: String(localized: "One key\nfor everything"),
+                     lead: String(localized: "Open apps, arrange windows, find what you copied, capture the screen, ask questions. Over any app."))
                 HStack(spacing: Space.m) {
                     ForEach(Array(launcherKeys.enumerated()), id: \.offset) { _, key in Keycap(label: key, lit: model.hotkeyPressed) }
                 }
                 .padding(.top, Space.s)
                 Group {
                     if model.hotkeyPressed {
-                        Label("좋습니다. 이 키가 입력창을 엽니다.", systemImage: "checkmark")
+                        Label("Great. This key opens the launcher.", systemImage: "checkmark")
                     } else {
-                        Text("지금 눌러 보세요")
+                        Text("Try pressing it now")
                     }
                 }
                 .font(.role(.body, weight: .medium))
@@ -125,29 +125,29 @@ struct OnboardingView: View {
             }
         case .permissions:
             Split {
-                Copy(eyebrow: "권한", title: "macOS 의\n허락 세 가지",
-                     lead: "창을 옮기고 화면을 찍으려면 맥이 허락해야 합니다. 꼭 필요한 것은 손쉬운 사용 하나이고, 나머지는 그 기능을 쓸 때만 필요합니다. 나중에 설정 → 권한 에서도 켭니다.")
+                Copy(eyebrow: String(localized: "Permissions"), title: String(localized: "Three permissions\nfrom macOS"),
+                     lead: String(localized: "Moving windows and capturing the screen need your Mac’s permission. Only Accessibility is required; the others are needed only when you use those features. You can also turn them on later in Settings → Permissions."))
             } art: {
                 VStack(spacing: 0) {
-                    PermissionRow(title: "손쉬운 사용", detail: "창 옮기기, 바로 붙여넣기", required: true, granted: model.accessibility) {
+                    PermissionRow(title: String(localized: "Accessibility"), detail: String(localized: "Moving windows, pasting directly"), required: true, granted: model.accessibility) {
                         AccessibilityPermission.prompt()
                         AccessibilityPermission.openSystemSettings()
                     }
                     GuideInk.hairline.frame(height: 1)
-                    PermissionRow(title: "화면 기록", detail: "캡처와 녹화. 켠 뒤 앱을 다시 엽니다", required: false, granted: model.screenRecording) {
+                    PermissionRow(title: String(localized: "Screen Recording"), detail: String(localized: "Capture and recording. The app reopens after you turn it on"), required: false, granted: model.screenRecording) {
                         ScreenCapturePermission.request()
                         ScreenCapturePermission.openSystemSettings()
                     }
                     GuideInk.hairline.frame(height: 1)
-                    PermissionRow(title: "클립보드 읽기", detail: model.clipboard ? "복사한 것을 이 맥에만 기록" : "시스템 설정의 「다른 앱에서 붙여넣기」 에서 허용",
+                    PermissionRow(title: String(localized: "Clipboard Access"), detail: model.clipboard ? String(localized: "Records what you copy on this Mac only") : String(localized: "Allow it in “Paste from Other Apps” in System Settings"),
                                   required: false, granted: model.clipboard, action: nil)
                 }
                 .panel()
             }
         case .tour:
             Split {
-                Copy(eyebrow: "둘러보기", title: "이름으로 찾고\n키로 부릅니다",
-                     lead: "모든 기능은 입력창에서 이름으로 찾을 수 있습니다. 자주 쓰는 것에는 단축키가 있고, 설정에서 바꿉니다.")
+                Copy(eyebrow: String(localized: "Tour"), title: String(localized: "Find it by name,\ncall it with a key"),
+                     lead: String(localized: "Every feature can be found by name in the launcher. The ones you use often have shortcuts, which you can change in Settings."))
             } art: {
                 VStack(spacing: 0) {
                     let items = OnboardingTour.items(hotkeys: settings.settings.hotkeys)
@@ -170,23 +170,23 @@ struct OnboardingView: View {
             }
         case .ai:
             Split {
-                Copy(eyebrow: "AI 검색", title: "점을 찍고\n물어보세요",
-                     lead: "입력창 맨 앞에 . 을 치면 웹을 검색해 최신 정보로 답합니다. OpenRouter 키가 필요하고, 키는 이 맥의 키체인에만 둡니다.")
+                Copy(eyebrow: String(localized: "AI Search"), title: String(localized: "Type a period\nand ask"),
+                     lead: String(localized: "Type . at the start of the launcher to get answers searched on the web, up to date. It needs an OpenRouter key, which stays in this Mac’s keychain."))
                 AIKeyField(model: model).padding(.top, Space.xs)
             } art: {
                 AnswerArt()
             }
         case .privacy:
             Split {
-                Copy(eyebrow: "개인정보", title: "기록은\n이 맥에만",
-                     lead: "클립보드, 사용 시간, 시스템 모니터 기록은 이 맥에만 남고 어디로도 보내지 않습니다. 무엇을 남길지 지금 고르고, 나중에 설정 → 개인정보와 저장 공간 에서 바꿉니다.")
+                Copy(eyebrow: String(localized: "Privacy"), title: String(localized: "Your history\nstays on this Mac"),
+                     lead: String(localized: "Clipboard, screen time and system monitor history stay on this Mac and are never sent anywhere. Choose what to keep now, and change it later in Settings → Privacy & Storage."))
             } art: {
                 VStack(spacing: 0) {
-                    ChoiceRow(title: "사용 시간 기록", detail: "어느 앱을 얼마나 썼는지. 90일 뒤 지웁니다", isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
+                    ChoiceRow(title: String(localized: "Record Screen Time"), detail: String(localized: "How long you used each app. Deleted after 90 days"), isOn: settings.moduleBinding(ScreenTimeModule.descriptor))
                     GuideInk.hairline.frame(height: 1)
-                    ChoiceRow(title: "공용 IP 주소 확인", detail: "네트워크 자세히 보기에서 Cloudflare 에 묻습니다", isOn: settings.binding(\.publicAddressLookup))
+                    ChoiceRow(title: String(localized: "Look Up Public IP Address"), detail: String(localized: "Network details ask Cloudflare for it"), isOn: settings.binding(\.publicAddressLookup))
                     GuideInk.hairline.frame(height: 1)
-                    ChoiceRow(title: "로그인할 때 자동 실행", detail: "맥을 켜면 메뉴 막대에서 기다립니다", isOn: Binding(
+                    ChoiceRow(title: String(localized: "Launch at Login"), detail: String(localized: "Waits in the menu bar when you start your Mac"), isOn: Binding(
                         get: { LaunchAtLogin.isInstalled ? LaunchAtLogin.isEnabled : settings.settings.launchAtLogin },
                         set: { value in
                             if LaunchAtLogin.isInstalled { try? LaunchAtLogin.set(value) }
@@ -206,11 +206,11 @@ struct OnboardingView: View {
                             .background(GuideInk.positive, in: Circle())
                             .offset(x: 4, y: 4)
                     }
-                Text("준비됐습니다").font(.role(.figure, weight: .semibold)).kerning(-0.8)
+                Text("You’re all set").font(.role(.figure, weight: .semibold)).kerning(-0.8)
                 HStack(spacing: Space.s) {
-                    Text("언제든")
+                    Text("Press", comment: "Before the launcher keys: Press ⌥ Space anytime.")
                     ForEach(Array(launcherKeys.enumerated()), id: \.offset) { _, key in KeyHint(key) }
-                    Text("를 누르세요. 설정은 메뉴 막대 아이콘을 오른쪽 클릭하거나 입력창에서 ⌘, 입니다.")
+                    Text("anytime. For Settings, right-click the menu bar icon or press ⌘, in the launcher.", comment: "After the launcher keys: Press ⌥ Space anytime.")
                 }
                 .font(.role(.emphasis))
                 .foregroundStyle(GuideInk.secondary)
@@ -230,15 +230,15 @@ struct OnboardingView: View {
             .accessibilityHidden(true)
             Spacer()
             if model.step != .welcome {
-                Button("이전") { model.go(model.step.previous) }.buttonStyle(GhostButton())
+                Button("Back") { model.go(model.step.previous) }.buttonStyle(GhostButton())
             }
             if model.step.isLast {
-                Button("시작하기", action: onFinish).buttonStyle(SolidButton()).keyboardShortcut(.defaultAction)
+                Button("Get Started", action: onFinish).buttonStyle(SolidButton()).keyboardShortcut(.defaultAction)
             } else {
                 let skipping = model.step == .welcome && !model.hotkeyPressed
                 // Without the one required permission the app still runs, with window actions off.
                 let limited = model.step == .permissions && !model.accessibility
-                Button(skipping ? "건너뛰기" : limited ? "권한 없이 계속" : "계속") { model.go(model.step.next) }
+                Button(skipping ? "Skip" : limited ? "Continue Without Permission" : "Continue") { model.go(model.step.next) }
                     .buttonStyle(skipping ? AnyButtonStyle(GhostButton()) : AnyButtonStyle(SolidButton()))
                     .keyboardShortcut(.defaultAction)
             }
@@ -365,7 +365,7 @@ private struct PermissionRow: View {
             VStack(alignment: .leading, spacing: Space.xs) {
                 HStack(spacing: Space.s) {
                     Text(title).font(.role(.emphasis, weight: .medium))
-                    Text(required ? "필요" : "선택")
+                    Text(required ? "Required" : "Optional")
                         .font(.role(.caption, weight: .semibold))
                         .foregroundStyle(required ? Brand.peach : GuideInk.tertiary)
                         .padding(.horizontal, Space.s)
@@ -376,11 +376,11 @@ private struct PermissionRow: View {
             }
             Spacer(minLength: Space.s)
             if granted {
-                Text("허락됨").font(.role(.secondary)).foregroundStyle(GuideInk.secondary)
+                Text("Allowed").font(.role(.secondary)).foregroundStyle(GuideInk.secondary)
             } else if let action {
-                Button("허락하기", action: action).buttonStyle(SolidButton(compact: true))
+                Button("Allow", action: action).buttonStyle(SolidButton(compact: true))
             } else {
-                Text("확인 필요").font(.role(.secondary)).foregroundStyle(Status.warning)
+                Text("Needs attention").font(.role(.secondary)).foregroundStyle(Status.warning)
             }
         }
         .padding(.horizontal, Space.l)
@@ -415,10 +415,10 @@ private struct AIKeyField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.s) {
             if model.hasKey {
-                Label("키가 준비되어 있습니다", systemImage: "checkmark").font(.role(.body, weight: .medium)).foregroundStyle(GuideInk.positive)
+                Label("Your key is ready", systemImage: "checkmark").font(.role(.body, weight: .medium)).foregroundStyle(GuideInk.positive)
             } else {
                 HStack(spacing: Space.s) {
-                    SecureField("sk-or-…", text: $draft)
+                    SecureField(String("sk-or-…"), text: $draft)
                         .textFieldStyle(.plain)
                         .font(.role(.body, design: .monospaced))
                         .padding(.horizontal, Space.m)
@@ -426,9 +426,9 @@ private struct AIKeyField: View {
                         .background(GuideInk.surface, in: RoundedRectangle(cornerRadius: Radius.s, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: Radius.s, style: .continuous).strokeBorder(GuideInk.hairline, lineWidth: 1))
                         .onSubmit(save)
-                    Button("저장", action: save).buttonStyle(SolidButton(compact: true)).disabled(draft.trimmingCharacters(in: .whitespaces).isEmpty)
+                    Button("Save", action: save).buttonStyle(SolidButton(compact: true)).disabled(draft.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
-                Text(failed ? "키를 저장하지 못했습니다." : "없으면 건너뛰고 나중에 설정의 AI 검색에서 넣습니다.")
+                Text(failed ? "Couldn’t save the key." : "If you don’t have one, skip this and add it later in AI Search in Settings.")
                     .font(.role(.secondary)).foregroundStyle(failed ? Brand.peach : GuideInk.tertiary)
             }
         }
@@ -447,14 +447,14 @@ private struct AIKeyField: View {
 private struct LauncherArt: View {
     let lit: Bool
     private let rows: [(String, String, String?)] = [
-        ("rectangle.lefthalf.filled", "왼쪽 절반", "⌃⌥←"), ("doc.on.clipboard", "클립보드 기록", "⌥V"),
-        ("camera.viewfinder", "영역 캡처", "⌥⇧4"), ("app.dashed", "Slack", nil),
+        ("rectangle.lefthalf.filled", String(localized: "Left Half"), "⌃⌥←"), ("doc.on.clipboard", String(localized: "Clipboard History"), "⌥V"),
+        ("camera.viewfinder", String(localized: "Capture Area"), "⌥⇧4"), ("app.dashed", "Slack", nil),
     ]
 
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                Text("왼").font(.role(.title, weight: .medium))
+                Text("Le", comment: "A query being typed in the launcher picture; the first row (Left Half) matches it.").font(.role(.title, weight: .medium))
                 Rectangle().fill(GuideInk.primary).frame(width: 1.5, height: 21).padding(.leading, Space.xs)
                 Spacer()
             }
@@ -495,23 +495,23 @@ private struct AnswerArt: View {
             HStack(spacing: Space.s) {
                 HStack(spacing: Space.xs) {
                     Image(systemName: "sparkles").font(.role(.caption, weight: .semibold))
-                    Text("AI").font(.role(.detail, weight: .semibold))
+                    Text(verbatim: "AI").font(.role(.detail, weight: .semibold))
                 }
                 .foregroundStyle(Brand.lavender)
                 .padding(.horizontal, Space.s)
                 .frame(height: 22)
                 .background(Tint.wash(Brand.lavender), in: Capsule())
-                Text("오늘 원달러 환율").font(.role(.heading, weight: .medium)).foregroundStyle(Brand.gradient)
+                Text("USD to KRW today").font(.role(.heading, weight: .medium)).foregroundStyle(Brand.gradient)
                 Spacer()
             }
             .padding(.horizontal, Space.l)
             .frame(height: 52)
             GuideInk.hairline.frame(height: 1)
             VStack(alignment: .leading, spacing: Space.m) {
-                Text("오늘 원/달러 환율은 1,382.5원입니다. 전일보다 3.2원 올랐고, 장중 1,379원에서 1,385원 사이에서 움직였습니다.")
+                Text("Today’s USD/KRW rate is ₩1,382.5, up ₩3.2 from yesterday. It moved between ₩1,379 and ₩1,385 during the day.")
                     .font(.role(.body)).lineSpacing(4).foregroundStyle(Tint.strong(GuideInk.primary))
                 HStack(spacing: Space.s) {
-                    ForEach(["1  investing.com", "2  한국은행"], id: \.self) { source in
+                    ForEach(["1  investing.com", String(localized: "2  Bank of Korea")], id: \.self) { source in
                         Text(source).font(.role(.detail)).foregroundStyle(GuideInk.secondary)
                             .padding(.horizontal, Space.s).frame(height: 22)
                             .background(Fill.control, in: Capsule())

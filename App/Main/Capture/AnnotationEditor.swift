@@ -86,7 +86,7 @@ import ToolsmithKit
 
         super.init(contentRect: NSRect(x: visible.midX - content.width / 2, y: visible.midY - content.height / 2, width: content.width, height: content.height),
                    styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
-        title = "주석 편집"
+        title = String(localized: "Edit Annotations")
         appearance = NSAppearance(named: .darkAqua)
         isReleasedWhenClosed = false
         delegate = self
@@ -98,7 +98,7 @@ import ToolsmithKit
                                         onCopy: { [weak self] in self?.copyResult() },
                                         onSave: { [weak self] in self?.saveResult() },
                                         onDone: { [weak self] in self?.done() })
-        contentView = NSHostingView(rootView: root)
+        contentView = NSHostingView(rootView: root.environment(\.locale, .app))
         makeFirstResponder(canvas)
     }
 
@@ -172,7 +172,7 @@ private struct AnnotationEditorView: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .help("\(tool.title) (\(String(tool.key).uppercased()))")
+                    .help(Text(verbatim: "\(tool.title) (\(String(tool.key).uppercased()))"))
                     .accessibilityLabel(tool.title)
                     .accessibilityAddTraits(model.tool == tool ? .isSelected : [])
                 }
@@ -191,15 +191,16 @@ private struct AnnotationEditorView: View {
                 }
             }
             divider
-            Segmented(title: "굵기", selection: $model.weight, options: [0, 1, 2], label: { ["얇게", "보통", "굵게"][$0] })
+            Segmented(title: String(localized: "Weight"), selection: $model.weight, options: [0, 1, 2],
+                      label: { [String(localized: "Thin"), String(localized: "Regular"), String(localized: "Thick")][$0] })
             .frame(width: 150)
             divider
-            Button { model.undo() } label: { Image(systemName: "arrow.uturn.backward") }.disabled(!model.document.canUndo).help("되돌리기 (⌘Z)")
-            Button { model.redo() } label: { Image(systemName: "arrow.uturn.forward") }.disabled(!model.document.canRedo).help("다시 하기 (⇧⌘Z)")
+            Button { model.undo() } label: { Image(systemName: "arrow.uturn.backward") }.disabled(!model.document.canUndo).help("Undo (⌘Z)")
+            Button { model.redo() } label: { Image(systemName: "arrow.uturn.forward") }.disabled(!model.document.canRedo).help("Redo (⇧⌘Z)")
             Spacer(minLength: Space.s)
-            Button("복사", action: onCopy).help("⌘C")
-            Button("저장", action: onSave).help("⌘S")
-            Button("완료", action: onDone).keyboardShortcut(.defaultAction).help("복사하고 닫기 (↵)")
+            Button("Copy", action: onCopy).help(Text(verbatim: "⌘C"))
+            Button("Save", action: onSave).help(Text(verbatim: "⌘S"))
+            Button("Done", action: onDone).keyboardShortcut(.defaultAction).help("Copy and Close (↵)")
         }
         .padding(.horizontal, Space.l)
         .background(Surface.canvasBar)
@@ -330,7 +331,7 @@ private struct CanvasHost: NSViewRepresentable {
         field.drawsBackground = true
         field.backgroundColor = NSColor.black.withAlphaComponent(0.25)
         field.focusRingType = .none
-        field.placeholderString = "글자 입력 후 ↵"
+        field.placeholderString = String(localized: "Type text, then ↵")
         field.delegate = self
         addSubview(field)
         textField = field

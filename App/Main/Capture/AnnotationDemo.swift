@@ -8,7 +8,7 @@ import ToolsmithKit
         let image = NSImage(size: size, flipped: true) { rect in
             NSColor(white: 0.96, alpha: 1).setFill()
             rect.fill()
-            let lines = ["연락처: 010-0000-0000", "내일 오후 3시에 통화 가능하실까요?", "회의록 초안을 금요일까지 보내 드립니다.", "\(AppIdentity.name) annotation demo"]
+            let lines = ["Phone: 000-000-0000", "Are you free for a call tomorrow at 3 PM?", "I’ll send the draft minutes by Friday.", "\(AppIdentity.name) annotation demo"]
             for (index, line) in lines.enumerated() {
                 NSAttributedString(string: line, attributes: [.font: NSFont.systemFont(ofSize: 20), .foregroundColor: NSColor.black])
                     .draw(at: CGPoint(x: 40, y: 50 + CGFloat(index) * 60))
@@ -35,7 +35,7 @@ import ToolsmithKit
                        points: stride(from: 0, through: 27, by: 1).map { CGPoint(x: 60 + CGFloat($0) * 10, y: 268 + sin(CGFloat($0) * 0.7) * 9) }),
             make(.rectangle, 30, 160, 450, 206, .red),
             make(.arrow, 560, 300, 420, 240, .blue),
-            make(.text, 470, 300, 470, 300, .blue, text: "여기 확인"),
+            make(.text, 470, 300, 470, 300, .blue, text: "Check this"),
         ]
         let result = AnnotationRenderer.render(CapturedImage(image: base, scale: scale), items: items)
         try? result.pngData?.write(to: url)

@@ -16,10 +16,10 @@ public enum MenuBarStyle: String, Codable, CaseIterable, Sendable {
 
     public var label: String {
         switch self {
-        case .icon: return "아이콘"
-        case .iconAndValue: return "아이콘과 수치"
-        case .value: return "수치"
-        case .graph: return "그래프"
+        case .icon: return localized("Icon")
+        case .iconAndValue: return localized("Icon and Value")
+        case .value: return localized("Value")
+        case .graph: return localized("Graph")
         }
     }
 }
@@ -49,7 +49,7 @@ public struct MenuBarItemDescriptor: Identifiable, Equatable, Sendable {
     }
 
     /// The app's own icon. Shown by itself whenever nothing else is.
-    public static let appIcon = MenuBarItemDescriptor(id: "app.icon", moduleID: "app", title: "앱 아이콘", symbol: "command",
+    public static let appIcon = MenuBarItemDescriptor(id: "app.icon", moduleID: "app", title: localized("App Icon"), symbol: "command",
                                                       styles: [.icon], defaultVisible: false)
 }
 

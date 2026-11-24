@@ -93,7 +93,7 @@ struct AITurn: Identifiable, Equatable {
             } catch let error as URLError where error.code == .cancelled {
                 self?.finish(id, error: nil)
             } catch {
-                self?.finish(id, error: "AI 에 연결하지 못했습니다: \(error.localizedDescription)")
+                self?.finish(id, error: String(localized: "Couldn’t connect to the AI: \(error.localizedDescription)"))
             }
         }
     }
@@ -109,7 +109,7 @@ struct AITurn: Identifiable, Equatable {
         if let error {
             turns[index].error = error
         } else if turns[index].answer.isEmpty {
-            turns[index].error = "답이 오지 않았습니다."
+            turns[index].error = String(localized: "No answer came back.")
         } else if turns[index].citations.isEmpty {
             // No citation list came: the links written in the answer are the sources.
             turns[index].citations = Citation.fromMarkdownLinks(in: turns[index].answer)
@@ -122,7 +122,7 @@ struct AITurn: Identifiable, Equatable {
         task = nil
         if let last = turns.indices.last, turns[last].isStreaming {
             turns[last].isStreaming = false
-            if turns[last].answer.isEmpty { turns[last].error = "멈췄습니다." }
+            if turns[last].answer.isEmpty { turns[last].error = String(localized: "Stopped.") }
         }
     }
 
@@ -131,10 +131,16 @@ struct AITurn: Identifiable, Equatable {
         turns = []
     }
 
-    /// Development aid: a finished answer to look at without calling the service.
+    /// Development aid: a finished answer to look at without calling the service, in the app's language.
     func loadDemo() {
-        var turn = AITurn(question: "오늘 원달러 환율")
-        turn.answer = "오늘 원/달러 환율은 **1,382.5원**입니다 ([investing.com](https://investing.com/currencies/usd-krw)). 전일보다 3.2원 올랐고, 장중 1,379원에서 1,385원 사이에서 움직였습니다 ([한국은행](https://www.bok.or.kr))."
+        var turn: AITurn
+        if Locale.app.language.languageCode == .korean {
+            turn = AITurn(question: "오늘 원달러 환율") // not localized: sample content
+            turn.answer = "오늘 원/달러 환율은 **1,382.5원**입니다 ([investing.com](https://investing.com/currencies/usd-krw)). 전일보다 3.2원 올랐고, 장중 1,379원에서 1,385원 사이에서 움직였습니다 ([한국은행](https://www.bok.or.kr))." // not localized: sample content
+        } else {
+            turn = AITurn(question: "Dollar to euro rate today")
+            turn.answer = "The dollar trades at **0.92 euros** today ([investing.com](https://investing.com/currencies/usd-eur)), up 0.3% from yesterday, between 0.917 and 0.923 during the session ([European Central Bank](https://www.ecb.europa.eu))."
+        }
         turn.citations = Citation.fromMarkdownLinks(in: turn.answer)
         turn.isStreaming = false
         turns = [turn]

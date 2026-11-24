@@ -3,7 +3,7 @@ import ToolsmithKit
 
 /// Installed apps as launcher commands.
 @MainActor final class AppCommandSource: CommandSource {
-    static let section = CommandSection(id: "apps", title: "앱", order: 10)
+    static let section = CommandSection(id: "apps", title: String(localized: "Apps"), order: 10)
     private var entries: [AppEntry] = []
     /// Called on the main thread after a rescan found a different set of apps.
     var onChange: (() -> Void)?
@@ -47,9 +47,9 @@ import ToolsmithKit
     }
 }
 
-/// 앱 실행: installed apps as launcher commands.
+/// Installed apps as launcher commands.
 @MainActor final class AppsModule: AppModule {
-    nonisolated static let descriptor = ModuleDescriptor(id: "apps", title: "앱 실행", summary: "설치된 앱을 이름으로 찾아 엽니다",
+    nonisolated static let descriptor = ModuleDescriptor(id: "apps", title: String(localized: "App Launcher"), summary: String(localized: "Finds installed apps by name and opens them"),
                                              symbol: "square.grid.2x2", tint: .blue, requires: [LauncherModule.descriptor.id])
     var descriptor: ModuleDescriptor { Self.descriptor }
     private unowned let host: ModuleHost

@@ -100,30 +100,30 @@ enum TonePlayer {
     private func wait(_ seconds: Double) async { try? await Task.sleep(for: .seconds(seconds)) }
 
     func run() async {
-        log("# 소리 경로 자체 시험 \(Date())")
+        log("# Audio route self-test \(Date())")
         let devices = SystemAudio.devices()
-        guard let blackHole = devices.first(where: { $0.uid == "BlackHole2ch_UID" }) else { return finish("BlackHole 2ch 가 없습니다") }
+        guard let blackHole = devices.first(where: { $0.uid == "BlackHole2ch_UID" }) else { return finish("BlackHole 2ch is not installed") }
         // Somewhere else to send the tone: a silent virtual device if there is one, else the built-in
         // speakers, then at a tenth of the level so the Mac only whispers for a second or two.
         let virtualSink = devices.first { $0.hasOutput && $0.uid != blackHole.uid && AudioDeviceKind(transport: $0.transport) == .virtual }
         let sink = virtualSink ?? devices.first { $0.hasOutput && AudioDeviceKind(transport: $0.transport) == .builtIn }
         let sinkGain = virtualSink == nil ? 0.1 : 1.0
 
-        log("마이크 권한 요청 (BlackHole 입력을 읽으려고)")
-        guard await AVCaptureDevice.requestAccess(for: .audio) else { return finish("마이크 권한이 없어 BlackHole 을 읽지 못합니다") }
+        log("Asking for microphone access (to read the BlackHole input)")
+        guard await AVCaptureDevice.requestAccess(for: .audio) else { return finish("No microphone access, so BlackHole cannot be read") }
 
         // A muted BlackHole loops back silence. Unmuted for the test, and left as it was afterwards.
         let wasMuted = SystemAudio.isMuted(blackHole.id, .output) ?? false
         if wasMuted {
             SystemAudio.setMuted(blackHole.id, .output, false)
-            log("BlackHole 출력이 음소거라 시험 동안만 풉니다")
+            log("BlackHole output is muted; unmuting it for the test only")
         }
         defer { if wasMuted { SystemAudio.setMuted(blackHole.id, .output, true) } }
 
         let recorder = Recorder()
         var inputProc: AudioDeviceIOProcID?
         AudioDeviceCreateIOProcIDWithBlock(&inputProc, blackHole.id, nil) { _, input, _, _, _ in recorder.add(input) }
-        guard let inputProc, AudioDeviceStart(blackHole.id, inputProc) == noErr else { return finish("BlackHole 입력을 시작하지 못했습니다") }
+        guard let inputProc, AudioDeviceStart(blackHole.id, inputProc) == noErr else { return finish("Could not start the BlackHole input") }
         defer {
             AudioDeviceStop(blackHole.id, inputProc)
             AudioDeviceDestroyIOProcID(blackHole.id, inputProc)
@@ -139,14 +139,14 @@ enum TonePlayer {
         defer { tone?.terminate() }
         await wait(1.5)
         guard let toneProcess = tone.flatMap({ child in SystemAudio.processes().first { $0.pid == child.processIdentifier } }) else {
-            return finish("시험 소리 프로세스를 오디오 시스템에서 찾지 못했습니다")
+            return finish("The audio system has no object for the test tone process")
         }
         let base = await measure()
-        log("기준(경로 없음): L \(fmt(base.0)) R \(fmt(base.1))")
-        guard base.0 > 0.05 else { return finish("BlackHole 에서 시험 소리가 읽히지 않습니다 (마이크 권한을 확인하세요)") }
+        log("Baseline (no route): L \(fmt(base.0)) R \(fmt(base.1))")
+        guard base.0 > 0.05 else { return finish("The test tone does not reach BlackHole (check microphone access)") }
 
         // The first tap is where macOS asks for System Audio Recording; until it is allowed the tap is silent.
-        log("시스템 오디오 녹음 권한 기다림 (최대 15분)")
+        log("Waiting for system audio recording permission (up to 15 minutes)")
         let source = TapSource.processes([toneProcess.objectID])
         do {
             let probe = try TapRoute(plan: RoutePlan(structure: RouteStructure(source: source, outputUIDs: [blackHole.uid]), chain: EffectChain()), outputs: [blackHole], clock: nil)
@@ -156,10 +156,10 @@ enum TonePlayer {
                 waited += 0.5
             }
             probe.stop()
-            guard waited < 900 else { return finish("탭에 소리가 들어오지 않습니다 (시스템 오디오 녹음 권한을 확인하세요)") }
-            log("권한 확인됨 (\(Int(waited))초)")
+            guard waited < 900 else { return finish("No sound reaches the tap (check system audio recording permission)") }
+            log("Permission confirmed (\(Int(waited)) s)")
         } catch {
-            return finish("탭을 만들지 못했습니다: \((error as? TapRouteError)?.message ?? "\(error)")")
+            return finish("Could not create the tap: \((error as? TapRouteError)?.message ?? "\(error)")")
         }
         await wait(0.6)
 
@@ -174,25 +174,25 @@ enum TonePlayer {
                 let left = level.0 / reference.0, right = level.1 / reference.1
                 rows.append(Row(name: name, expected: expected, left: left, right: right, baseline: reference.0, pass: pass(left, right)))
             } catch {
-                rows.append(Row(name: name, expected: "경로 실패: \((error as? TapRouteError)?.message ?? "\(error)")", left: .nan, right: .nan, baseline: reference.0, pass: false))
+                rows.append(Row(name: name, expected: "route failed: \((error as? TapRouteError)?.message ?? "\(error)")", left: .nan, right: .nan, baseline: reference.0, pass: false))
             }
             await wait(0.6)
         }
         func near(_ value: Double, _ target: Double, _ tolerance: Double) -> Bool { abs(value - target) <= tolerance }
 
-        await check("경로만 (볼륨 100%)", expected: "1.00 (원래 소리와 겹치지 않음)", outputs: [blackHole], chain: EffectChain(), reference: base) { l, r in near(l, 1, 0.05) && near(r, 1, 0.05) }
-        await check("볼륨 50%", expected: "0.25 (50%² )", outputs: [blackHole], chain: EffectChain(gain: AudioGain.amplitude(volume: 0.5, overdrive: 1, muted: false)), reference: base) { l, _ in near(l, 0.25, 0.03) }
-        await check("음소거", expected: "0.00", outputs: [blackHole], chain: EffectChain(gain: 0), reference: base) { l, r in l < 0.01 && r < 0.01 }
+        await check("Route only (volume 100%)", expected: "1.00 (does not double the original)", outputs: [blackHole], chain: EffectChain(), reference: base) { l, r in near(l, 1, 0.05) && near(r, 1, 0.05) }
+        await check("Volume 50%", expected: "0.25 (50%² )", outputs: [blackHole], chain: EffectChain(gain: AudioGain.amplitude(volume: 0.5, overdrive: 1, muted: false)), reference: base) { l, _ in near(l, 0.25, 0.03) }
+        await check("Mute", expected: "0.00", outputs: [blackHole], chain: EffectChain(gain: 0), reference: base) { l, r in l < 0.01 && r < 0.01 }
         await check("Volume Overdrive 2x", expected: "2.00", outputs: [blackHole], chain: EffectChain(gain: 2), reference: base) { l, _ in near(l, 2, 0.1) }
         await check("EQ 1 kHz +12 dB", expected: "3.98", outputs: [blackHole], chain: EffectChain(equalizers: [EQSettings(gains: [0, 0, 0, 0, 0, 12, 0, 0, 0, 0])]), reference: base) { l, _ in near(l, 3.98, 0.3) }
         await check("EQ 1 kHz −12 dB", expected: "0.25", outputs: [blackHole], chain: EffectChain(equalizers: [EQSettings(gains: [0, 0, 0, 0, 0, -12, 0, 0, 0, 0])]), reference: base) { l, _ in near(l, 0.25, 0.04) }
-        await check("Balance 왼쪽 끝", expected: "L 1.00, R 0.00", outputs: [blackHole], chain: EffectChain(balance: -1), reference: base) { l, r in near(l, 1, 0.05) && r < 0.01 }
+        await check("Balance full left", expected: "L 1.00, R 0.00", outputs: [blackHole], chain: EffectChain(balance: -1), reference: base) { l, r in near(l, 1, 0.05) && r < 0.01 }
         if let sink {
-            await check("다른 장치로 보내기 (\(sink.name))", expected: "0.00 (원래 장치에 남지 않음)", outputs: [sink], chain: EffectChain(gain: sinkGain), settle: 0.6, reference: base) { l, r in l < 0.01 && r < 0.01 }
-            await check("출력 묶음 (BlackHole + \(sink.name))", expected: String(format: "%.2f", sinkGain), outputs: [blackHole, sink], chain: EffectChain(gain: sinkGain), settle: 0.6, reference: base) { l, _ in near(l, sinkGain, 0.08 * sinkGain) }
+            await check("Send to another device (\(sink.name))", expected: "0.00 (nothing left on the original device)", outputs: [sink], chain: EffectChain(gain: sinkGain), settle: 0.6, reference: base) { l, r in l < 0.01 && r < 0.01 }
+            await check("Output group (BlackHole + \(sink.name))", expected: String(format: "%.2f", sinkGain), outputs: [blackHole, sink], chain: EffectChain(gain: sinkGain), settle: 0.6, reference: base) { l, _ in near(l, sinkGain, 0.08 * sinkGain) }
         }
         let after = await measure()
-        rows.append(Row(name: "경로를 모두 내린 뒤", expected: "1.00 (원래대로)", left: after.0 / base.0, right: after.1 / base.1, baseline: base.0,
+        rows.append(Row(name: "After every route is down", expected: "1.00 (as before)", left: after.0 / base.0, right: after.1 / base.1, baseline: base.0,
                         pass: near(after.0 / base.0, 1, 0.05)))
 
         // Magic Boost needs quiet sound: a second tone, ten times softer.
@@ -208,19 +208,19 @@ enum TonePlayer {
                 let level = await measure()
                 route.stop()
                 let ratio = level.0 / quietBase.0
-                rows.append(Row(name: "Magic Boost (작은 소리 0.02)", expected: "3~4 (목표 -16 dBFS, 최대 4배)", left: ratio, right: level.1 / quietBase.1, baseline: quietBase.0, pass: ratio > 2.8 && ratio <= 4.1))
+                rows.append(Row(name: "Magic Boost (quiet sound 0.02)", expected: "3–4 (target -16 dBFS, at most 4×)", left: ratio, right: level.1 / quietBase.1, baseline: quietBase.0, pass: ratio > 2.8 && ratio <= 4.1))
             } catch {
-                rows.append(Row(name: "Magic Boost", expected: "경로 실패", left: .nan, right: .nan, baseline: quietBase.0, pass: false))
+                rows.append(Row(name: "Magic Boost", expected: "route failed", left: .nan, right: .nan, baseline: quietBase.0, pass: false))
             }
         }
 
         log("")
-        log("| 시험 | 기대 (기준 대비) | 왼쪽 | 오른쪽 | 기준 RMS | 판정 |")
+        log("| Test | Expected (vs. baseline) | Left | Right | Baseline RMS | Result |")
         log("|---|---|---|---|---|---|")
         for row in rows {
-            log("| \(row.name) | \(row.expected) | \(fmt(row.left)) | \(fmt(row.right)) | \(fmt(row.baseline)) | \(row.pass ? "통과" : "실패") |")
+            log("| \(row.name) | \(row.expected) | \(fmt(row.left)) | \(fmt(row.right)) | \(fmt(row.baseline)) | \(row.pass ? "pass" : "fail") |")
         }
-        finish("끝: \(rows.filter(\.pass).count)/\(rows.count) 통과")
+        finish("Done: \(rows.filter(\.pass).count)/\(rows.count) passed")
     }
 
     private func startTone(amplitude: Double) -> Process? {

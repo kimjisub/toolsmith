@@ -11,27 +11,27 @@ struct TokenSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Space.xxl) {
             VStack(alignment: .leading, spacing: Space.xs) {
-                Text("디자인 토큰").font(.role(.title))
-                Text("App/Main/Theme/Tokens.swift 와 App/Kit/Design/Palette.swift. 화면은 이 이름만 쓰고, lint 가 그 밖의 값을 막습니다. 다크 전용.")
+                Text("Design Tokens").font(.role(.title))
+                Text("App/Main/Theme/Tokens.swift and App/Kit/Design/Palette.swift. Screens use only these names; the lint rejects any other value. Dark only.")
                     .textRole(.detail).foregroundStyle(Ink.tertiary)
             }
-            section("글자 단계") {
+            section(String(localized: "Type Roles")) {
                 VStack(alignment: .leading, spacing: Space.s) {
                     ForEach(TextRole.allCases, id: \.self) { role in
                         HStack(alignment: .firstTextBaseline, spacing: Space.l) {
-                            Text(".\(role.label)").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 96, alignment: .leading)
-                            Text("\(Int(role.size))/\(Int(role.lineHeight))").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 56, alignment: .leading)
-                            Text("다람쥐 헌 쳇바퀴 Aa 123").font(.role(role))
+                            Text(verbatim: ".\(role.label)").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 96, alignment: .leading)
+                            Text(verbatim: "\(Int(role.size))/\(Int(role.lineHeight))").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 56, alignment: .leading)
+                            Text("The quick brown fox Aa 123").font(.role(role))
                         }
                     }
                 }
             }
-            section("글자 색 (대비: 바탕 / 카드 / 선택 줄)") {
+            section(String(localized: "Text colors (contrast: ground / card / selected row)")) {
                 VStack(alignment: .leading, spacing: Space.s) {
                     contrastRow("Ink.primary", Ink.primary, Palette.Text.primary)
                     contrastRow("Ink.secondary", Ink.secondary, Palette.Text.secondary)
                     contrastRow("Ink.tertiary", Ink.tertiary, Palette.Text.tertiary)
-                    contrastRow("Ink.disabled (읽는 글자 아님)", Ink.disabled, Palette.Text.disabled)
+                    contrastRow(String(localized: "Ink.disabled (not for reading)"), Ink.disabled, Palette.Text.disabled)
                     contrastRow("Brand.accent", Brand.accent, Palette.lavender)
                     contrastRow("Status.success", Status.success, Palette.success)
                     contrastRow("Status.warning", Status.warning, Palette.warning)
@@ -39,7 +39,7 @@ struct TokenSheet: View {
                     contrastRow("Status.info", Status.info, Palette.info)
                 }
             }
-            section("면과 선") {
+            section(String(localized: "Fills and Lines")) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: Space.m) {
                     swatch("Fill.faint", Fill.faint)
                     swatch("Fill.card", Fill.card)
@@ -57,7 +57,7 @@ struct TokenSheet: View {
                     swatch("Surface.canvas", Surface.canvas)
                 }
             }
-            section("브랜드와 상태") {
+            section(String(localized: "Brand and Status")) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: Space.m) {
                     swatch("Brand.lavender", Brand.lavender)
                     swatch("Brand.peach", Brand.peach)
@@ -67,42 +67,42 @@ struct TokenSheet: View {
                     swatch("Status.danger", Status.danger)
                 }
             }
-            section("타일 (흰 기호와의 대비)") {
+            section(String(localized: "Tiles (Contrast with White Symbols)")) {
                 HStack(spacing: Space.l) {
                     ForEach(Array(zip(["gray", "blue", "green", "teal", "indigo", "purple", "pink", "orange"], Palette.Tile.all)), id: \.0) { name, rgba in
                         VStack(spacing: Space.xs) {
                             IconTile(symbol: "star.fill", color: Color(rgba), size: IconSize.tileLarge)
-                            Text("Tile.\(name)").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
+                            Text(verbatim: "Tile.\(name)").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
                             Text(String(format: "%.1f:1", RGBA.contrast(.white(1), rgba))).font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.secondary)
                         }
                     }
                 }
             }
-            section("간격 Space (4pt 격자)") {
+            section(String(localized: "Spacing: Space (4-pt Grid)")) {
                 VStack(alignment: .leading, spacing: Space.xs) {
                     ForEach([("xs", Space.xs), ("s", Space.s), ("m", Space.m), ("l", Space.l), ("xl", Space.xl), ("xxl", Space.xxl), ("xxxl", Space.xxxl), ("huge", Space.huge)], id: \.0) { name, value in
                         HStack(spacing: Space.m) {
-                            Text("Space.\(name)").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 110, alignment: .leading)
-                            Text("\(Int(value))").font(.role(.secondary, design: .monospaced)).frame(width: 28, alignment: .trailing)
+                            Text(verbatim: "Space.\(name)").font(.role(.secondary, design: .monospaced)).foregroundStyle(Ink.tertiary).frame(width: 110, alignment: .leading)
+                            Text(verbatim: "\(Int(value))").font(.role(.secondary, design: .monospaced)).frame(width: 28, alignment: .trailing)
                             Brand.accent.frame(width: value * 4, height: Space.s)
                         }
                     }
                 }
             }
-            section("모서리 Radius와 아이콘 IconSize") {
+            section(String(localized: "Corners: Radius, and Icons: IconSize")) {
                 HStack(alignment: .bottom, spacing: Space.xl) {
                     ForEach([("xs", Radius.xs), ("s", Radius.s), ("m", Radius.m), ("l", Radius.l), ("xl", Radius.xl)], id: \.0) { name, value in
                         VStack(spacing: Space.xs) {
                             RoundedRectangle(cornerRadius: value, style: .continuous).fill(Fill.selected)
                                 .overlay(RoundedRectangle(cornerRadius: value, style: .continuous).strokeBorder(Line.strong, lineWidth: 1))
                                 .frame(width: 56, height: 56)
-                            Text("Radius.\(name) \(Int(value))").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
+                            Text(verbatim: "Radius.\(name) \(Int(value))").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
                         }
                     }
                     ForEach([("app", IconSize.app), ("tile", IconSize.tile), ("tileLarge", IconSize.tileLarge), ("header", IconSize.header)], id: \.0) { name, value in
                         VStack(spacing: Space.xs) {
                             IconTile(symbol: "bolt.fill", color: Tile.indigo, size: value)
-                            Text("\(name) \(Int(value))").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
+                            Text(verbatim: "\(name) \(Int(value))").font(.role(.caption, design: .monospaced)).foregroundStyle(Ink.tertiary)
                         }
                     }
                 }

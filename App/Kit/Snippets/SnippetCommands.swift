@@ -3,7 +3,7 @@ import Foundation
 /// The snippets in the launcher: one command to search only them, one per snippet, and one to
 /// make a new snippet.
 public final class SnippetCommandSource: CommandSource {
-    public static let section = CommandSection(id: "snippets", title: "스니펫", order: 4)
+    public static let section = CommandSection(id: "snippets", title: localized("Snippets"), order: 4)
     public static let newID = "snippets.new"
     public static let searchID = "snippets.search"
     /// How many lines of a snippet's text it can be found by.
@@ -15,7 +15,7 @@ public final class SnippetCommandSource: CommandSource {
     /// A snippet with variables was picked: open the fill screen.
     public var onFill: @MainActor (Snippet) -> Void = { _ in }
     public var onNew: @MainActor () -> Void = {}
-    /// 「스니펫 검색」 was run: the launcher goes on to show only snippets.
+    /// Search Snippets was run: the launcher goes on to show only snippets.
     public var onSearch: @MainActor () -> Void = {}
 
     public init(store: SnippetStore) { self.store = store }
@@ -33,11 +33,11 @@ public final class SnippetCommandSource: CommandSource {
                                if asks { self?.onFill(snippet) } else { self?.onInsert(snippet, template) }
                            })
         }
-        let new = Command(id: Self.newID, title: "스니펫 만들기", subtitle: nil,
+        let new = Command(id: Self.newID, localizedTitle: LocalizedStringResource("New Snippet", bundle: .kit), subtitle: nil,
                           keywords: ["snippet", "멘트", "문구", "상용구"], section: Self.section,
                           icon: .symbol("plus.bubble"), hotkeyID: nil,
                           run: { [weak self] in self?.onNew() })
-        let search = Command(id: Self.searchID, title: "스니펫 검색", subtitle: nil,
+        let search = Command(id: Self.searchID, localizedTitle: LocalizedStringResource("Search Snippets", bundle: .kit), subtitle: nil,
                              keywords: ["snippet", "멘트", "문구", "상용구"], section: Self.section,
                              icon: .symbol("text.magnifyingglass"), hotkeyID: Self.searchID, keepsLauncherOpen: true,
                              run: { [weak self] in self?.onSearch() })

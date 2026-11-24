@@ -14,13 +14,13 @@ public struct ResultSection: Equatable {
 public final class LauncherEngine {
     public static let perSectionLimit = 8
     public static let recentLimit = 6
-    public static let recentSection = CommandSection(id: "recent", title: "최근", order: -1)
+    public static let recentSection = CommandSection(id: "recent", title: localized("Recent"), order: -1)
 
     /// The sources searched. Set when a feature is switched on or off; `reload()` reads them.
     public var sources: [CommandSource]
     private let usage: UsageLog
     private let now: () -> Date
-    /// Sections added to the empty launcher after "최근", besides the sources' own (`CommandSource.emptyStateSections`).
+    /// Sections added to the empty launcher after Recent, besides the sources' own (`CommandSource.emptyStateSections`).
     public var emptyStateExtra: () -> [ResultSection] = { [] }
     private var all: [Command] = []
     private var byID: [String: Command] = [:]

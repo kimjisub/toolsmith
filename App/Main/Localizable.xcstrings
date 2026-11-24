@@ -1,0 +1,7359 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ %@ update failed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ update failed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@ 업데이트 실패"
+          }
+        }
+      }
+    },
+    "%@ It won’t be downloaded again automatically." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 자동으로 다시 받지 않습니다."
+          }
+        }
+      }
+    },
+    "%@ It won’t be downloaded again automatically. To try again, use Check Now in Settings › About › Updates." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 자동으로 다시 받지 않으니, 설정 › 정보 › 업데이트의 「지금 확인」 으로 다시 받아 주세요."
+          }
+        }
+      }
+    },
+    "%@ Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 설정"
+          }
+        }
+      }
+    },
+    "%@ ago" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 전"
+          }
+        }
+      }
+    },
+    "%@ and %lld more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ and %2$lld more"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 외 %2$lld개"
+          }
+        }
+      }
+    },
+    "%@ failed before, so it won’t be downloaded again automatically. Use Check Now to try again." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 은 받지 못했던 버전이라 자동으로 다시 받지 않습니다. 「지금 확인」 으로 다시 받을 수 있습니다."
+          }
+        }
+      }
+    },
+    "%@ is ready. It will be installed when the recording ends." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 이 준비됐습니다. 녹화가 끝나면 바꿉니다."
+          }
+        }
+      }
+    },
+    "%@ is the shortcut for “%@”. Move it to this action?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is the shortcut for “%2$@”. Move it to this action?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 는 「%2$@」 의 단축키입니다. 이 동작으로 옮길까요?"
+          }
+        }
+      }
+    },
+    "%@ of %@ used" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@ used"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ 중 %1$@ 사용"
+          }
+        }
+      }
+    },
+    "%@ opens the launcher and can’t be moved." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 는 입력창 열기의 단축키라 옮길 수 없습니다."
+          }
+        }
+      }
+    },
+    "%@ · Permissions: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · Permissions: %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ · %2$@ 권한"
+          }
+        }
+      }
+    },
+    "%lld Cores" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Core"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Cores"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "코어 %lld개"
+          }
+        }
+      }
+    },
+    "%lld apps" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld app"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld apps"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld개"
+          }
+        }
+      }
+    },
+    "%lld characters" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld character"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld characters"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld자"
+          }
+        }
+      }
+    },
+    "%lld cycles" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cycle"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cycles"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld회"
+          }
+        }
+      }
+    },
+    "%lld days ago" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld day ago"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld days ago"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld일 전"
+          }
+        }
+      }
+    },
+    "%lld empty fields · ↵ pastes with them left blank" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld empty field · ↵ pastes with it left blank"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld empty fields · ↵ pastes with them left blank"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "빈 칸 %lld개 · ↵ 를 누르면 비운 채로 붙습니다"
+          }
+        }
+      }
+    },
+    "%lld files" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld files"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 %lld개"
+          }
+        }
+      }
+    },
+    "%lld items" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld개"
+          }
+        }
+      }
+    },
+    "%lld more" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "외 %lld개"
+          }
+        }
+      }
+    },
+    "%lld pt" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lldpt"
+          }
+        }
+      }
+    },
+    "%lld:00" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld시"
+          }
+        }
+      }
+    },
+    "0 min" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0분"
+          }
+        }
+      }
+    },
+    "1 Minute" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1분"
+          }
+        }
+      }
+    },
+    "2  Bank of Korea" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2  한국은행"
+          }
+        }
+      }
+    },
+    "2 Minutes" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2분"
+          }
+        }
+      }
+    },
+    "30 Seconds" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30초"
+          }
+        }
+      }
+    },
+    "A battery lasts longer when it is not always kept at 100%. Charging stops at a set level." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리를 오래 쓰려면 늘 100% 로 두지 않는 것이 좋습니다. 충전을 일정 수준에서 멈춥니다."
+          }
+        }
+      }
+    },
+    "A charge limit only matters on a MacBook" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 제한은 맥북에서만 의미가 있습니다"
+          }
+        }
+      }
+    },
+    "A feature this one needs is off" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기다리는 기능이 꺼져 있습니다"
+          }
+        }
+      }
+    },
+    "A new version is installed only after its developer signature and Apple notarization are checked, and waits for a screen recording to finish. A version that can’t be downloaded or installed is reported in a notification and not downloaded again automatically." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 버전은 개발자 서명과 애플 공증을 확인한 뒤에만 설치하고, 화면 녹화 중이면 끝날 때까지 기다립니다. 받거나 바꾸지 못한 버전은 알림으로 알리고 자동으로 다시 받지 않습니다."
+          }
+        }
+      }
+    },
+    "A scrolling capture is already running." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미 스크롤 캡처 중입니다"
+          }
+        }
+      }
+    },
+    "AI Answers" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 검색"
+          }
+        }
+      }
+    },
+    "AI Answers → OpenRouter" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 검색 → OpenRouter"
+          }
+        }
+      }
+    },
+    "AI Search" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 검색"
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정보"
+          }
+        }
+      }
+    },
+    "About %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 정보"
+          }
+        }
+      }
+    },
+    "Accessibility" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "손쉬운 사용"
+          }
+        }
+      }
+    },
+    "Adapter" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터"
+          }
+        }
+      }
+    },
+    "Adapter connected" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터 연결됨"
+          }
+        }
+      }
+    },
+    "Adapter connected, not charging" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터 연결됨, 충전 안 함"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가"
+          }
+        }
+      }
+    },
+    "Add App…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 추가…"
+          }
+        }
+      }
+    },
+    "Add Effect" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "효과 더하기"
+          }
+        }
+      }
+    },
+    "Add Favorite" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기 더하기"
+          }
+        }
+      }
+    },
+    "Add Shortcut" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축키 추가"
+          }
+        }
+      }
+    },
+    "Add Snippet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫 추가"
+          }
+        }
+      }
+    },
+    "Add text you write again and again, then paste it from the launcher or with a shortcut." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자주 쓰는 멘트를 추가하면 입력창이나 단축키로 바로 붙일 수 있습니다."
+          }
+        }
+      }
+    },
+    "Adjust" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "조절"
+          }
+        }
+      }
+    },
+    "After Capturing" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찍은 뒤"
+          }
+        }
+      }
+    },
+    "AirPlay" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPlay"
+          }
+        }
+      }
+    },
+    "AirPlay devices appear here once you choose them in Control Center" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AirPlay 기기는 제어 센터에서 한 번 고르면 여기에 나옵니다"
+          }
+        }
+      }
+    },
+    "Alerts" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림음"
+          }
+        }
+      }
+    },
+    "All" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체"
+          }
+        }
+      }
+    },
+    "All items sit side by side in one menu bar slot. Clicking opens the item under the pointer." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 항목이 메뉴 막대의 한 칸 안에 나란히 놓입니다. 누른 자리의 항목이 열립니다."
+          }
+        }
+      }
+    },
+    "All of it is in %@, readable only by you." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 %@ 에 있고, 이 맥의 사용자만 읽을 수 있습니다."
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허락하기"
+          }
+        }
+      }
+    },
+    "Allow it in “Paste from Other Apps” in System Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정의 「다른 앱에서 붙여넣기」 에서 허용"
+          }
+        }
+      }
+    },
+    "Allowed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허락됨"
+          }
+        }
+      }
+    },
+    "Always On" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항상 켜짐"
+          }
+        }
+      }
+    },
+    "An OpenRouter key is needed. Press ↵ to open Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenRouter 키가 필요합니다. ↵ 를 누르면 설정이 열립니다"
+          }
+        }
+      }
+    },
+    "An OpenRouter model name. Leave empty to use the default (%@)." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenRouter 의 모델 이름. 비우면 기본값(%@)을 씁니다."
+          }
+        }
+      }
+    },
+    "Annotated image copied." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주석을 넣은 그림을 복사했습니다."
+          }
+        }
+      }
+    },
+    "Another app already uses this shortcut, so it couldn’t be registered." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 앱이 이미 쓰고 있어 등록하지 못했습니다."
+          }
+        }
+      }
+    },
+    "Answering…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "답하는 중…"
+          }
+        }
+      }
+    },
+    "Anything in braces asks for a value when you paste." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중괄호로 감싼 곳은 붙일 때 값을 묻습니다."
+          }
+        }
+      }
+    },
+    "App" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱"
+          }
+        }
+      }
+    },
+    "App Language" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 언어"
+          }
+        }
+      }
+    },
+    "App Launcher" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 실행"
+          }
+        }
+      }
+    },
+    "App/Main/Theme/Tokens.swift and App/Kit/Design/Palette.swift. Screens use only these names; the lint rejects any other value. Dark only." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App/Main/Theme/Tokens.swift 와 App/Kit/Design/Palette.swift. 화면은 이 이름만 쓰고, lint 가 그 밖의 값을 막습니다. 다크 전용."
+          }
+        }
+      }
+    },
+    "Apps" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱"
+          }
+        }
+      }
+    },
+    "Apps Not Recorded" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록하지 않을 앱"
+          }
+        }
+      }
+    },
+    "Apps Using the Most Energy" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "에너지를 많이 쓰는 앱"
+          }
+        }
+      }
+    },
+    "Apps you have not changed play as macOS plays them. When you change one app’s volume, output or effects, only that app’s audio is received, changed and played on the device you chose. Turning this feature off or quitting the app puts every app back as it was. Without permission, apps you changed go silent: allow it, or reset those apps." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "손대지 않은 앱은 macOS 가 평소대로 소리를 냅니다. 앱 하나의 볼륨, 보낼 곳, 효과를 바꾸면 그 앱의 소리만 받아 와서 바꾼 뒤 고른 장치로 냅니다. 이 기능을 끄거나 앱을 닫으면 모든 앱이 평소대로 돌아옵니다. 허락하지 않으면 바꾼 앱의 소리가 들리지 않으니, 그때는 허락하거나 그 앱의 설정을 되돌립니다."
+          }
+        }
+      }
+    },
+    "Area, window and scrolling captures with annotation, text recognition, video and GIF recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역, 창, 스크롤 캡처와 주석, 글자 인식, 영상과 GIF 녹화"
+          }
+        }
+      }
+    },
+    "Ask" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "묻기"
+          }
+        }
+      }
+    },
+    "Ask AI" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 에게 묻기"
+          }
+        }
+      }
+    },
+    "Ask a Follow-Up" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이어서 묻기"
+          }
+        }
+      }
+    },
+    "Ask anything" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무엇이든 물어보세요"
+          }
+        }
+      }
+    },
+    "Asks for: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "묻는 것: %@"
+          }
+        }
+      }
+    },
+    "Auto" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동"
+          }
+        }
+      }
+    },
+    "Average" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "평균"
+          }
+        }
+      }
+    },
+    "Average %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "평균 %@"
+          }
+        }
+      }
+    },
+    "Average number of tasks waiting to run over 1, 5 and 15 minutes" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1분, 5분, 15분 동안 실행을 기다린 작업 수의 평균"
+          }
+        }
+      }
+    },
+    "Back" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "돌아가기"
+          }
+        }
+      }
+    },
+    "Battery" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리"
+          }
+        }
+      }
+    },
+    "Battery %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 %@"
+          }
+        }
+      }
+    },
+    "Battery Charging" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 충전"
+          }
+        }
+      }
+    },
+    "Battery Level" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 잔량"
+          }
+        }
+      }
+    },
+    "Battery Temperature" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 온도"
+          }
+        }
+      }
+    },
+    "Brand and Status" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "브랜드와 상태"
+          }
+        }
+      }
+    },
+    "By App" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱별"
+          }
+        }
+      }
+    },
+    "By Hour" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시간대별"
+          }
+        }
+      }
+    },
+    "CPU %@, power %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "CPU %1$@, power %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU %1$@, 전력 %2$@"
+          }
+        }
+      }
+    },
+    "CPU & Other" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU·기타"
+          }
+        }
+      }
+    },
+    "CPU Temperature" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU 온도"
+          }
+        }
+      }
+    },
+    "CPU Temperature and Power" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU 온도와 전력"
+          }
+        }
+      }
+    },
+    "CPU Usage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU 사용률"
+          }
+        }
+      }
+    },
+    "Call it up from any app with a shortcut to find and run apps, commands and history" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어느 앱에서든 단축키로 불러 앱, 명령, 기록을 찾아 실행합니다"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "Capture" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처"
+          }
+        }
+      }
+    },
+    "Capture Area" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역 캡처"
+          }
+        }
+      }
+    },
+    "Capture Full Screen" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 화면 캡처"
+          }
+        }
+      }
+    },
+    "Capture Window" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창 캡처"
+          }
+        }
+      }
+    },
+    "Capture an area, a window or the whole screen. Each capture appears at the bottom left, where you can copy it, save it, pin it or recognize its text." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면의 영역, 창, 전체를 찍습니다. 찍은 그림은 왼쪽 아래에 떠서 복사, 저장, 고정, 글자 읽기를 고를 수 있습니다."
+          }
+        }
+      }
+    },
+    "Capture and recording. The app reopens after you turn it on" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처와 녹화. 켠 뒤 앱을 다시 엽니다"
+          }
+        }
+      }
+    },
+    "Capturing the screen needs Screen Recording permission. Allow it in Capture in Settings." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면을 찍으려면 화면 기록 권한이 필요합니다. 설정의 캡처에서 허락해 주세요."
+          }
+        }
+      }
+    },
+    "Center" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데"
+          }
+        }
+      }
+    },
+    "Change" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꾸기"
+          }
+        }
+      }
+    },
+    "Change the output, input and alert devices, and each app's volume, output and effects" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력, 입력, 알림음 장치와 앱마다의 볼륨, 보낼 곳, 효과를 바꿉니다"
+          }
+        }
+      }
+    },
+    "Changed Apps" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꾼 앱"
+          }
+        }
+      }
+    },
+    "Change…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바꾸기…"
+          }
+        }
+      }
+    },
+    "Charge" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전"
+          }
+        }
+      }
+    },
+    "Charge Limit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 제한"
+          }
+        }
+      }
+    },
+    "Charge limit paused" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 제한 잠시 꺼짐"
+          }
+        }
+      }
+    },
+    "Charge to 100%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "100%까지 충전"
+          }
+        }
+      }
+    },
+    "Charging" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 중"
+          }
+        }
+      }
+    },
+    "Charging normally" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "평소대로 충전"
+          }
+        }
+      }
+    },
+    "Charging paused" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 보류 중"
+          }
+        }
+      }
+    },
+    "Charging stopped" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 멈춤"
+          }
+        }
+      }
+    },
+    "Charging stops when the battery reaches this level and starts again when it drops %lld percentage points below." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리가 이만큼 차면 충전을 멈추고, %lld%%p 아래로 내려가면 다시 충전합니다."
+          }
+        }
+      }
+    },
+    "Charging to 100% this once" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이번만 100%까지 충전하는 중"
+          }
+        }
+      }
+    },
+    "Charging up to %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%까지만 충전"
+          }
+        }
+      }
+    },
+    "Check Again" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 확인"
+          }
+        }
+      }
+    },
+    "Check Now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 확인"
+          }
+        }
+      }
+    },
+    "Checks every 6 hours and installs a new version, then reopens" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6시간마다 확인해 새 버전이 있으면 받아서 바꾸고 다시 켭니다"
+          }
+        }
+      }
+    },
+    "Choose" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고르기"
+          }
+        }
+      }
+    },
+    "Choose Features" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기능 고르기"
+          }
+        }
+      }
+    },
+    "Choose the items the menu bar shows, their order and their style" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대에 보일 항목, 순서, 모양을 고릅니다"
+          }
+        }
+      }
+    },
+    "Choose the order and style of CPU, memory, disk, network, battery, CPU temperature and power" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU, 메모리, 디스크, 네트워크, 배터리, CPU 온도와 전력의 순서와 모양을 고릅니다"
+          }
+        }
+      }
+    },
+    "Choose what the features you turned on show in the menu bar. The top of the list is the left of the menu bar. Click an item to open its feature; right-click for the app menu." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜 둔 기능이 메뉴 막대에 무엇을 보일지 고릅니다. 위가 메뉴 막대의 왼쪽입니다. 항목을 누르면 그 기능이 열리고, 오른쪽 클릭하면 앱 메뉴가 열립니다."
+          }
+        }
+      }
+    },
+    "Clear" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기"
+          }
+        }
+      }
+    },
+    "Clear All" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 지우기"
+          }
+        }
+      }
+    },
+    "Clear All but Pinned" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고정한 것만 남기고 지우기"
+          }
+        }
+      }
+    },
+    "Clear All…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 지우기…"
+          }
+        }
+      }
+    },
+    "Clear Everything" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전부 지우기"
+          }
+        }
+      }
+    },
+    "Clear History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 지우기"
+          }
+        }
+      }
+    },
+    "Clear all screen time history?" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 시간 기록을 모두 지울까요?"
+          }
+        }
+      }
+    },
+    "Clear clipboard history?" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드 기록을 지울까요?"
+          }
+        }
+      }
+    },
+    "Clear the system monitor history?" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 모니터 기록을 지울까요?"
+          }
+        }
+      }
+    },
+    "Clear…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기…"
+          }
+        }
+      }
+    },
+    "Click a row and press the keys you want. Esc cancels, ⌫ removes the shortcut. Settings → Shortcuts lists every shortcut at once." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "줄을 누르고 원하는 키를 누릅니다. esc 는 취소, ⌫ 는 단축키 지우기입니다. 모든 단축키는 설정의 단축키에서 한눈에 봅니다."
+          }
+        }
+      }
+    },
+    "Click a row and press the keys you want. Esc cancels, ⌫ removes the shortcut. Shortcuts of features that are off aren’t listed and come back when you turn them on." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "줄을 누르고 원하는 키를 누르면 바뀝니다. esc 는 취소, ⌫ 는 단축키 지우기입니다. 꺼 둔 기능의 단축키는 여기에 없고, 다시 켜면 돌아옵니다."
+          }
+        }
+      }
+    },
+    "Click a value in the menu bar to open the dashboard. Hold the pointer over a card to open its details beside it." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대의 수치를 누르면 대시보드가 열리고, 카드에 포인터를 올리면 자세한 내용이 옆에 열립니다."
+          }
+        }
+      }
+    },
+    "Click a window to select it · Space for an area · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창을 눌러 고르기 · Space 영역으로 · esc 취소"
+          }
+        }
+      }
+    },
+    "Click a window to select it · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창을 눌러 고르기 · esc 취소"
+          }
+        }
+      }
+    },
+    "Click the speaker in the menu bar, or choose “Open Sound” in the launcher. Whether the speaker shows in the menu bar, and with the volume, is set in Menu Bar. The launcher also lists commands that switch the output and input device, and your saved Quick Configs." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대의 스피커를 누르거나 입력창에서 「소리 조절 열기」 로 엽니다. 스피커를 메뉴 막대에 둘지, 볼륨 숫자를 함께 보일지는 「메뉴 막대」 칸에서 정합니다. 입력창에는 출력, 입력 장치를 바로 바꾸는 명령과 저장한 Quick Config 도 나옵니다."
+          }
+        }
+      }
+    },
+    "Click to paste into the app you were using" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "누르면 쓰던 앱에 붙여 넣습니다"
+          }
+        }
+      }
+    },
+    "Clipboard" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드"
+          }
+        }
+      }
+    },
+    "Clipboard Access" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드 읽기"
+          }
+        }
+      }
+    },
+    "Clipboard History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드 기록"
+          }
+        }
+      }
+    },
+    "Clipboard, screen time and system monitor history stay on this Mac and are never sent anywhere. Choose what to keep now, and change it later in Settings → Privacy & Storage." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드, 사용 시간, 시스템 모니터 기록은 이 맥에만 남고 어디로도 보내지 않습니다. 무엇을 남길지 지금 고르고, 나중에 설정 → 개인정보와 저장 공간 에서 바꿉니다."
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        }
+      }
+    },
+    "Collecting…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모으는 중…"
+          }
+        }
+      }
+    },
+    "Color Format" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "색 표기"
+          }
+        }
+      }
+    },
+    "Combine into One Slot" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한 칸으로 묶기"
+          }
+        }
+      }
+    },
+    "Compressed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "압축됨"
+          }
+        }
+      }
+    },
+    "Condition" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 상태"
+          }
+        }
+      }
+    },
+    "Connected" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결됨"
+          }
+        }
+      }
+    },
+    "Connected Devices" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결된 기기"
+          }
+        }
+      }
+    },
+    "Connection" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결"
+          }
+        }
+      }
+    },
+    "Content" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내용"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계속"
+          }
+        }
+      }
+    },
+    "Continue Without Permission" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "권한 없이 계속"
+          }
+        }
+      }
+    },
+    "Converting to GIF…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF 로 바꾸는 중…"
+          }
+        }
+      }
+    },
+    "Copied %@ (points)." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (포인트) 을 복사했습니다."
+          }
+        }
+      }
+    },
+    "Copied %@." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 을 복사했습니다."
+          }
+        }
+      }
+    },
+    "Copied %lld characters of text." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Copied %lld character of text."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Copied %lld characters of text."
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 %lld자를 복사했습니다."
+          }
+        }
+      }
+    },
+    "Copied. Press ⌘V to paste. (With Accessibility access it pastes right away.)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사했습니다. ⌘V 로 붙여 넣으세요. (손쉬운 사용 권한을 주면 바로 붙습니다)"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사"
+          }
+        }
+      }
+    },
+    "Copy Answer" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "답 복사"
+          }
+        }
+      }
+    },
+    "Copy Text from Screen" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 인식해 복사"
+          }
+        }
+      }
+    },
+    "Copy and Close (↵)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사하고 닫기 (↵)"
+          }
+        }
+      }
+    },
+    "Copy to Clipboard After Capturing" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찍자마자 클립보드에 복사"
+          }
+        }
+      }
+    },
+    "Core %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Core %1$lld: %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "코어 %1$lld: %2$@"
+          }
+        }
+      }
+    },
+    "Cores" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "코어"
+          }
+        }
+      }
+    },
+    "Corners: Radius, and Icons: IconSize" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모서리 Radius와 아이콘 IconSize"
+          }
+        }
+      }
+    },
+    "Couldn’t capture the screen: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면을 찍지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t change launch at login: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 실행을 바꾸지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t change the charge limit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 제한을 바꾸지 못했습니다"
+          }
+        }
+      }
+    },
+    "Couldn’t check: %@ Will try again at the next check." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인하지 못했습니다: %@ 다음에 다시 확인합니다."
+          }
+        }
+      }
+    },
+    "Couldn’t connect to the AI: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI 에 연결하지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t connect to the fan helper." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬 도우미와 연결하지 못했습니다."
+          }
+        }
+      }
+    },
+    "Couldn’t connect to the helper: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도우미에 연결하지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t control the fans (%@)." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬을 조절하지 못했습니다 (%@)."
+          }
+        }
+      }
+    },
+    "Couldn’t convert to GIF." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF 로 바꾸지 못했습니다"
+          }
+        }
+      }
+    },
+    "Couldn’t create the GIF file." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF 파일을 만들지 못했습니다"
+          }
+        }
+      }
+    },
+    "Couldn’t create the audio route (%d)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 경로를 만들지 못했습니다 (%d)"
+          }
+        }
+      }
+    },
+    "Couldn’t download: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t find the output device" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 장치를 찾지 못했습니다"
+          }
+        }
+      }
+    },
+    "Couldn’t install %@ (%@ isn’t writable)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Couldn’t install %1$@ (%2$@ isn’t writable)."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 으로 바꾸지 못했습니다(%2$@ 에 쓸 수 없음)."
+          }
+        }
+      }
+    },
+    "Couldn’t install the helper: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도우미를 설치하지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t read the fans’ speed range." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬의 회전수 범위를 읽지 못했습니다."
+          }
+        }
+      }
+    },
+    "Couldn’t receive the app’s audio (%d)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 소리를 받아 오지 못했습니다 (%d)"
+          }
+        }
+      }
+    },
+    "Couldn’t remove the helper: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도우미를 지우지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t save in the chosen format or folder, so the video was saved to the Desktop" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원하신 형식이나 폴더로 저장하지 못해 데스크탑에 영상으로 저장했습니다"
+          }
+        }
+      }
+    },
+    "Couldn’t save the image." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그림을 저장하지 못했습니다."
+          }
+        }
+      }
+    },
+    "Couldn’t save the key." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키를 저장하지 못했습니다."
+          }
+        }
+      }
+    },
+    "Couldn’t save: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장하지 못했습니다: %@"
+          }
+        }
+      }
+    },
+    "Couldn’t start the audio route (%d)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 경로를 시작하지 못했습니다 (%d)"
+          }
+        }
+      }
+    },
+    "Couldn’t stitch the pieces together." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이어 붙이지 못했습니다"
+          }
+        }
+      }
+    },
+    "Create" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "만들기"
+          }
+        }
+      }
+    },
+    "Current capacity compared with when new" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새것일 때 용량과 견준 지금 용량"
+          }
+        }
+      }
+    },
+    "Custom" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접 맞춤"
+          }
+        }
+      }
+    },
+    "Customize Menu Bar" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대 꾸미기"
+          }
+        }
+      }
+    },
+    "Cycle Count" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 사이클"
+          }
+        }
+      }
+    },
+    "Data Folder" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장 폴더"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기"
+          }
+        }
+      }
+    },
+    "Delete Group" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "묶음 지우기"
+          }
+        }
+      }
+    },
+    "Delete the snippet “%@”?" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」 스니펫을 지울까요?"
+          }
+        }
+      }
+    },
+    "Deletes all screen time recorded so far" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금까지의 사용 시간을 모두 지웁니다"
+          }
+        }
+      }
+    },
+    "Delete…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지우기…"
+          }
+        }
+      }
+    },
+    "Design Capacity" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설계 용량"
+          }
+        }
+      }
+    },
+    "Design Tokens" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "디자인 토큰"
+          }
+        }
+      }
+    },
+    "Development builds and apps you build yourself don’t check for updates. Only signed releases do." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개발 빌드와 직접 빌드한 앱은 업데이트를 확인하지 않습니다. 서명된 배포판에서만 동작합니다."
+          }
+        }
+      }
+    },
+    "Development builds don’t check for updates." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개발 빌드는 업데이트를 확인하지 않습니다."
+          }
+        }
+      }
+    },
+    "Device" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "장치"
+          }
+        }
+      }
+    },
+    "Disk Reads and Writes" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "디스크 읽기와 쓰기"
+          }
+        }
+      }
+    },
+    "Disk read %@, write %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Disk read %1$@, write %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "디스크 읽기 %1$@, 쓰기 %2$@"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "완료"
+          }
+        }
+      }
+    },
+    "Double-click or press esc to close" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 번 누르거나 esc 로 닫기"
+          }
+        }
+      }
+    },
+    "Download" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다운로드"
+          }
+        }
+      }
+    },
+    "Downloading %@…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 을 받는 중입니다."
+          }
+        }
+      }
+    },
+    "Drag to measure · esc to close" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끌어서 크기 재기 · esc 닫기"
+          }
+        }
+      }
+    },
+    "Drag to reorder. If nothing is shown, the app icon appears on its own. Items of features that are off come back here when you turn them on." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끌어서 순서를 바꿉니다. 아무것도 보이지 않게 하면 앱 아이콘이 저절로 나타납니다. 꺼 둔 기능의 항목은 기능을 켜면 여기에 다시 나옵니다."
+          }
+        }
+      }
+    },
+    "Drag to select an area · Space to pick a window · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끌어서 영역 고르기 · Space 창 고르기 · esc 취소"
+          }
+        }
+      }
+    },
+    "Drag to select the area to read text from · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자를 읽을 영역을 끌어서 고르기 · esc 취소"
+          }
+        }
+      }
+    },
+    "Drag to select the area to record as GIF · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF 로 녹화할 영역을 끌어서 고르기 · esc 취소"
+          }
+        }
+      }
+    },
+    "Drag to select the area to record · esc to cancel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화할 영역을 끌어서 고르기 · esc 취소"
+          }
+        }
+      }
+    },
+    "Drag to select the area to scroll · esc to finish while capturing" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스크롤할 영역을 끌어서 고르기 · 찍는 동안 esc 로 끝내기"
+          }
+        }
+      }
+    },
+    "Each item gets its own menu bar slot, in the order of this list." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목마다 메뉴 막대에 따로 칸을 둡니다. 순서는 이 목록을 따릅니다."
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집"
+          }
+        }
+      }
+    },
+    "Edit Annotations" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주석 편집"
+          }
+        }
+      }
+    },
+    "Effects and options" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "효과와 옵션"
+          }
+        }
+      }
+    },
+    "Energy Impact" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "에너지 영향"
+          }
+        }
+      }
+    },
+    "Energy Mode" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "에너지 모드"
+          }
+        }
+      }
+    },
+    "Enter a new key to replace it" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 키를 넣으면 바뀝니다"
+          }
+        }
+      }
+    },
+    "Every feature can be found by name in the launcher. The ones you use often have shortcuts, which you can change in Settings." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 기능은 입력창에서 이름으로 찾을 수 있습니다. 자주 쓰는 것에는 단축키가 있고, 설정에서 바꿉니다."
+          }
+        }
+      }
+    },
+    "Everything %@ keeps on this Mac and everything it sends out. Your history is never sent to any server." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 이 이 맥에 남기는 것과 밖으로 보내는 것 전부입니다. 기록을 어느 서버로도 보내지 않습니다."
+          }
+        }
+      }
+    },
+    "Everything else starts from the launcher, so this one can’t be empty." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 모든 것은 입력창에서 시작합니다. 비워 둘 수 없습니다."
+          }
+        }
+      }
+    },
+    "Example" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예시"
+          }
+        }
+      }
+    },
+    "Fan %@ rpm" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬 %@ rpm"
+          }
+        }
+      }
+    },
+    "Fan %lld" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬 %lld"
+          }
+        }
+      }
+    },
+    "Fans" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬"
+          }
+        }
+      }
+    },
+    "Fans stopped" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬 멈춤"
+          }
+        }
+      }
+    },
+    "Features" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기능"
+          }
+        }
+      }
+    },
+    "Features and Menu Bar" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기능과 메뉴 막대"
+          }
+        }
+      }
+    },
+    "File" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일"
+          }
+        }
+      }
+    },
+    "Fills and Lines" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "면과 선"
+          }
+        }
+      }
+    },
+    "Find it by name,\ncall it with a key" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름으로 찾고\n키로 부릅니다"
+          }
+        }
+      }
+    },
+    "Finds installed apps by name and opens them" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치된 앱을 이름으로 찾아 엽니다"
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끝내기"
+          }
+        }
+      }
+    },
+    "First contact" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 연락 인사"
+          }
+        }
+      }
+    },
+    "Flat (Off)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "평평하게 (꺼짐)"
+          }
+        }
+      }
+    },
+    "Follows the system unless you choose one" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고르지 않으면 시스템 언어를 따릅니다"
+          }
+        }
+      }
+    },
+    "Free (including cached files)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여유 (캐시된 파일 포함)"
+          }
+        }
+      }
+    },
+    "Frequency" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주파수"
+          }
+        }
+      }
+    },
+    "GPU Usage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPU 사용"
+          }
+        }
+      }
+    },
+    "Gap Between Windows" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창 사이 간격"
+          }
+        }
+      }
+    },
+    "General" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일반"
+          }
+        }
+      }
+    },
+    "Get AI answers backed by a web search in the launcher. Questions are sent only when you ask" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창에서 웹 검색이 붙은 AI 답을 받습니다. 물을 때만 질문을 보냅니다"
+          }
+        }
+      }
+    },
+    "Get Started" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작하기"
+          }
+        }
+      }
+    },
+    "Get Started with %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 시작하기"
+          }
+        }
+      }
+    },
+    "Goes back to Auto when the app quits or the temperature passes %lld°" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱을 끄거나 %lld° 를 넘으면 자동으로 돌아갑니다"
+          }
+        }
+      }
+    },
+    "Goes over permissions and features again in one place" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "권한과 기능을 한 번에 다시 봅니다"
+          }
+        }
+      }
+    },
+    "Goes over permissions and features from the start" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "권한과 기능을 처음부터 다시 봅니다"
+          }
+        }
+      }
+    },
+    "Going out? Charge to full this once" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "외출 전이라면 이번만 끝까지"
+          }
+        }
+      }
+    },
+    "Graphics" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그래픽"
+          }
+        }
+      }
+    },
+    "Graphics Processor Usage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그래픽 처리 장치 사용"
+          }
+        }
+      }
+    },
+    "Great. This key opens the launcher." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "좋습니다. 이 키가 입력창을 엽니다."
+          }
+        }
+      }
+    },
+    "Health" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "건강"
+          }
+        }
+      }
+    },
+    "Health %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "건강 %@"
+          }
+        }
+      }
+    },
+    "Held at the limit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제한에서 멈춤"
+          }
+        }
+      }
+    },
+    "Helper" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도우미"
+          }
+        }
+      }
+    },
+    "Hi {name}, this is {my name}.\nI’m reaching out about the {position:backend} role." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{이름}님 안녕하세요, {내 이름}입니다.\n{포지션:백엔드} 포지션으로 연락드립니다."
+          }
+        }
+      }
+    },
+    "High" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "높음"
+          }
+        }
+      }
+    },
+    "History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록"
+          }
+        }
+      }
+    },
+    "Hottest of %lld sensors" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hottest of %lld sensor"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hottest of %lld sensors"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "센서 %lld개 중 가장 뜨거운 값"
+          }
+        }
+      }
+    },
+    "How App Sound Is Changed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 소리를 바꾸는 방법"
+          }
+        }
+      }
+    },
+    "How a color from the color picker is copied" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "색 고르기로 고른 색을 복사할 때의 모양"
+          }
+        }
+      }
+    },
+    "How long you used each app. Deleted after 90 days" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어느 앱을 얼마나 썼는지. 90일 뒤 지웁니다"
+          }
+        }
+      }
+    },
+    "If you don’t have one, skip this and add it later in AI Search in Settings." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "없으면 건너뛰고 나중에 설정의 AI 검색에서 넣습니다."
+          }
+        }
+      }
+    },
+    "Image" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지"
+          }
+        }
+      }
+    },
+    "Image %lld×%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Image %1$lld×%2$lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 %1$lld×%2$lld"
+          }
+        }
+      }
+    },
+    "Image copied." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그림을 복사했습니다."
+          }
+        }
+      }
+    },
+    "In this Mac’s keychain" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥의 키체인에 있습니다"
+          }
+        }
+      }
+    },
+    "In use" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 쓰는 장치"
+          }
+        }
+      }
+    },
+    "Include Mac Audio" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥의 소리 넣기"
+          }
+        }
+      }
+    },
+    "Include Microphone" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마이크 넣기"
+          }
+        }
+      }
+    },
+    "Include ⌃, ⌥ or ⌘." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌃, ⌥, ⌘ 중 하나를 함께 누르세요."
+          }
+        }
+      }
+    },
+    "Ink.disabled (not for reading)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ink.disabled (읽는 글자 아님)"
+          }
+        }
+      }
+    },
+    "Input" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력"
+          }
+        }
+      }
+    },
+    "Input: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력: %@"
+          }
+        }
+      }
+    },
+    "Install" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치"
+          }
+        }
+      }
+    },
+    "Installed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치되어 있습니다"
+          }
+        }
+      }
+    },
+    "Installed %@. Reopening." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 으로 바꿨습니다. 다시 켭니다."
+          }
+        }
+      }
+    },
+    "Installing asks once for an administrator password or approval" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치하면 관리자 암호나 허용을 한 번 묻습니다"
+          }
+        }
+      }
+    },
+    "It is too hot right now to control the fans manually." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금은 온도가 높아 팬을 직접 조절할 수 없습니다."
+          }
+        }
+      }
+    },
+    "Items" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목"
+          }
+        }
+      }
+    },
+    "Its shortcut is deleted too. You can’t undo this." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫과 함께 걸어 둔 단축키도 지워지며, 되돌릴 수 없습니다."
+          }
+        }
+      }
+    },
+    "Just Copied" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "방금 복사한 것"
+          }
+        }
+      }
+    },
+    "Keep History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보관 기간"
+          }
+        }
+      }
+    },
+    "Keep Open" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "열어 두기"
+          }
+        }
+      }
+    },
+    "Keep on only the features you use" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰는 기능만 켜 둡니다"
+          }
+        }
+      }
+    },
+    "Keeping what you copy in clipboard history. The history stays on this Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사한 것을 클립보드 기록에 남기기. 기록은 이 맥에만 있습니다"
+          }
+        }
+      }
+    },
+    "Keeps what you copy so you can find and paste it again. Stays on this Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사한 것을 쌓아 두었다가 찾아 다시 붙입니다. 이 맥에만 남습니다"
+          }
+        }
+      }
+    },
+    "Kept on This Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥에 남기는 것"
+          }
+        }
+      }
+    },
+    "Key Needed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키 필요"
+          }
+        }
+      }
+    },
+    "Key Saved" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장되어 있습니다"
+          }
+        }
+      }
+    },
+    "Kind" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "종류"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어"
+          }
+        }
+      }
+    },
+    "Last 7 Days" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최근 7일"
+          }
+        }
+      }
+    },
+    "Last Checked" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막 확인"
+          }
+        }
+      }
+    },
+    "Launch at Login" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인할 때 자동 실행"
+          }
+        }
+      }
+    },
+    "Launch at login takes effect once the app is installed in the Applications folder." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동 실행은 응용 프로그램 폴더에 설치한 뒤에 적용됩니다."
+          }
+        }
+      }
+    },
+    "Launcher" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창"
+          }
+        }
+      }
+    },
+    "Layout" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배치"
+          }
+        }
+      }
+    },
+    "Le" : {
+      "comment" : "A query being typed in the launcher picture; the first row (Left Half) matches it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼"
+          }
+        }
+      }
+    },
+    "Left" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽"
+          }
+        }
+      }
+    },
+    "Left %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 %lld%%"
+          }
+        }
+      }
+    },
+    "Left Half" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왼쪽 절반"
+          }
+        }
+      }
+    },
+    "Limit Again" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 제한"
+          }
+        }
+      }
+    },
+    "Link" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "링크"
+          }
+        }
+      }
+    },
+    "Load Average" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "평균 부하"
+          }
+        }
+      }
+    },
+    "Load Saved Sound Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Config 불러오기"
+          }
+        }
+      }
+    },
+    "Local IP" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내부 IP"
+          }
+        }
+      }
+    },
+    "Location" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치"
+          }
+        }
+      }
+    },
+    "Look Up Public IP Address" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공용 IP 주소 확인"
+          }
+        }
+      }
+    },
+    "Looking up…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알아보는 중…"
+          }
+        }
+      }
+    },
+    "Lost the connection to the fan helper. The fans may be stuck at a fixed speed: turn Manual on again and back to Auto, or restart the Mac." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팬 도우미와 연결이 끊겼습니다. 팬이 고정된 채일 수 있으니, 「직접」 을 다시 켰다가 「자동」 으로 돌리거나 맥을 재시동하세요."
+          }
+        }
+      }
+    },
+    "Low" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "낮음"
+          }
+        }
+      }
+    },
+    "Lowering to %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%까지 내리는 중"
+          }
+        }
+      }
+    },
+    "Mac utilities you switch on as you need them: launcher, clipboard, window snapping, capture, AI answers, system monitor and sound control in one app." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필요한 기능만 켜서 쓰는 맥 도구. 입력창, 클립보드, 화면 나누기, 캡처, AI 검색, 시스템 모니터, 소리 조절을 한 앱에서 씁니다."
+          }
+        }
+      }
+    },
+    "Magic Boost: raises quiet sounds and leaves loud ones as they are" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magic Boost: 작은 소리를 키우고 큰 소리는 그대로 둡니다"
+          }
+        }
+      }
+    },
+    "Manage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "관리"
+          }
+        }
+      }
+    },
+    "Manual" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접"
+          }
+        }
+      }
+    },
+    "Maximum Capacity" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최대 용량"
+          }
+        }
+      }
+    },
+    "Measure" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "크기 재기"
+          }
+        }
+      }
+    },
+    "Memory" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리"
+          }
+        }
+      }
+    },
+    "Memory %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리 %@"
+          }
+        }
+      }
+    },
+    "Memory Pressure" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리 압력"
+          }
+        }
+      }
+    },
+    "Memory Usage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리 사용률"
+          }
+        }
+      }
+    },
+    "Memory Used" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모리 사용"
+          }
+        }
+      }
+    },
+    "Memory in Use" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰는 메모리"
+          }
+        }
+      }
+    },
+    "Menu Bar" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대"
+          }
+        }
+      }
+    },
+    "Menu Bar Preview" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대 미리보기"
+          }
+        }
+      }
+    },
+    "Menu Bar Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대 설정"
+          }
+        }
+      }
+    },
+    "Microphone" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마이크"
+          }
+        }
+      }
+    },
+    "Model" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모델"
+          }
+        }
+      }
+    },
+    "Move" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옮기기"
+          }
+        }
+      }
+    },
+    "Move Down in Favorites" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에서 아래로"
+          }
+        }
+      }
+    },
+    "Move Up in Favorites" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에서 위로"
+          }
+        }
+      }
+    },
+    "Moves windows to halves, thirds and corners of the screen" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창을 화면의 절반, 3분의 1, 귀퉁이로 옮깁니다"
+          }
+        }
+      }
+    },
+    "Moving and snapping windows, and pasting what you pick straight into the app you were using" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창 옮기기와 화면 나누기, 고른 항목을 쓰던 앱에 바로 붙여넣기"
+          }
+        }
+      }
+    },
+    "Moving windows and capturing the screen need your Mac’s permission. Only Accessibility is required; the others are needed only when you use those features. You can also turn them on later in Settings → Permissions." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창을 옮기고 화면을 찍으려면 맥이 허락해야 합니다. 꼭 필요한 것은 손쉬운 사용 하나이고, 나머지는 그 기능을 쓸 때만 필요합니다. 나중에 설정 → 권한 에서도 켭니다."
+          }
+        }
+      }
+    },
+    "Moving windows needs Accessibility permission. Allow it in Settings → Permissions." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창을 옮기려면 손쉬운 사용 권한이 필요합니다. 설정의 권한에서 허락해 주세요."
+          }
+        }
+      }
+    },
+    "Moving windows, pasting directly" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "창 옮기기, 바로 붙여넣기"
+          }
+        }
+      }
+    },
+    "Mute" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음소거"
+          }
+        }
+      }
+    },
+    "Mute For" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "잠시 음소거"
+          }
+        }
+      }
+    },
+    "Mutes the sound for a set time, then fades it back in" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정한 시간 동안 소리를 끄고, 끝나면 서서히 다시 켭니다"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름"
+          }
+        }
+      }
+    },
+    "Name (for example, Speakers and Headphones)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 (예: 스피커와 헤드폰)"
+          }
+        }
+      }
+    },
+    "Name for these settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 설정의 이름"
+          }
+        }
+      }
+    },
+    "Name needs Location access" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름은 위치 권한이 필요"
+          }
+        }
+      }
+    },
+    "Needs attention" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인 필요"
+          }
+        }
+      }
+    },
+    "Network" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크"
+          }
+        }
+      }
+    },
+    "Network Download" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 다운로드"
+          }
+        }
+      }
+    },
+    "Network Speed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 속도"
+          }
+        }
+      }
+    },
+    "Network details ask Cloudflare for it" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 자세히 보기에서 Cloudflare 에 묻습니다"
+          }
+        }
+      }
+    },
+    "Neural Engine" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "뉴럴 엔진"
+          }
+        }
+      }
+    },
+    "Never sent. When off, the app in front isn’t recorded" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내지는 않습니다. 끄면 앞에 있는 앱을 기록하지 않습니다"
+          }
+        }
+      }
+    },
+    "New Output Group" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 묶음 만들기"
+          }
+        }
+      }
+    },
+    "New Output Group…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 묶음 만들기…"
+          }
+        }
+      }
+    },
+    "New Snippet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 스니펫"
+          }
+        }
+      }
+    },
+    "Next Field" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음 칸"
+          }
+        }
+      }
+    },
+    "No Apps to Add" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더할 수 있는 앱이 없습니다"
+          }
+        }
+      }
+    },
+    "No Effects to Add" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더할 효과가 없습니다"
+          }
+        }
+      }
+    },
+    "No Matches" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾는 것이 없습니다"
+          }
+        }
+      }
+    },
+    "No Matching Actions" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "찾는 동작이 없습니다"
+          }
+        }
+      }
+    },
+    "No Results" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "결과 없음"
+          }
+        }
+      }
+    },
+    "No Snippets Yet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 스니펫이 없습니다"
+          }
+        }
+      }
+    },
+    "No actions can have a shortcut yet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축키를 줄 수 있는 동작이 아직 없습니다"
+          }
+        }
+      }
+    },
+    "No answer came back." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "답이 오지 않았습니다."
+          }
+        }
+      }
+    },
+    "No apps are playing sound. Apps appear here when they play, and favorites are always shown." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 소리를 내는 앱이 없습니다. 앱이 소리를 내면 여기에 나오고, 즐겨찾기한 앱은 늘 보입니다."
+          }
+        }
+      }
+    },
+    "No charge limit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전 제한 없음"
+          }
+        }
+      }
+    },
+    "No connection" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결 없음"
+          }
+        }
+      }
+    },
+    "No longer used" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더 이상 쓰지 않습니다"
+          }
+        }
+      }
+    },
+    "No text found." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자를 찾지 못했습니다."
+          }
+        }
+      }
+    },
+    "No variables." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변수가 없습니다."
+          }
+        }
+      }
+    },
+    "No way to control charging was found in this Mac’s power management chip" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥의 전원 관리 칩에서 충전을 다룰 방법을 찾지 못했습니다"
+          }
+        }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "없음"
+          }
+        }
+      }
+    },
+    "None of the features you turned on need a permission." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜 둔 기능 중에 권한이 필요한 것이 없습니다."
+          }
+        }
+      }
+    },
+    "Not Sent (System Output)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내지 않음 (시스템 출력)"
+          }
+        }
+      }
+    },
+    "Not Set" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 없습니다"
+          }
+        }
+      }
+    },
+    "Not available in this build" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 빌드에서는 쓸 수 없습니다"
+          }
+        }
+      }
+    },
+    "Not checked yet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 확인하지 않았습니다"
+          }
+        }
+      }
+    },
+    "Not connected" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결 안 됨"
+          }
+        }
+      }
+    },
+    "Not installed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설치되어 있지 않습니다"
+          }
+        }
+      }
+    },
+    "Not needed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필요 없습니다"
+          }
+        }
+      }
+    },
+    "Not recording." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화 중이 아닙니다."
+          }
+        }
+      }
+    },
+    "Not saved yet. It’s saved once it has both a name and text." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 저장되지 않았습니다. 이름과 내용을 모두 쓰면 저장됩니다."
+          }
+        }
+      }
+    },
+    "Not saved: the name or the text is empty. Fill in both to save." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름이나 내용이 비어 있어 저장되지 않았습니다. 둘 다 채워야 저장됩니다."
+          }
+        }
+      }
+    },
+    "Not sent" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내지 않음"
+          }
+        }
+      }
+    },
+    "Nothing Copied Yet" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 복사한 것이 없습니다"
+          }
+        }
+      }
+    },
+    "Nothing copied yet. Whatever you copy appears here." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 복사한 것이 없습니다. 무언가를 복사하면 여기에 쌓입니다."
+          }
+        }
+      }
+    },
+    "Nothing recorded yet." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아직 기록이 없습니다."
+          }
+        }
+      }
+    },
+    "Now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끔"
+          }
+        }
+      }
+    },
+    "Old Helper" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예전 도우미"
+          }
+        }
+      }
+    },
+    "On" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜짐"
+          }
+        }
+      }
+    },
+    "On battery" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리 사용 중"
+          }
+        }
+      }
+    },
+    "One key\nfor everything" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키 하나로\n전부 부릅니다"
+          }
+        }
+      }
+    },
+    "One-minute averages of numbers like CPU, memory, network and power. Deleted after 28 days" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU, 메모리, 네트워크, 전력 같은 숫자의 1분 평균. 28일 뒤 지웁니다"
+          }
+        }
+      }
+    },
+    "Only when you ask the AI in the launcher, and only that question. Answers aren’t saved" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창에서 AI 에게 물을 때만, 그 질문을 보냅니다. 답은 저장하지 않습니다"
+          }
+        }
+      }
+    },
+    "Only when you open the network details, at most once every 5 minutes. Nothing about you is sent" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "네트워크 자세히 보기를 열 때만, 5분에 한 번까지. 보내는 내용은 없습니다"
+          }
+        }
+      }
+    },
+    "Open" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "열기"
+          }
+        }
+      }
+    },
+    "Open Launcher" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창 열기"
+          }
+        }
+      }
+    },
+    "Open Login Items" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인 항목 열기"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정 열기"
+          }
+        }
+      }
+    },
+    "Open Sound" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 조절 열기"
+          }
+        }
+      }
+    },
+    "Open apps, arrange windows, find what you copied, capture the screen, ask questions. Over any app." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱을 열고, 창을 나누고, 복사했던 것을 찾고, 화면을 찍고, 묻습니다. 어느 앱 위에서든."
+          }
+        }
+      }
+    },
+    "OpenRouter Key" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenRouter 키"
+          }
+        }
+      }
+    },
+    "Opens the launcher from any app" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어느 앱에서든 이 키로 입력창을 엽니다"
+          }
+        }
+      }
+    },
+    "Optional" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택"
+          }
+        }
+      }
+    },
+    "Options" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옵션"
+          }
+        }
+      }
+    },
+    "Other" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기타"
+          }
+        }
+      }
+    },
+    "Output" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력"
+          }
+        }
+      }
+    },
+    "Output Groups" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 묶음"
+          }
+        }
+      }
+    },
+    "Output Volume" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 볼륨"
+          }
+        }
+      }
+    },
+    "Output muted" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 음소거"
+          }
+        }
+      }
+    },
+    "Output volume %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력 볼륨 %@"
+          }
+        }
+      }
+    },
+    "Output: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "출력: %@"
+          }
+        }
+      }
+    },
+    "Page Ins" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이지 입력"
+          }
+        }
+      }
+    },
+    "Page Outs" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "페이지 출력"
+          }
+        }
+      }
+    },
+    "Paste" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "붙이기"
+          }
+        }
+      }
+    },
+    "Paste Directly" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바로 붙여넣기"
+          }
+        }
+      }
+    },
+    "Paste a key you created at openrouter.ai" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "openrouter.ai 에서 만든 키를 붙여 넣으세요"
+          }
+        }
+      }
+    },
+    "Paste from Other Apps" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 앱에서 붙여넣기"
+          }
+        }
+      }
+    },
+    "Paste into App" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰던 앱에 붙여넣기"
+          }
+        }
+      }
+    },
+    "Paste right away without saving first" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장하지 않고 바로 붙여 넣을 수 있습니다"
+          }
+        }
+      }
+    },
+    "Pastes right away when there are no variables; otherwise asks for their values first" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변수가 없으면 바로 붙고, 있으면 값을 묻는 화면이 뜹니다"
+          }
+        }
+      }
+    },
+    "Pause Charging Now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 충전 보류"
+          }
+        }
+      }
+    },
+    "Pause History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 잠시 멈추기"
+          }
+        }
+      }
+    },
+    "Peak Download Speed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최고 다운로드 속도"
+          }
+        }
+      }
+    },
+    "Peak Upload Speed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최고 업로드 속도"
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "권한"
+          }
+        }
+      }
+    },
+    "Pick Color" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "색 고르기"
+          }
+        }
+      }
+    },
+    "Pin" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고정"
+          }
+        }
+      }
+    },
+    "Pin to Favorites" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에 고정"
+          }
+        }
+      }
+    },
+    "Pinned" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고정한 것"
+          }
+        }
+      }
+    },
+    "Pinned items stay regardless" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고정한 것은 기간과 상관없이 남습니다"
+          }
+        }
+      }
+    },
+    "Plenty" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "여유 있음"
+          }
+        }
+      }
+    },
+    "Plugged in" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터 연결됨"
+          }
+        }
+      }
+    },
+    "Power" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전력"
+          }
+        }
+      }
+    },
+    "Power Flow" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전원 흐름"
+          }
+        }
+      }
+    },
+    "Power and Temperature" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전력과 온도"
+          }
+        }
+      }
+    },
+    "Power the whole Mac is using now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥 전체가 지금 쓰는 전력"
+          }
+        }
+      }
+    },
+    "Preset" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preset"
+          }
+        }
+      }
+    },
+    "Press" : {
+      "comment" : "Before the launcher keys: Press ⌥ Space anytime.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언제든"
+          }
+        }
+      }
+    },
+    "Press keys…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키를 누르세요…"
+          }
+        }
+      }
+    },
+    "Press ⌥V to open the history strip, find something and paste it again. The history is never sent anywhere." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "⌥V 로 기록 띠를 열어 찾고 다시 붙입니다. 기록은 어디로도 보내지 않습니다."
+          }
+        }
+      }
+    },
+    "Pressure" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "압력"
+          }
+        }
+      }
+    },
+    "Pressure %@ · %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "압력 %1$@ · %2$@ 사용"
+          }
+        }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보"
+          }
+        }
+      }
+    },
+    "Privacy & Storage" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보와 저장 공간"
+          }
+        }
+      }
+    },
+    "Public IP" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공용 IP"
+          }
+        }
+      }
+    },
+    "Public IP Lookup → Cloudflare" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공용 IP 확인 → Cloudflare"
+          }
+        }
+      }
+    },
+    "Put a variable in braces, like {name}, and you’re asked for its value when you paste. Snippets are saved only on this Mac and never sent anywhere." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{이름} 처럼 중괄호로 변수를 넣으면 붙일 때 값을 물어 채워 줍니다. 스니펫은 이 맥에만 저장되고 다른 곳으로 보내지 않습니다."
+          }
+        }
+      }
+    },
+    "Quick Config: %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 설정: %@"
+          }
+        }
+      }
+    },
+    "Quick Configs" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick Config"
+          }
+        }
+      }
+    },
+    "Quit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "종료"
+          }
+        }
+      }
+    },
+    "Quit %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 종료"
+          }
+        }
+      }
+    },
+    "R %@ · W %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽기 %1$@ · 쓰기 %2$@"
+          }
+        }
+      }
+    },
+    "Read" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽기"
+          }
+        }
+      }
+    },
+    "Reads and Writes" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "읽기와 쓰기"
+          }
+        }
+      }
+    },
+    "Record Area" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역 녹화"
+          }
+        }
+      }
+    },
+    "Record Area as GIF" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영역 GIF 녹화"
+          }
+        }
+      }
+    },
+    "Record Full Screen" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 화면 녹화"
+          }
+        }
+      }
+    },
+    "Record Screen Time" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 시간 기록"
+          }
+        }
+      }
+    },
+    "Recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화"
+          }
+        }
+      }
+    },
+    "Recording is paused." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록을 잠시 멈춘 상태입니다."
+          }
+        }
+      }
+    },
+    "Records on this Mac only how long you used each app. Deleted after 90 days" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어느 앱을 얼마나 썼는지 이 맥에만 기록합니다. 90일 뒤 지웁니다"
+          }
+        }
+      }
+    },
+    "Records what you copy on this Mac only" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사한 것을 이 맥에만 기록"
+          }
+        }
+      }
+    },
+    "Redo (⇧⌘Z)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 하기 (⇧⌘Z)"
+          }
+        }
+      }
+    },
+    "Regular" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보통"
+          }
+        }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제거"
+          }
+        }
+      }
+    },
+    "Remove %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 빼기"
+          }
+        }
+      }
+    },
+    "Remove from Favorites" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "즐겨찾기에서 빼기"
+          }
+        }
+      }
+    },
+    "Remove this effect" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 효과 빼기"
+          }
+        }
+      }
+    },
+    "Reopen Now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 다시 열기"
+          }
+        }
+      }
+    },
+    "Reopen to Apply" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 열어 적용"
+          }
+        }
+      }
+    },
+    "Required" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필요"
+          }
+        }
+      }
+    },
+    "Reset All" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모두 되돌리기"
+          }
+        }
+      }
+    },
+    "Reset All Effects" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "효과 모두 되돌리기"
+          }
+        }
+      }
+    },
+    "Reset This App" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 앱 설정 되돌리기"
+          }
+        }
+      }
+    },
+    "Right" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽"
+          }
+        }
+      }
+    },
+    "Right %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽 %lld%%"
+          }
+        }
+      }
+    },
+    "Run" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "실행"
+          }
+        }
+      }
+    },
+    "Running" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동작 중"
+          }
+        }
+      }
+    },
+    "Running on battery" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리로 쓰는 중"
+          }
+        }
+      }
+    },
+    "Same as Output" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 출력 따라가기"
+          }
+        }
+      }
+    },
+    "Sample Rate" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample Rate"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장"
+          }
+        }
+      }
+    },
+    "Save Current Settings…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 설정 저장…"
+          }
+        }
+      }
+    },
+    "Save Location" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장 폴더"
+          }
+        }
+      }
+    },
+    "Saved" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장됨"
+          }
+        }
+      }
+    },
+    "Saved History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장된 기록"
+          }
+        }
+      }
+    },
+    "Saved to %@ and copied the file" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 에 저장하고 파일을 복사했습니다"
+          }
+        }
+      }
+    },
+    "Saved to %@." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 에 저장했습니다."
+          }
+        }
+      }
+    },
+    "Saved." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장했습니다."
+          }
+        }
+      }
+    },
+    "Saves text you write often and pastes it into the app you’re using" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자주 쓰는 멘트를 저장해 두고 쓰던 앱에 바로 붙입니다"
+          }
+        }
+      }
+    },
+    "Screen Capture" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "캡처와 녹화"
+          }
+        }
+      }
+    },
+    "Screen Recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 기록"
+          }
+        }
+      }
+    },
+    "Screen Time" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 시간"
+          }
+        }
+      }
+    },
+    "Screen Time Today" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 사용 시간"
+          }
+        }
+      }
+    },
+    "Screen capture, recording and text recognition. Takes effect after you reopen the app" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 캡처, 녹화, 글자 읽기. 허락한 뒤 앱을 다시 열어야 적용됩니다"
+          }
+        }
+      }
+    },
+    "Scrolling Capture" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스크롤 캡처"
+          }
+        }
+      }
+    },
+    "Scrolling capture finished. %lld pt tall." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스크롤 캡처를 마쳤습니다. 세로 %lldpt."
+          }
+        }
+      }
+    },
+    "Scrolling capture needs Accessibility permission to scroll for you. Allow it in General in Settings." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스크롤 캡처는 손쉬운 사용 권한이 있어야 대신 스크롤할 수 있습니다. 설정의 일반에서 허락해 주세요."
+          }
+        }
+      }
+    },
+    "Search Snippets" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫 검색"
+          }
+        }
+      }
+    },
+    "Search actions" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "동작 찾기"
+          }
+        }
+      }
+    },
+    "Search what you copied" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사했던 것 찾기"
+          }
+        }
+      }
+    },
+    "Searching the web…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "웹을 찾아보는 중…"
+          }
+        }
+      }
+    },
+    "See CPU, memory, power, temperature and network in the menu bar and a dashboard" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU, 메모리, 전력, 온도, 네트워크를 메뉴 막대와 대시보드에서 봅니다"
+          }
+        }
+      }
+    },
+    "Send only this app’s sound to another output device" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 앱 소리만 다른 출력 장치로 보냅니다"
+          }
+        }
+      }
+    },
+    "Send to Another Output" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 출력으로 보내기"
+          }
+        }
+      }
+    },
+    "Sent Out" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "밖으로 보내는 것"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        }
+      }
+    },
+    "Settings…" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정…"
+          }
+        }
+      }
+    },
+    "Short, closing apps will speed things up" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "부족함, 앱을 닫으면 빨라집니다"
+          }
+        }
+      }
+    },
+    "Shortcut" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축키"
+          }
+        }
+      }
+    },
+    "Shortcuts" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축키"
+          }
+        }
+      }
+    },
+    "Shortcuts and the choices on these screens" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단축키와 이 화면의 선택들"
+          }
+        }
+      }
+    },
+    "Show Again" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다시 보기"
+          }
+        }
+      }
+    },
+    "Show All History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 전체 보기"
+          }
+        }
+      }
+    },
+    "Show Name" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름 보기"
+          }
+        }
+      }
+    },
+    "Show Screen Time" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 시간 보기"
+          }
+        }
+      }
+    },
+    "Show Welcome Guide Again" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음 안내 다시 보기"
+          }
+        }
+      }
+    },
+    "Show in Finder" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finder 에서 보기"
+          }
+        }
+      }
+    },
+    "Shows the address and country the internet sees for this Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인터넷이 보는 이 맥의 주소와 나라를 보여 줍니다"
+          }
+        }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "건너뛰기"
+          }
+        }
+      }
+    },
+    "Snippets" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫"
+          }
+        }
+      }
+    },
+    "Something went wrong" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "문제가 있습니다"
+          }
+        }
+      }
+    },
+    "Sound" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리"
+          }
+        }
+      }
+    },
+    "Spacing: Space (4-pt Grid)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "간격 Space (4pt 격자)"
+          }
+        }
+      }
+    },
+    "Speed" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "속도"
+          }
+        }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "멈추기"
+          }
+        }
+      }
+    },
+    "Stop GIF" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GIF 끝내기"
+          }
+        }
+      }
+    },
+    "Stop Recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화 끝내기"
+          }
+        }
+      }
+    },
+    "Stopped" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "멈춤"
+          }
+        }
+      }
+    },
+    "Stopped." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "멈췄습니다."
+          }
+        }
+      }
+    },
+    "Stops charging at a limit like 80% to spare the battery" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "충전을 80% 같은 한도에서 멈춰 배터리를 아낍니다"
+          }
+        }
+      }
+    },
+    "Style" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모양"
+          }
+        }
+      }
+    },
+    "Swap" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스왑"
+          }
+        }
+      }
+    },
+    "System" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템"
+          }
+        }
+      }
+    },
+    "System Audio Recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 오디오 녹음"
+          }
+        }
+      }
+    },
+    "System Monitor" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 모니터"
+          }
+        }
+      }
+    },
+    "System Monitor History" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 모니터 기록"
+          }
+        }
+      }
+    },
+    "System Settings → Privacy & Security → Paste from Other Apps: Allow" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 → 개인정보 보호 및 보안 → 다른 앱에서 붙여넣기 에서 「허용」"
+          }
+        }
+      }
+    },
+    "System Settings → Privacy & Security → Screen & System Audio Recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 → 개인정보 보호 및 보안 → 화면 및 시스템 오디오 녹음"
+          }
+        }
+      }
+    },
+    "Temperature" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "온도"
+          }
+        }
+      }
+    },
+    "Temperature sensors can’t be read" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "온도 센서를 읽을 수 없습니다"
+          }
+        }
+      }
+    },
+    "Text" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자"
+          }
+        }
+      }
+    },
+    "Text and images you copied. Copies marked as passwords and copies from apps you excluded are never kept" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사한 글자와 그림. 비밀번호로 표시된 복사와 고른 앱의 복사는 남기지 않습니다"
+          }
+        }
+      }
+    },
+    "Text colors (contrast: ground / card / selected row)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 색 (대비: 바탕 / 카드 / 선택 줄)"
+          }
+        }
+      }
+    },
+    "That display could not be found." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 화면을 찾지 못했습니다"
+          }
+        }
+      }
+    },
+    "That window could not be found." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 창을 찾지 못했습니다"
+          }
+        }
+      }
+    },
+    "The alert volume is a share of the output volume." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알림음 볼륨은 출력 볼륨에 대한 비율입니다."
+          }
+        }
+      }
+    },
+    "The app in use changed, so the text was only copied. Press ⌘V to paste." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰던 앱이 바뀌어 복사만 했습니다. ⌘V 로 붙여 넣으세요."
+          }
+        }
+      }
+    },
+    "The app works without them; only that feature is left out. To turn one off, go to System Settings → Privacy & Security." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허락하지 않아도 앱은 동작하고, 그 기능만 빠집니다. 끄려면 시스템 설정 → 개인정보 보호 및 보안 에서 바꿉니다."
+          }
+        }
+      }
+    },
+    "The app works without them; only what needs the permission is left out." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허락하지 않아도 앱은 동작하고, 그 권한이 필요한 동작만 빠집니다."
+          }
+        }
+      }
+    },
+    "The audio system could not find %@, so the system output effects are off. They are tried again when you change an app's sound." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 을(를) 오디오 시스템에서 찾지 못해 시스템 출력 효과를 켜지 않았습니다. 앱 하나의 소리를 바꾸면 다시 시도합니다."
+          }
+        }
+      }
+    },
+    "The chosen output device is not connected, so the sound plays on the system output. It goes back when the device reconnects." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고른 출력 장치가 연결되어 있지 않아 시스템 출력으로 냅니다. 다시 연결하면 그쪽으로 갑니다."
+          }
+        }
+      }
+    },
+    "The contents of this item can no longer be found." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 기록의 내용을 찾을 수 없습니다."
+          }
+        }
+      }
+    },
+    "The graphs’ past history will be removed. This can’t be undone." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그래프의 지난 기록이 사라집니다. 되돌릴 수 없습니다."
+          }
+        }
+      }
+    },
+    "The helper installs only in release builds signed with the developer’s Developer ID" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "도우미는 개발자의 Developer ID 로 서명한 배포 빌드에서만 설치됩니다"
+          }
+        }
+      }
+    },
+    "The history has grown quite large. You can shorten how long items are kept, or clear it." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록이 꽤 커졌습니다. 필요하면 보관 기간을 줄이거나 지울 수 있습니다."
+          }
+        }
+      }
+    },
+    "The history holds %lld items, which can slow down search. You can shorten how long items are kept, or clear it." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록이 %lld개로 많이 쌓여 검색이 느려질 수 있습니다. 필요하면 보관 기간을 줄이거나 지울 수 있습니다."
+          }
+        }
+      }
+    },
+    "The image can no longer be found" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지를 찾을 수 없습니다"
+          }
+        }
+      }
+    },
+    "The image is larger than %@ (%@), so it is not kept in clipboard history. You can still paste it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The image is larger than %1$@ (%2$@), so it is not kept in clipboard history. You can still paste it."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그림이 %1$@ 를 넘어(%2$@) 클립보드 기록에는 남지 않습니다. 붙여 넣기는 됩니다."
+          }
+        }
+      }
+    },
+    "The key is stored only in this Mac’s keychain. Questions and answers go to and from OpenRouter; %@ doesn’t save them." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키는 이 맥의 키체인에만 저장됩니다. 질문과 답은 OpenRouter 로 오가고 %@ 은 저장하지 않습니다."
+          }
+        }
+      }
+    },
+    "The key was deleted from this Mac." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥에서 키를 지웠습니다."
+          }
+        }
+      }
+    },
+    "The last hour is kept in memory only. Longer periods are kept on this Mac for 28 days as 1-minute averages (10-minute averages after 3 days)." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1시간까지는 메모리에만 두고, 그보다 긴 기간은 1분 평균(3일 뒤부터는 10분 평균)을 28일 동안 이 맥에 둡니다."
+          }
+        }
+      }
+    },
+    "The launcher shortcut can’t be empty." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창 단축키는 비울 수 없습니다."
+          }
+        }
+      }
+    },
+    "The new language is used after the app reopens." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱을 다시 열면 새 언어로 바뀝니다."
+          }
+        }
+      }
+    },
+    "The quick brown fox Aa 123" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다람쥐 헌 쳇바퀴 Aa 123"
+          }
+        }
+      }
+    },
+    "The recording file was not created." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화 파일이 만들어지지 않았습니다"
+          }
+        }
+      }
+    },
+    "The same sound plays on every chosen device. The first device keeps the time." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고른 장치 모두에서 같은 소리가 납니다. 첫 장치가 시간을 맞춥니다."
+          }
+        }
+      }
+    },
+    "The saved snippets file couldn’t be read, so the list opened empty. The original file was kept in the same folder as snippets.broken.json." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장된 스니펫 파일을 읽지 못해 빈 상태로 열었습니다. 원래 파일은 지우지 않고 같은 폴더에 snippets.broken.json 으로 남겨 두었습니다."
+          }
+        }
+      }
+    },
+    "The saved sound settings could not be read and were moved to audio.broken.json. The defaults are in use for now." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장된 소리 설정 파일을 읽지 못해 audio.broken.json 으로 옮겨 두었습니다. 지금은 기본값으로 동작합니다."
+          }
+        }
+      }
+    },
+    "The space left between snapped windows and at the edges of the screen." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나눈 창들 사이와 화면 가장자리에 두는 여백입니다."
+          }
+        }
+      }
+    },
+    "The temperature passed %lld°, so the fans went back to automatic." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "온도가 %lld° 를 넘어 자동으로 되돌렸습니다."
+          }
+        }
+      }
+    },
+    "The video has no frames." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영상에 그림이 없습니다"
+          }
+        }
+      }
+    },
+    "There is no display." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면이 없습니다"
+          }
+        }
+      }
+    },
+    "There’s no earlier size to restore." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "되돌릴 이전 크기가 없습니다."
+          }
+        }
+      }
+    },
+    "There’s no window to move." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옮길 창이 없습니다."
+          }
+        }
+      }
+    },
+    "There’s only one display." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터가 하나뿐입니다."
+          }
+        }
+      }
+    },
+    "Thick" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "굵게"
+          }
+        }
+      }
+    },
+    "Thin" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "얇게"
+          }
+        }
+      }
+    },
+    "This Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥"
+          }
+        }
+      }
+    },
+    "This Mac cannot pause charging by itself, so at this level the adapter is disconnected for a while and the Mac runs on battery until it drops %lld percentage points below, then charges again. The adapter is reconnected before the Mac sleeps." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥은 충전만 멈추는 방법이 없어, 이만큼 차면 어댑터를 잠시 끊고 배터리로 쓰다가 %lld%%p 아래로 내려가면 다시 충전합니다. 잠자기 전에는 어댑터를 다시 잇습니다."
+          }
+        }
+      }
+    },
+    "This Mac did not accept manual fan control." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥이 팬 직접 조절을 받아들이지 않았습니다."
+          }
+        }
+      }
+    },
+    "This Mac has no battery" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배터리가 없는 맥입니다"
+          }
+        }
+      }
+    },
+    "This Mac is not supported" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥은 지원하지 않습니다"
+          }
+        }
+      }
+    },
+    "This Mac uses macOS’s own charge limit, so the charge helper installed earlier is no longer needed. Removing it puts back the charge settings the helper changed, then deletes it." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥은 macOS 의 충전 제한을 쓰므로 예전에 설치한 충전 도우미가 필요 없습니다. 제거하면 도우미가 바꿔 둔 충전 설정을 원래대로 돌려놓고 지웁니다."
+          }
+        }
+      }
+    },
+    "This Mac’s temperature can’t be read, so the fans are not controlled manually." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥의 온도를 읽을 수 없어 팬을 직접 조절하지 않습니다."
+          }
+        }
+      }
+    },
+    "This build does not include fan control." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 빌드에는 팬 조절이 없습니다."
+          }
+        }
+      }
+    },
+    "This is also a macOS system shortcut." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥 시스템 단축키와 겹칩니다."
+          }
+        }
+      }
+    },
+    "This output device’s audio format isn’t supported" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 출력 장치의 소리 형식은 다룰 수 없습니다"
+          }
+        }
+      }
+    },
+    "This window can’t be resized." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 창은 크기를 바꿀 수 없습니다."
+          }
+        }
+      }
+    },
+    "Three permissions\nfrom macOS" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 의\n허락 세 가지"
+          }
+        }
+      }
+    },
+    "Tight, compressing and swapping" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "빠듯함, 압축과 스왑을 쓰는 중"
+          }
+        }
+      }
+    },
+    "Tiles (Contrast with White Symbols)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "타일 (흰 기호와의 대비)"
+          }
+        }
+      }
+    },
+    "Time isn’t counted after 5 minutes without input, or while the screen is locked or off. During a video call that uses the microphone or camera, it counts even without input." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5분 넘게 손을 대지 않거나 화면이 잠기거나 꺼지면 세지 않습니다. 마이크나 카메라를 쓰는 화상 회의 중이면 손을 대지 않아도 셉니다."
+          }
+        }
+      }
+    },
+    "To stop recording, turn off Screen Time in Settings → Features. What’s already recorded stays." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록을 멈추려면 설정의 「기능」 에서 사용 시간을 끕니다. 이미 쌓인 기록은 남습니다."
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘"
+          }
+        }
+      }
+    },
+    "Today’s USD/KRW rate is ₩1,382.5, up ₩3.2 from yesterday. It moved between ₩1,379 and ₩1,385 during the day." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 원/달러 환율은 1,382.5원입니다. 전일보다 3.2원 올랐고, 장중 1,379원에서 1,385원 사이에서 움직였습니다."
+          }
+        }
+      }
+    },
+    "Top Apps" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "많이 쓰는 앱"
+          }
+        }
+      }
+    },
+    "Total %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 %@"
+          }
+        }
+      }
+    },
+    "Tour" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "둘러보기"
+          }
+        }
+      }
+    },
+    "Try pressing it now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 눌러 보세요"
+          }
+        }
+      }
+    },
+    "Turn Off All Effects" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "효과 모두 끄기"
+          }
+        }
+      }
+    },
+    "Turn Off Magic Boost" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magic Boost 끄기"
+          }
+        }
+      }
+    },
+    "Turn On All Effects" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "효과 모두 켜기"
+          }
+        }
+      }
+    },
+    "Turn it on in Settings → Battery Charging" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정 → 배터리 충전에서 켭니다"
+          }
+        }
+      }
+    },
+    "Turn it on to see its settings here. Its history and settings are kept while it’s off." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜면 이 기능의 설정이 여기에 나옵니다. 꺼 둔 동안에도 쌓인 기록과 설정은 그대로 있습니다."
+          }
+        }
+      }
+    },
+    "Turn on %@ first." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "먼저 %@ 을 켜야 씁니다"
+          }
+        }
+      }
+    },
+    "Turn on %@ in System Settings → General → Login Items" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 설정 → 일반 → 로그인 항목 에서 %@ 을 켜 주세요"
+          }
+        }
+      }
+    },
+    "Turn on only the features you use. A feature that is off does nothing in the background, asks for no permissions, and disappears from shortcuts and launcher commands. Turn it on and it’s back at once." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰는 기능만 켜 둡니다. 끈 기능은 백그라운드에서 아무것도 하지 않고, 권한을 묻지 않고, 단축키와 입력창 명령에서도 빠집니다. 켜면 바로 다시 살아납니다."
+          }
+        }
+      }
+    },
+    "Turned Off" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "꺼짐"
+          }
+        }
+      }
+    },
+    "Turned off" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "꺼 둠"
+          }
+        }
+      }
+    },
+    "Turning a feature off doesn’t delete its history or settings; they’re still there when you turn it back on. To delete them, use Privacy & Storage." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끈 기능의 기록과 설정은 지우지 않습니다. 다시 켜면 그대로 있습니다. 지우려면 개인정보와 저장 공간에서 지웁니다."
+          }
+        }
+      }
+    },
+    "Type . at the start of the launcher to get answers searched on the web, up to date. It needs an OpenRouter key, which stays in this Mac’s keychain." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창 맨 앞에 . 을 치면 웹을 검색해 최신 정보로 답합니다. OpenRouter 키가 필요하고, 키는 이 맥의 키체인에만 둡니다."
+          }
+        }
+      }
+    },
+    "Type . at the start of the launcher, or type a question and press ⇥ to choose Ask AI. It searches the web and answers with up-to-date information." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "입력창 맨 앞에 . 을 치거나, 친 뒤 ⇥ 로 「AI 에게 묻기」 를 고르면 웹을 검색해 최신 정보로 답합니다."
+          }
+        }
+      }
+    },
+    "Type Roles" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 단계"
+          }
+        }
+      }
+    },
+    "Type a period\nand ask" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "점을 찍고\n물어보세요"
+          }
+        }
+      }
+    },
+    "Type text, then ↵" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글자 입력 후 ↵"
+          }
+        }
+      }
+    },
+    "USD to KRW today" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 원달러 환율"
+          }
+        }
+      }
+    },
+    "Undo (⌘Z)" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "되돌리기 (⌘Z)"
+          }
+        }
+      }
+    },
+    "Undo Delete" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지운 것 되돌리기"
+          }
+        }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알 수 없음"
+          }
+        }
+      }
+    },
+    "Unmute" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 켜기"
+          }
+        }
+      }
+    },
+    "Unmute Now" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 다시 켜기"
+          }
+        }
+      }
+    },
+    "Unpin" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "고정 풀기"
+          }
+        }
+      }
+    },
+    "Up %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가동 시간 %@"
+          }
+        }
+      }
+    },
+    "Update Automatically" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자동으로 업데이트"
+          }
+        }
+      }
+    },
+    "Updates" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업데이트"
+          }
+        }
+      }
+    },
+    "Upload" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업로드"
+          }
+        }
+      }
+    },
+    "Upload %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업로드 %@"
+          }
+        }
+      }
+    },
+    "Upload %@, download %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Upload %1$@, download %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업로드 %1$@, 다운로드 %2$@"
+          }
+        }
+      }
+    },
+    "Uptime" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가동 시간"
+          }
+        }
+      }
+    },
+    "Use Desktop" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데스크탑으로"
+          }
+        }
+      }
+    },
+    "Use the battery down to %lld%% while plugged in" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터를 꽂은 채 %lld%%까지 배터리로 쓰기"
+          }
+        }
+      }
+    },
+    "Use the battery while plugged in" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터를 꽂은 채 배터리로 쓰기"
+          }
+        }
+      }
+    },
+    "Used" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용"
+          }
+        }
+      }
+    },
+    "Used in Sound to change one app’s volume, output and effects, and to measure its level. macOS asks the first time" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소리 조절에서 앱 하나의 볼륨, 보낼 곳, 효과를 바꾸고 레벨을 잴 때 씁니다. 처음 쓸 때 macOS 가 묻습니다"
+          }
+        }
+      }
+    },
+    "Used only to record your voice with a screen recording" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "녹화에 목소리를 넣을 때만 씁니다"
+          }
+        }
+      }
+    },
+    "Used only to show the name of the connected Wi-Fi network. Your location itself is never read" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연결된 Wi-Fi 이름을 보여 줄 때만 씁니다. 위치 자체는 읽지 않습니다"
+          }
+        }
+      }
+    },
+    "User %@ · System %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "User %1$@ · System %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 %1$@ · 시스템 %2$@"
+          }
+        }
+      }
+    },
+    "Uses macOS’s charge limit" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 의 충전 제한을 씁니다"
+          }
+        }
+      }
+    },
+    "Uses macOS’s own charge limit. It is the same value as System Settings → Battery and is kept while the Mac sleeps. If the battery is fuller than the limit, it slowly runs down to the limit while plugged in. macOS does not allow limits below 80%." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 의 충전 제한을 그대로 씁니다. 시스템 설정 → 배터리 의 값과 같고, 맥이 잠자는 동안에도 지켜집니다. 제한보다 많이 차 있으면 어댑터를 꽂은 채 제한까지 천천히 내려갑니다. macOS 는 80% 아래를 허용하지 않습니다."
+          }
+        }
+      }
+    },
+    "Value for %@" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 값"
+          }
+        }
+      }
+    },
+    "Values in the Menu Bar" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴 막대에 보일 수치"
+          }
+        }
+      }
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "버전 %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Video recordings only. GIFs have no sound" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영상 녹화에만 적용됩니다. GIF 에는 소리가 없습니다"
+          }
+        }
+      }
+    },
+    "Volume" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "볼륨"
+          }
+        }
+      }
+    },
+    "Waiting for approval" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허용을 기다립니다"
+          }
+        }
+      }
+    },
+    "Waits in the menu bar when you start your Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥을 켜면 메뉴 막대에서 기다립니다"
+          }
+        }
+      }
+    },
+    "Weight" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "굵기"
+          }
+        }
+      }
+    },
+    "Welcome" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작"
+          }
+        }
+      }
+    },
+    "Welcome Guide" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음 안내"
+          }
+        }
+      }
+    },
+    "What macOS lets you allow for each app. Features ask only for what they need when you first use them; here you can see and change everything at once." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 가 앱마다 따로 허락하는 것들입니다. 기능은 처음 쓸 때 필요한 것만 묻고, 여기서 한눈에 보고 바꿀 수 있습니다."
+          }
+        }
+      }
+    },
+    "What would you like to do?" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무엇을 할까요"
+          }
+        }
+      }
+    },
+    "What you copy while one of these apps is in front, like a password manager, isn’t recorded. Copies marked as passwords are never recorded, whatever the app." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비밀번호 관리 앱처럼 이 앱들이 앞에 있을 때 복사한 것은 쌓이지 않습니다. 비밀번호로 표시된 복사는 앱과 상관없이 쌓이지 않습니다."
+          }
+        }
+      }
+    },
+    "Whatever you copy appears here." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무언가를 복사하면 여기에 쌓입니다."
+          }
+        }
+      }
+    },
+    "When off, each item gets its own slot" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끄면 항목마다 따로 칸이 됩니다"
+          }
+        }
+      }
+    },
+    "When on, opening the network details asks Cloudflare’s public address (www.cloudflare.com/cdn-cgi/trace) at most once every 5 minutes. Nothing is sent; Cloudflare sees this Mac’s public IP." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜 두면 네트워크 자세히 보기를 열 때 Cloudflare 의 공개 주소(www.cloudflare.com/cdn-cgi/trace)에 5분에 한 번까지 묻습니다. 보내는 것은 없고, Cloudflare 는 이 맥의 공인 IP 를 봅니다."
+          }
+        }
+      }
+    },
+    "Where history and settings are kept. Only on this Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록과 설정이 있는 곳. 이 맥에만 있습니다"
+          }
+        }
+      }
+    },
+    "Which app was in front, and for how long. Deleted after 90 days" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞에 있던 앱과 시간. 90일 뒤 지웁니다"
+          }
+        }
+      }
+    },
+    "While this is on, what you copy isn’t recorded" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "켜 두는 동안 복사한 것은 쌓이지 않습니다"
+          }
+        }
+      }
+    },
+    "Whole Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥 전체"
+          }
+        }
+      }
+    },
+    "Whole-Mac Power" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "맥 전체 전력"
+          }
+        }
+      }
+    },
+    "Window Snapping" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "화면 나누기"
+          }
+        }
+      }
+    },
+    "Wired" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "유선"
+          }
+        }
+      }
+    },
+    "Wired Memory" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와이어드"
+          }
+        }
+      }
+    },
+    "Without Formatting" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서식 없이"
+          }
+        }
+      }
+    },
+    "Without it, window snapping and pasting directly don’t work. Everything else still works." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "없으면 화면 나누기와 바로 붙여넣기가 동작하지 않습니다. 나머지 기능은 그대로 씁니다."
+          }
+        }
+      }
+    },
+    "Write" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "쓰기"
+          }
+        }
+      }
+    },
+    "Write the text to paste. Wrap a word in braces, like {name}, to be asked for it when you paste." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "붙여 넣을 멘트를 적으세요. {이름} 처럼 중괄호로 감싸면 붙일 때 값을 묻습니다."
+          }
+        }
+      }
+    },
+    "You can’t undo this." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지운 기록은 되돌릴 수 없습니다."
+          }
+        }
+      }
+    },
+    "Your history\nstays on this Mac" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록은\n이 맥에만"
+          }
+        }
+      }
+    },
+    "Your key is ready" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "키가 준비되어 있습니다"
+          }
+        }
+      }
+    },
+    "You’re all set" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "준비됐습니다"
+          }
+        }
+      }
+    },
+    "You’re up to date." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최신 버전입니다."
+          }
+        }
+      }
+    },
+    "and a number run that row" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "와 숫자를 누르면 그 줄이 바로 실행됩니다"
+          }
+        }
+      }
+    },
+    "anytime. For Settings, right-click the menu bar icon or press ⌘, in the launcher." : {
+      "comment" : "After the launcher keys: Press ⌥ Space anytime.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "를 누르세요. 설정은 메뉴 막대 아이콘을 오른쪽 클릭하거나 입력창에서 ⌘, 입니다."
+          }
+        }
+      }
+    },
+    "available" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 가능"
+          }
+        }
+      }
+    },
+    "e.g. First contact" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "예: 첫 연락 인사"
+          }
+        }
+      }
+    },
+    "free" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "남음"
+          }
+        }
+      }
+    },
+    "macOS asks for microphone access the first time you record with this on" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음 켜고 녹화하면 macOS 가 마이크 권한을 묻습니다"
+          }
+        }
+      }
+    },
+    "macOS is blocking clipboard access, so new copies are not recorded. See Clipboard in Settings." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 가 클립보드 읽기를 막고 있어 새로 복사한 것이 쌓이지 않습니다. 설정의 클립보드를 보세요."
+          }
+        }
+      }
+    },
+    "macOS is blocking what you copy in other apps. In System Settings → Privacy & Security → Paste from Other Apps, set %@ to Allow." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 가 다른 앱에서 복사한 내용을 읽지 못하게 막고 있습니다. 시스템 설정 → 개인정보 보호 및 보안 → 다른 앱에서 붙여넣기 에서 %@ 을 「허용」 으로 바꿔 주세요."
+          }
+        }
+      }
+    },
+    "macOS kernel" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 커널"
+          }
+        }
+      }
+    },
+    "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %@. Click Remove to put charging back as it was and delete it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %1$@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %2$@. Click Remove to put charging back as it was and delete it."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥의 macOS 에는 충전 제한이 없어(macOS 26.4 이상 애플 실리콘 맥에 있습니다) 맥의 전원 관리 칩(SMC)에 직접 값을 씁니다. 이는 관리자 권한이 필요합니다. 「설치」 를 누르면 %1$@ 안에 든 작은 도우미가 시스템의 백그라운드 항목으로 등록되고, 시스템 설정 → 일반 → 로그인 항목에서 허용하면 관리자 권한으로 돕니다. 도우미는 충전 말고는 아무것도 하지 않고 %2$@ 의 요청만 받습니다. 「제거」 를 누르면 충전을 원래대로 돌려놓고 지웁니다."
+          }
+        }
+      }
+    },
+    "macOS tells only apps with Location access the Wi-Fi name" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 는 위치 권한이 있는 앱에만 Wi-Fi 이름을 알려 줍니다"
+          }
+        }
+      }
+    },
+    "{name} asks for a value when you paste; {name:default} fills in a default.\nTo type a brace itself, double it: {{ and }}." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{이름} 은 붙일 때 값을 묻고, {이름:기본값} 처럼 쓰면 기본값이 미리 채워집니다.\n중괄호 글자 자체를 넣고 싶으면 {{ 와 }} 처럼 두 번 겹쳐 씁니다."
+          }
+        }
+      }
+    },
+    "“%@”" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「%@」"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -20,20 +20,20 @@ struct ModuleSettingsScreen: View {
                 if let groups = module.settingsGroups(in: environment) { groups }
                 let shortcuts = shortcutActions
                 if !shortcuts.isEmpty {
-                    SettingsSection(title: "단축키", footer: "줄을 누르고 원하는 키를 누릅니다. esc 는 취소, ⌫ 는 단축키 지우기입니다. 모든 단축키는 설정의 단축키에서 한눈에 봅니다.") {
+                    SettingsSection(title: String(localized: "Shortcuts"), footer: String(localized: "Click a row and press the keys you want. Esc cancels, ⌫ removes the shortcut. Settings → Shortcuts lists every shortcut at once.")) {
                         ForEach(shortcuts) { HotkeyRow(environment: environment, action: $0) }
                     }
                 }
                 let needed = permissions.permissions.filter { kind in descriptor.permissions.contains { $0.rawValue == kind.kind.rawValue } }
                 if !needed.isEmpty {
-                    SettingsSection(title: "권한", footer: "허락하지 않아도 앱은 동작하고, 그 권한이 필요한 동작만 빠집니다.") {
+                    SettingsSection(title: String(localized: "Permissions"), footer: String(localized: "The app works without them; only what needs the permission is left out.")) {
                         ForEach(needed) { PermissionCard(permission: $0, granted: permissions.granted.contains($0.kind)) }
                     }
                 }
             } else {
                 Card {
-                    EmptyState(symbol: descriptor.symbol, title: waitingFor.isEmpty ? "꺼져 있습니다" : "기다리는 기능이 꺼져 있습니다",
-                               detail: "켜면 이 기능의 설정이 여기에 나옵니다. 꺼 둔 동안에도 쌓인 기록과 설정은 그대로 있습니다.")
+                    EmptyState(symbol: descriptor.symbol, title: waitingFor.isEmpty ? String(localized: "Turned Off") : String(localized: "A feature this one needs is off"),
+                               detail: String(localized: "Turn it on to see its settings here. Its history and settings are kept while it’s off."))
                 }
             }
         }

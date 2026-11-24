@@ -80,6 +80,8 @@ struct MixerAppRow: Identifiable, Equatable {
     private var refreshTimer: Timer?
     private var meterTimer: Timer?
     private var names: [String: (name: String, path: String?)] = [:]
+    /// A development build is showing made-up state (`showDemo`): nothing is read from or sent to the audio system.
+    private var isDemo = false
 
     init(store: AudioConfigStore) {
         self.store = store
@@ -90,7 +92,7 @@ struct MixerAppRow: Identifiable, Equatable {
 
     /// Reads everything once and follows the system from then on. The saved settings take effect here.
     func start() {
-        guard listeners.isEmpty else { return }
+        guard listeners.isEmpty, !isDemo else { return }
         listeners = AudioProperty.listen(to: [kAudioHardwarePropertyDevices, kAudioHardwarePropertyDefaultOutputDevice, kAudioHardwarePropertyDefaultInputDevice,
                                               kAudioHardwarePropertyDefaultSystemOutputDevice, kAudioHardwarePropertyProcessObjectList]) { [weak self] in
             MainActor.assumeIsolated { self?.scheduleRefresh() }
@@ -117,6 +119,7 @@ struct MixerAppRow: Identifiable, Equatable {
     /// when another app or a volume key changes them) and the meters run.
     func setVisible(_ visible: Bool) {
         self.visible = visible
+        guard !isDemo else { return }
         refreshTimer?.invalidate()
         meterTimer?.invalidate()
         refreshTimer = nil
@@ -149,6 +152,7 @@ struct MixerAppRow: Identifiable, Equatable {
     }
 
     private func refresh() {
+        guard !isDemo else { return }
         let found = SystemAudio.devices()
         if found != devices {
             devices = found
@@ -177,7 +181,7 @@ struct MixerAppRow: Identifiable, Equatable {
         if next.2 != effects { effects = next.2 }
     }
 
-    /// 「시스템 출력 따라가기」: the alert sounds move to wherever the output went.
+    /// "Follow system output": the alert sounds move to wherever the output went.
     private func followOutputWithEffects() {
         guard configuration.effectsFollowOutput, let output = SystemAudio.defaultDevice(.output), SystemAudio.defaultDevice(.effects) != output else { return }
         SystemAudio.setDefault(.effects, to: output)
@@ -186,6 +190,7 @@ struct MixerAppRow: Identifiable, Equatable {
     // MARK: Routes
 
     private func reconcile() {
+        guard !isDemo else { return }
         let connected = Set(devices.filter(\.hasOutput).map(\.uid))
         let ownProcess = SystemAudio.ownProcessObject()
         let muted = Set(timedMutes.keys)
@@ -221,7 +226,7 @@ struct MixerAppRow: Identifiable, Equatable {
 
     private func updateSystemError() {
         let next: String? = configuration.system.chain.isNeutral ? nil
-            : SystemAudio.ownProcessObject() == nil ? "\(AppIdentity.name) 을(를) 오디오 시스템에서 찾지 못해 시스템 출력 효과를 켜지 않았습니다. 앱 하나의 소리를 바꾸면 다시 시도합니다."
+            : SystemAudio.ownProcessObject() == nil ? String(localized: "The audio system could not find \(AppIdentity.name), so the system output effects are off. They are tried again when you change an app's sound.")
             : routeErrors[AudioRoutes.systemKey]
         if next != systemError { systemError = next }
     }
@@ -241,6 +246,7 @@ struct MixerAppRow: Identifiable, Equatable {
     }
 
     private func rebuildRows() {
+        guard !isDemo else { return }
         let connected = Set(devices.filter(\.hasOutput).map(\.uid))
         let appRows = AudioApps.rows(groups: groups, favorites: configuration.favorites, configured: Set(configuration.apps.keys),
                                      lastHeard: lastHeard, now: Date(), name: { self.appInfo($0, path: nil).name })
@@ -387,7 +393,7 @@ struct MixerAppRow: Identifiable, Equatable {
 
     func moveFavorite(_ key: String, by offset: Int) { change { $0.moveFavorite(key, by: offset) } }
 
-    /// Running apps with a window, for 「즐겨찾기 더하기」, by name.
+    /// Running apps with a window, for "Add Favorite", by name.
     func favoriteCandidates() -> [(key: String, name: String)] {
         let favorites = Set(configuration.favorites)
         var seen: Set<String> = []
@@ -470,4 +476,40 @@ struct MixerAppRow: Identifiable, Equatable {
         reconcile()
         rebuildRows()
     }
+
+    #if TOOLSMITH_DEV
+    /// One app line of `showDemo`.
+    struct DemoApp {
+        let key: String
+        let path: String
+        let settings: AppAudioSettings
+        let isPlaying: Bool
+        let isFavorite: Bool
+    }
+
+    /// Development aid: shows made-up devices, apps and levels for pictures. Every route is taken
+    /// down first and nothing is read from or changed in the audio system afterwards.
+    func showDemo(devices: [AudioDevice], output: SystemDeviceState, input: SystemDeviceState, effects: SystemDeviceState,
+                  alertVolume: Double, apps: [DemoApp], levels: [String: Float]) {
+        stopAll()
+        isDemo = true
+        store.update { configuration in
+            for app in apps { configuration.apps[app.key] = app.settings }
+            configuration.favorites = apps.filter(\.isFavorite).map(\.key)
+        }
+        configuration = store.configuration
+        self.devices = devices
+        self.output = output
+        self.input = input
+        self.effects = effects
+        self.alertVolume = alertVolume
+        rows = apps.map { app in
+            let row = AudioAppRow(key: app.key, group: AudioAppGroup(key: app.key, appPath: app.path, processIDs: [], isPlaying: app.isPlaying),
+                                  isFavorite: app.isFavorite, isRecent: false)
+            return MixerAppRow(key: app.key, name: appInfo(app.key, path: app.path).name, appPath: app.path, row: row, settings: app.settings,
+                               outputMissing: false, routeError: nil, timedMuteUntil: nil)
+        }
+        meters.set(levels)
+    }
+    #endif
 }
