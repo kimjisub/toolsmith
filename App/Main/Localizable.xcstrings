@@ -685,6 +685,16 @@
         }
       }
     },
+    "After you allow one, macOS may reopen the app. The guide continues from here." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "허락하면 macOS 가 앱을 다시 열 수 있습니다. 안내는 여기서 이어집니다."
+          }
+        }
+      }
+    },
     "AirPlay" : {
       "localizations" : {
         "ko" : {

@@ -49,9 +49,10 @@ struct ToolsmithApp: App {
         self.environment = environment
         environment.launch()
 
-        // First launch: the guide. (Not when the app was started with a development flag.)
-        if !environment.settings.settings.onboardingCompleted, CommandLine.arguments.count == 1 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { environment.onboarding.show() }
+        // Until it is finished, the guide opens at launch, on the page it was left on.
+        let saved = environment.settings.settings
+        if let step = OnboardingResume.stepAtLaunch(completed: saved.onboardingCompleted, savedStep: saved.onboardingStep, arguments: CommandLine.arguments) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { environment.onboarding.show(from: step) }
         }
 
         #if TOOLSMITH_DEV
@@ -59,7 +60,8 @@ struct ToolsmithApp: App {
         // Each running module answers its own flags.
         environment.modules.running.forEach { $0.runDevelopmentAid(arguments) }
         if arguments.contains("--show-onboarding") {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { environment.onboarding.show() }
+            // As at launch: the saved page of an unfinished guide.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { environment.onboarding.show(from: saved.onboardingStep ?? .welcome) }
         }
         if let index = arguments.firstIndex(of: "--render-onboarding"), index + 1 < arguments.count {
             // Development aid: draw every page of the guide into pictures, and quit.
