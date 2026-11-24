@@ -1,0 +1,135 @@
+name: Toolsmith
+options:
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+# Dev is Release plus the development aids. Release and Debug never define TOOLSMITH_DEV, so a build
+# for the team cannot carry the stand-in fan helper (see CLAUDE.md, "배포 빌드").
+configs:
+  Debug: debug
+  Release: release
+  Dev: release
+
+settings:
+  base:
+    # The app's identity: its name, bundle id, signing team, update repository and copyright.
+    # This block is the only place they are written. The app's code reads them through
+    # AppIdentity (App/Kit/AppIdentity.swift, from the framework's Info.plist), the scripts
+    # through scripts/identity.sh. A fork or a rename changes these lines (and the app icon).
+    APP_NAME: Toolsmith
+    APP_BUNDLE_ID: kim.jisub.toolsmith
+    APP_TEAM_ID: TU5R3B6V43
+    APP_UPDATE_REPOSITORY: kimjisub/toolsmith
+    APP_COPYRIGHT: "© 2026 Jisub Kim"
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    # Ad-hoc signatures have no Team ID, so the hardened runtime's library validation
+    # rejects our own embedded framework. The release script re-signs with the Developer ID.
+    ENABLE_HARDENED_RUNTIME: NO
+    DEAD_CODE_STRIPPING: YES
+  configs:
+    # Development builds only: the command-line aids and the stand-in fan helper.
+    Dev:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: TOOLSMITH_DEV
+
+targets:
+  ToolsmithKit:
+    type: framework
+    platform: macOS
+    sources:
+      - path: App/Kit
+        excludes: ["Info.plist"]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID).kit
+        GENERATE_INFOPLIST_FILE: YES
+        # Carries the app's identity to AppIdentity; the generated keys are added to it.
+        INFOPLIST_FILE: App/Kit/Info.plist
+
+  # The administrator helper for battery charge control. launchd runs it as root once the user
+  # allows it (SMAppService daemon); it lives in the app at Contents/MacOS/ToolsmithHelper.
+  ToolsmithHelper:
+    type: tool
+    platform: macOS
+    sources:
+      - path: App/Helper
+        excludes: ["LaunchDaemons"]
+      - path: App/Main/Monitor/Readers/SMC.swift
+    dependencies:
+      - target: ToolsmithKit
+        embed: false
+    settings:
+      base:
+        PRODUCT_NAME: ToolsmithHelper
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID).helper
+        # The identifier the signature carries comes from an Info.plist inside the executable.
+        GENERATE_INFOPLIST_FILE: YES
+        CREATE_INFOPLIST_SECTION_IN_BINARY: YES
+        SKIP_INSTALL: YES
+        # Finds ToolsmithKit.framework next to the app's own executable.
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+
+  Toolsmith:
+    type: application
+    platform: macOS
+    sources:
+      - path: App/Main
+        excludes: ["Info.plist", "*.entitlements"]
+    dependencies:
+      - target: ToolsmithKit
+      - target: ToolsmithHelper
+        embed: true
+        copy:
+          destination: executables
+    settings:
+      base:
+        PRODUCT_NAME: $(APP_NAME)
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID)
+        INFOPLIST_FILE: App/Main/Info.plist
+        CODE_SIGN_ENTITLEMENTS: App/Main/Toolsmith.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: 2026.11.0
+        CURRENT_PROJECT_VERSION: 1
+    # The charge helper's launchd plist, named and labelled after the bundle id (SMAppService finds it by name).
+    postCompileScripts:
+      - name: Charge helper launchd plist
+        script: |
+          folder="$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Library/LaunchDaemons"
+          mkdir -p "$folder"
+          sed "s/__APP_BUNDLE_ID__/$APP_BUNDLE_ID/g" "$SRCROOT/App/Helper/LaunchDaemons/helper.plist" > "$folder/$APP_BUNDLE_ID.helper.plist"
+        inputFiles:
+          - $(SRCROOT)/App/Helper/LaunchDaemons/helper.plist
+        outputFiles:
+          - $(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Library/LaunchDaemons/$(APP_BUNDLE_ID).helper.plist
+
+  ToolsmithKitTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [App/Tests]
+    dependencies:
+      - target: ToolsmithKit
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID).kit-tests
+
+schemes:
+  Toolsmith:
+    build:
+      targets:
+        Toolsmith: all
+  # Tests build only the framework. If they built the app too, a second copy of the app with the
+  # same bundle ID would sit in the build folder, and macOS can launch that stale copy instead of
+  # the real one (it did, after a permission prompt's "Quit & Reopen").
+  ToolsmithKitTests:
+    build:
+      targets:
+        ToolsmithKit: all
+        ToolsmithKitTests: [test]
+    test:
+      targets: [ToolsmithKitTests]

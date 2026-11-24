@@ -1,0 +1,85 @@
+# Pushes to any branch and pull requests: build the release configuration, run the tests and the
+# design lint. A tag "v<version>" (e.g. v2026.11.1) also signs the build with the Developer ID,
+# notarizes it and publishes it as a release of this repository, where people download it and the
+# app's automatic update looks. A manual run signs and notarizes too and keeps the DMG as an
+# artifact without publishing. See docs/release.md.
+#
+# Pull requests (including from forks) use `pull_request`, which gives them no secrets; signing
+# steps never run for them. Do not switch to `pull_request_target`.
+name: ci
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 40
+    permissions:
+      # write: a tag creates this repository's release (GITHUB_TOKEN).
+      contents: write
+    env:
+      # The build number only has to grow; the run number does.
+      TOOLSMITH_BUILD_NUMBER: ${{ github.run_number }}
+      RELEASING: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+      SIGNING: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Version from the tag
+        if: env.RELEASING == 'true'
+        run: echo "TOOLSMITH_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Build and test
+        run: scripts/build.sh --release --test
+
+      - name: Sign and notarize
+        if: env.SIGNING == 'true'
+        env:
+          DEVELOPER_ID_P12_BASE64: ${{ secrets.DEVELOPER_ID_P12_BASE64 }}
+          DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          TOOLSMITH_NOTARY_APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          TOOLSMITH_NOTARY_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          TOOLSMITH_NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+          TOOLSMITH_SIGNING_KEYCHAIN: ${{ runner.temp }}/toolsmith-signing.keychain-db
+        run: |
+          export TOOLSMITH_SIGNING_KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
+          scripts/ci-signing-keychain.sh "$TOOLSMITH_SIGNING_KEYCHAIN"
+          scripts/release.sh --skip-build
+
+      - name: Keep the DMG
+        if: env.SIGNING == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: Toolsmith-dmg
+          path: |
+            dist/*.dmg
+            dist/*.dmg.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish the release
+        if: env.RELEASING == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/publish-release.sh "$GITHUB_REPOSITORY"
