@@ -15,7 +15,8 @@ CI (`.github/workflows/ci.yml`, macOS runner) then:
 
 1. builds the Release configuration with that version (`TOOLSMITH_VERSION`) and the run number as the build number, and runs the tests and the design lint;
 2. signs every executable (the charge helper with its own identifier, then the app) with hardened runtime, makes the DMG and notarizes it (`scripts/release.sh`);
-3. publishes the DMG and `release.json` (version, build, sha256, size) as a release in this repository (`scripts/publish-release.sh`), where people download it and installed apps look for updates.
+3. publishes the DMG and `release.json` (version, build, sha256, size) as a release in this repository (`scripts/publish-release.sh`), where people download it and installed apps look for updates;
+4. points the Homebrew cask `kimjisub/tap/toolsmith` ([homebrew-tap](https://github.com/kimjisub/homebrew-tap)) at the new version and sha256 (`scripts/update-homebrew-cask.sh`).
 
 Versions are CalVer `YYYY.M.PATCH`: year, month without a leading zero, and a number that starts at `0` each month (`2026.11.0`, `2026.11.1`, `2026.12.0`). Never reuse or lower a version; automatic updates only install higher ones.
 
@@ -31,6 +32,7 @@ Installed apps read this repository's latest release through GitHub's public API
 |---|---|
 | `DEVELOPER_ID_P12_BASE64`, `DEVELOPER_ID_P12_PASSWORD` | The Developer ID Application certificate and private key (.p12, base64) and its password |
 | `NOTARY_APPLE_ID`, `NOTARY_TEAM_ID`, `NOTARY_PASSWORD` | Apple ID, team and app-specific password for `notarytool` |
+| `TAP_DEPLOY_KEY` | Private half of an SSH deploy key with write access to `kimjisub/homebrew-tap` only; the release job pushes the cask update with it |
 
 CI imports the certificate into a throwaway keychain for each run (`scripts/ci-signing-keychain.sh`) and publishes with the workflow's own `GITHUB_TOKEN`. Signing steps run only for tags and manual runs, never for pull requests.
 
