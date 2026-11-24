@@ -127,6 +127,10 @@ struct OnboardingView: View {
             Split {
                 Copy(eyebrow: String(localized: "Permissions"), title: String(localized: "Three permissions\nfrom macOS"),
                      lead: String(localized: "Moving windows and capturing the screen need your Mac’s permission. Only Accessibility is required; the others are needed only when you use those features. You can also turn them on later in Settings → Permissions."))
+                Label("After you allow one, macOS may reopen the app. The guide continues from here.", systemImage: "arrow.clockwise")
+                    .font(.role(.secondary))
+                    .foregroundStyle(GuideInk.tertiary)
+                    .fixedSize(horizontal: false, vertical: true)
             } art: {
                 VStack(spacing: 0) {
                     PermissionRow(title: String(localized: "Accessibility"), detail: String(localized: "Moving windows, pasting directly"), required: true, granted: model.accessibility) {

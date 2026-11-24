@@ -19,6 +19,31 @@ final class OnboardingTests: XCTestCase {
         XCTAssertTrue(SettingsStore(fileURL: url).settings.onboardingCompleted)
     }
 
+    func testOpensAtLaunchOnTheSavedPageUntilCompleted() {
+        let plain = ["/Applications/Toolsmith.app/Contents/MacOS/Toolsmith"]
+        XCTAssertEqual(OnboardingResume.stepAtLaunch(completed: false, savedStep: nil, arguments: plain), .welcome)
+        // Reopened by macOS after a permission, or by an update: the page it was on.
+        XCTAssertEqual(OnboardingResume.stepAtLaunch(completed: false, savedStep: .permissions, arguments: plain), .permissions)
+        XCTAssertEqual(OnboardingResume.stepAtLaunch(completed: false, savedStep: .done, arguments: plain), .done)
+        XCTAssertNil(OnboardingResume.stepAtLaunch(completed: true, savedStep: .permissions, arguments: plain))
+        // A development flag keeps it closed; a system option such as the language does not.
+        XCTAssertNil(OnboardingResume.stepAtLaunch(completed: false, savedStep: nil, arguments: plain + ["--show-panel", "monitor"]))
+        XCTAssertEqual(OnboardingResume.stepAtLaunch(completed: false, savedStep: nil, arguments: plain + ["-AppleLanguages", "(ko)"]), .welcome)
+    }
+
+    func testSavedPageSurvivesAndOlderFilesLoad() throws {
+        let url = tempFile(); try Data(#"{"schemaVersion":2,"onboardingCompleted":false}"#.utf8).write(to: url)
+        let store = SettingsStore(fileURL: url)
+        XCTAssertNil(store.settings.onboardingStep)                     // a file from before the page was saved
+        store.update { $0.onboardingStep = .permissions }
+        XCTAssertEqual(SettingsStore(fileURL: url).settings.onboardingStep, .permissions)
+        // A page this version does not know (written by a newer one) is dropped, not the whole file.
+        try Data(#"{"schemaVersion":2,"onboardingStep":42,"windowGap":8}"#.utf8).write(to: url)
+        let newer = SettingsStore(fileURL: url).settings
+        XCTAssertNil(newer.onboardingStep)
+        XCTAssertEqual(newer.windowGap, 8)
+    }
+
     func testTourListsTheFeaturesWithTheirKeys() {
         let tour = OnboardingTour.items(hotkeys: .defaults.seeded(), locale: english)
         XCTAssertEqual(tour.map(\.title), ["Window Snapping", "Clipboard History", "Screen Capture", "AI Answers", "System Monitor", "Screen Time"])

@@ -32,6 +32,8 @@ public struct Settings: Codable, Equatable {
     public var recordMicrophone: Bool = false
     /// Whether the first-run guide was finished (or skipped).
     public var onboardingCompleted: Bool = false
+    /// The page the unfinished guide was on, so it resumes there when the app is reopened.
+    public var onboardingStep: OnboardingStep?
     /// Which feature modules the user switched on or off.
     public var modules = ModuleSwitches()
     /// What the menu bar shows, in what order and how.
@@ -66,6 +68,7 @@ public struct Settings: Codable, Equatable {
         recordSystemAudio = try container.decodeIfPresent(Bool.self, forKey: .recordSystemAudio) ?? false
         recordMicrophone = try container.decodeIfPresent(Bool.self, forKey: .recordMicrophone) ?? false
         onboardingCompleted = try container.decodeIfPresent(Bool.self, forKey: .onboardingCompleted) ?? false
+        onboardingStep = (try? container.decodeIfPresent(OnboardingStep.self, forKey: .onboardingStep)) ?? nil
         automaticUpdates = try container.decodeIfPresent(Bool.self, forKey: .automaticUpdates) ?? true
         publicAddressLookup = try container.decodeIfPresent(Bool.self, forKey: .publicAddressLookup) ?? true
         modules = (try? container.decodeIfPresent(ModuleSwitches.self, forKey: .modules)) ?? ModuleSwitches()
