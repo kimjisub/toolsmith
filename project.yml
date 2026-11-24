@@ -24,7 +24,7 @@ settings:
     APP_BUNDLE_ID: kim.jisub.toolsmith
     APP_TEAM_ID: TU5R3B6V43
     APP_UPDATE_REPOSITORY: kimjisub/toolsmith
-    APP_COPYRIGHT: "© 2026 Jisub Kim"
+    APP_COPYRIGHT: "© 2026 Jisub Kim, Wonjun Lee"
     SWIFT_VERSION: "5.0"
     MACOSX_DEPLOYMENT_TARGET: "26.0"
     CODE_SIGN_STYLE: Manual

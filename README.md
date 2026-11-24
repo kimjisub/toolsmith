@@ -102,10 +102,14 @@ To distribute your own signed build, change the identity block at the top of `pr
 
 A feature is one folder and one line in `ModuleRegistry`. The settings page, the shortcuts, the permission list and the menu bar follow from what the module declares. See [CONTRIBUTING.md](CONTRIBUTING.md) for the module guide and the design system.
 
+## Maintainers
+
+Toolsmith is built and maintained by [Jisub Kim](https://github.com/kimjisub) and [Wonjun Lee](https://github.com/workoutplz).
+
 ## Contributing
 
 Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Report security problems privately as described in [SECURITY.md](SECURITY.md).
 
 ## License
 
-[MIT](LICENSE) © 2026 Jisub Kim
+[MIT](LICENSE) © 2026 Jisub Kim, Wonjun Lee
