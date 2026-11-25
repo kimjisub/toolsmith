@@ -5,9 +5,18 @@ import ToolsmithKit
 // `toolsmith`: the command line tool inside the app (Contents/Helpers/toolsmith). It sends its
 // arguments to the running app over the socket in the app's support folder and prints the answer;
 // the app does the work, so a command acts exactly as the same click in the app would. When the
-// app is not running it is started first.
+// app is not running it is started first. Help and unknown commands are answered here, without the app.
 
-let arguments = Array(CommandLine.arguments.dropFirst())
+let request = CLIRequest(arguments: Array(CommandLine.arguments.dropFirst()))
+
+/// Prints the answer, on standard error when it is a refusal or usage, and exits with its code.
+func finish(_ response: CLIResponse) -> Never {
+    let text = Data((response.output.hasSuffix("\n") ? response.output : response.output + "\n").utf8)
+    (response.exitCode == 0 ? FileHandle.standardOutput : FileHandle.standardError).write(text)
+    exit(response.exitCode)
+}
+
+if let answer = CLIHelp.answer(request) { finish(answer) }
 
 func connect() -> Int32? {
     let path = CLIEndpoint.socketURL.path
@@ -49,8 +58,8 @@ guard let descriptor = connect() ?? launchAndConnect() else {
     exit(1)
 }
 
-guard let request = try? JSONEncoder().encode(CLIRequest(arguments: arguments)) else { exit(1) }
-request.withUnsafeBytes { buffer in
+guard let encoded = try? JSONEncoder().encode(request) else { exit(1) }
+encoded.withUnsafeBytes { buffer in
     var offset = 0
     while offset < buffer.count {
         let written = write(descriptor, buffer.baseAddress! + offset, buffer.count - offset)
@@ -73,6 +82,4 @@ guard let response = try? JSONDecoder().decode(CLIResponse.self, from: reply) el
     FileHandle.standardError.write(Data("\(AppIdentity.name) gave no answer.\n".utf8))
     exit(1)
 }
-let text = Data((response.output.hasSuffix("\n") ? response.output : response.output + "\n").utf8)
-(response.exitCode == 0 ? FileHandle.standardOutput : FileHandle.standardError).write(text)
-exit(response.exitCode)
+finish(response)

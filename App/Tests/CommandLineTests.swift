@@ -16,6 +16,25 @@ final class CommandLineTests: XCTestCase {
         XCTAssertTrue(CLIResponse.json(["a": 1]).output.contains("\"a\" : 1"))
     }
 
+    func testHelpAndUnknownCommandsNeedNoApp() throws {
+        for arguments in [[], ["help"], ["--help"], ["-h"], ["--json"]] {
+            let answer = try XCTUnwrap(CLIHelp.answer(CLIRequest(arguments: arguments)), "\(arguments)")
+            XCTAssertEqual(answer, CLIResponse(output: CLIHelp.usage), "\(arguments)")
+        }
+        XCTAssertTrue(CLIHelp.usage.contains("toolsmith charge --help"))
+        XCTAssertEqual(CLIHelp.answer(CLIRequest(arguments: ["charge", "--help"])), CLIResponse(output: ChargeCommand.usage))
+        XCTAssertEqual(CLIHelp.answer(CLIRequest(arguments: ["charge", "help", "--json"])), CLIResponse(output: ChargeCommand.usage))
+
+        let unknown = try XCTUnwrap(CLIHelp.answer(CLIRequest(arguments: ["fly"])))
+        XCTAssertEqual(unknown.exitCode, 2)
+        XCTAssertTrue(unknown.output.hasPrefix("Unknown command: fly\n\nUsage: toolsmith"))
+
+        // These reach the app.
+        for arguments in [["status"], ["status", "--json"], ["charge"], ["charge", "limit", "80"]] {
+            XCTAssertNil(CLIHelp.answer(CLIRequest(arguments: arguments)), "\(arguments)")
+        }
+    }
+
     func testChargeCommandsParse() throws {
         XCTAssertEqual(try ChargeCommand.parse([]), .status)
         XCTAssertEqual(try ChargeCommand.parse(["status"]), .status)

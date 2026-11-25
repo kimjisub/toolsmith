@@ -65,7 +65,7 @@ English is the development language. Code holds English text; the String Catalog
 - Write whole sentences, never fragments joined in code, so each language can order its words. Counts get plural forms in the catalog.
 - Search words (`keywords:`) may hold words of every language. Development-only text (`*DevelopmentAids.swift`, logs) stays plain English.
 
-After a build, `scripts/localization.py sync` adds new strings to the catalogs; translate them there (or in Xcode's catalog editor). `scripts/build.sh` runs `scripts/localization.py check --built`, which fails when Korean is written in code, when a catalog entry lacks a translation, or when the code has a string the catalogs do not.
+After a build, `scripts/localization.py sync` adds new strings to the catalogs; translate them there (or in Xcode's catalog editor). `scripts/build.sh` runs `scripts/localization.py check --built`, which fails when Korean is written in code, when a catalog entry lacks a translation, when the code has a string the catalogs do not, or when a Korean particle stands apart from its word (「macOS가」, not 「macOS 가」). After a placeholder, write a particle only when the inserted word always ends the same way (the app's name); otherwise word the sentence so it needs none (「복사했습니다: %@」).
 
 ## Design system
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Keeps the string catalogs in step with the code. See CONTRIBUTING.md, "Text and languages".
 
-    scripts/localization.py lint            Korean string literals left in Swift code (no build needed)
+    scripts/localization.py lint            Korean string literals left in Swift code, and Korean particles
+                                            set apart from their word in the catalogs (no build needed)
     scripts/localization.py check           lint, plus every catalog entry translated into every language
     scripts/localization.py check --built [Dev|Release]
                                             check, plus the last build's strings all in the catalogs
@@ -43,6 +44,18 @@ NOT_LOCALIZED = "// not localized:"
 # Files whose Korean is data, not text shown to people: the Hangul search tables, development-only aids, tests.
 LINT_SKIP = re.compile(r"^App/(Tests/|Kit/Search/HangulText\.swift$|Main/.*DevelopmentAids\.swift$)")
 
+# Korean writes a particle against the word before it: 「macOS가」, 「「지금 확인」으로」, 「esc로」, 「로그인 항목에서」.
+# After a placeholder (%@) the right particle depends on how the inserted word ends, so either the
+# inserted word always ends the same way (the app's name, a size in MB) or the sentence is written
+# to need none (「복사했습니다: %@」, 「%@ 버전이」). 이 alone is left out: it is also 「this」 (이 맥).
+PARTICLES = "가|은|는|을|를|에|에서|에게|에는|에도|에서도|에서는|로|으로|로는|으로는|와|과|도|의|만|처럼|까지|부터|보다"
+SPACED_PARTICLE = re.compile(
+    rf"(?:[A-Za-z0-9」)}}\]%@↵⌫⇥⌘⌥°.] (?:{PARTICLES})|」 이|[가-힣] (?:에서|에게|에는|에도|에서도|에서는|으로|으로는|처럼|까지|부터|보다))"
+    r"(?=$|[\s,.!?:;)」…])"
+)
+# Translations where the space is right, as (key, the text that matched). Say why next to each.
+SPACING_ALLOWED: set[tuple[str, str]] = set()
+
 
 def lint() -> list[str]:
     problems = []
@@ -57,6 +70,29 @@ def lint() -> list[str]:
             code = KEYWORDS.split(code, 1)[0]
             if any(HANGUL.search(literal) for literal in STRING_LITERAL.findall(code)):
                 problems.append(f"  {relative}:{number}: {line.strip()}")
+    return problems
+
+
+def values(localization: dict):
+    """Every text of one language's entry: the plain one, plural and device variations, substitutions."""
+    if "stringUnit" in localization:
+        yield localization["stringUnit"]["value"]
+    for cases in localization.get("variations", {}).values():
+        for case in cases.values():
+            yield from values(case)
+    for substitution in localization.get("substitutions", {}).values():
+        yield from values(substitution)
+
+
+def spacing() -> list[str]:
+    problems = []
+    for catalog in [*CATALOGS, *STATIC_CATALOGS]:
+        for key, entry in load(catalog)["strings"].items():
+            localization = entry.get("localizations", {}).get("ko")
+            for value in values(localization) if localization else []:
+                for match in SPACED_PARTICLE.finditer(value):
+                    if (key, match.group()) not in SPACING_ALLOWED:
+                        problems.append(f"  {catalog.relative_to(ROOT)}: {key!r}: {match.group()!r} in {value!r}")
     return problems
 
 
@@ -153,6 +189,11 @@ def main(arguments: list[str]) -> int:
         failed = True
         print("localization: Korean text written in code (write English and translate it in a string catalog):")
         print("\n".join(problems))
+    spaced = spacing()
+    if spaced:
+        failed = True
+        print("localization: a Korean particle set apart from its word (write 「macOS가」, not 「macOS 가」; after %@, see SPACED_PARTICLE):")
+        print("\n".join(spaced))
     if command == "check":
         for catalog in [*CATALOGS, *STATIC_CATALOGS]:
             missing = untranslated(load(catalog))

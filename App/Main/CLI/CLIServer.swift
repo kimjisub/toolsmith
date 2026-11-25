@@ -65,23 +65,16 @@ import ToolsmithKit
     }
 
     private func answer(_ request: CLIRequest) async -> CLIResponse {
-        let words = request.words
-        guard let first = words.first, !["help", "--help", "-h"].contains(first) else { return .init(output: usage) }
+        if let answer = CLIHelp.answer(request) { return answer }
+        guard let first = request.words.first else { return .usage(CLIHelp.usage) }
         if first == "status" { return status(json: request.wantsJSON) }
         guard let module = modules.modules.first(where: { $0.commandLine?.name == first }), let commandLine = module.commandLine else {
-            return .usage("Unknown command: \(first)\n\n\(usage)")
+            return .usage("Unknown command: \(first)\n\n\(CLIHelp.usage)")
         }
         guard modules.isEnabled(module.descriptor.id) else {
             return .failure("\(module.descriptor.title) is switched off. Switch it on in \(AppIdentity.name) Settings → Features.")
         }
-        let rest = CLIRequest(arguments: Array(request.arguments.drop { $0 != first }.dropFirst()))
-        if rest.words.first.map({ ["help", "--help", "-h"].contains($0) }) == true { return .init(output: commandLine.usage) }
-        return await commandLine.run(rest)
-    }
-
-    private var usage: String {
-        let commands = modules.modules.compactMap(\.commandLine).map { "  \($0.name.padding(toLength: 12, withPad: " ", startingAt: 0)) see toolsmith \($0.name) --help" }
-        return (["Usage: toolsmith <command> [--json]", "", "  status       The app's version and which features run"] + commands).joined(separator: "\n")
+        return await commandLine.run(CLIRequest(arguments: Array(request.arguments.drop { $0 != first }.dropFirst())))
     }
 
     private struct Status: Codable {

@@ -5,3 +5,5 @@ DerivedData/
 dist/
 .port.json
 .superpowers/
+__pycache__/
+*.pyc
