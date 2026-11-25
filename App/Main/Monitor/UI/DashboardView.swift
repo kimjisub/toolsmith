@@ -16,7 +16,7 @@ struct DashboardView: View {
             VStack(spacing: Space.xs) {
                 row(.cpu, symbol: "cpu", title: "CPU", value: MonitorText.whole(s.cpu.total), unit: "%",
                     detail: [s.cpuMHz.map(MonitorText.frequency), s.temperatures.cpu.map(MonitorText.temperature)].compactMap { $0 }.joined(separator: " · ")) {
-                    Sparkline(values: zip(monitor.cpuUserHistory.values, monitor.cpuSystemHistory.values).map { $0 + $1 }, ceiling: 100)
+                    Sparkline(values: History.sum(monitor.cpuUserHistory, monitor.cpuSystemHistory), ceiling: 100)
                 }
                 row(.memory, symbol: "memorychip", title: String(localized: "Memory"), value: MonitorText.whole(s.memory.usedPercent), unit: "%",
                     detail: String(localized: "Pressure \(MonitorText.percent(s.memory.pressure)) · \(MonitorText.memory(s.memory.used))")) {

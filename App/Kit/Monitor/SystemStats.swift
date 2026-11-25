@@ -30,19 +30,36 @@ public enum NetworkCounters {
 }
 
 
-/// The last few readings of something, for a small graph.
+/// The last few readings of something, for a small graph. nil marks a gap between two readings
+/// taken far apart (the app was not running, or the Mac was asleep), so the graph does not draw a
+/// line across time it did not see.
 public struct History: Equatable, Sendable {
+    /// Readings further apart than this have a gap between them. The slowest reading (display
+    /// asleep) comes every 30 seconds.
+    public static let gapAfter: TimeInterval = 90
     public let capacity: Int
-    public private(set) var values: [Double] = []
+    public private(set) var values: [Double?] = []
+    private var lastTime: TimeInterval?
 
     public init(capacity: Int) { self.capacity = max(1, capacity) }
 
-    public mutating func push(_ value: Double) {
+    public mutating func push(_ value: Double, at time: TimeInterval) {
+        if let lastTime, time - lastTime > Self.gapAfter { append(nil) }
+        lastTime = time
+        append(value)
+    }
+
+    public var peak: Double { values.compactMap { $0 }.max() ?? 0 }
+
+    /// Two histories added reading by reading (CPU user + system); a gap in either is a gap.
+    public static func sum(_ a: History, _ b: History) -> [Double?] {
+        zip(a.values, b.values).map { first, second in first.flatMap { x in second.map { x + $0 } } }
+    }
+
+    private mutating func append(_ value: Double?) {
         values.append(value)
         if values.count > capacity { values.removeFirst(values.count - capacity) }
     }
-
-    public var peak: Double { values.max() ?? 0 }
 }
 
 /// Turns the raw bytes the System Management Controller returns into a number.

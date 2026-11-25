@@ -15,7 +15,7 @@ struct CPUDetailView: View {
                     Figure(value: MonitorText.whole(s.cpu.total), unit: "%",
                            caption: String(localized: "User \(MonitorText.percent(s.cpu.user)) · System \(MonitorText.percent(s.cpu.system))"))
                     Spacer()
-                    Sparkline(values: zip(monitor.cpuUserHistory.values, monitor.cpuSystemHistory.values).map { $0 + $1 }, ceiling: 100)
+                    Sparkline(values: History.sum(monitor.cpuUserHistory, monitor.cpuSystemHistory), ceiling: 100)
                         .frame(width: 130, height: 40)
                 }
             }

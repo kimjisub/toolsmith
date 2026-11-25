@@ -3331,6 +3331,16 @@
         }
       }
     },
+    "Kept on this Mac only, for 28 days: every reading of the last hour, then 1-minute averages (10-minute averages after 3 days). The graphs carry on after the app is reopened." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 맥에만 28일 동안 둡니다. 최근 1시간은 읽은 값을 모두, 그보다 앞은 1분 평균(3일 뒤부터는 10분 평균)으로 둡니다. 앱을 다시 열어도 그래프가 이어집니다."
+          }
+        }
+      }
+    },
     "Key Needed" : {
       "localizations" : {
         "ko" : {
@@ -6085,16 +6095,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이 맥에서 키를 지웠습니다."
-          }
-        }
-      }
-    },
-    "The last hour is kept in memory only. Longer periods are kept on this Mac for 28 days as 1-minute averages (10-minute averages after 3 days)." : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1시간까지는 메모리에만 두고, 그보다 긴 기간은 1분 평균(3일 뒤부터는 10분 평균)을 28일 동안 이 맥에 둡니다."
           }
         }
       }
