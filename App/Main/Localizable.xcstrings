@@ -385,6 +385,16 @@
         }
       }
     },
+    "%lld points" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%p"
+          }
+        }
+      }
+    },
     "%lld pt" : {
       "localizations" : {
         "ko" : {
@@ -1401,12 +1411,18 @@
         }
       }
     },
-    "Charging stops at the limit and starts again when the battery drops %lld percentage points below it." : {
+    "Charging is controlled by a small helper inside %@ that runs with administrator rights: macOS’s own charge limit alone runs a battery above it down to it and takes only a few values. Click Install and the helper is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs. It does nothing but charging, takes requests only from %@, and writes nothing while another charge app runs. Click Remove to put charging and macOS’s charge limit back as they were and delete it." : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Charging is controlled by a small helper inside %1$@ that runs with administrator rights: macOS’s own charge limit alone runs a battery above it down to it and takes only a few values. Click Install and the helper is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs. It does nothing but charging, takes requests only from %2$@, and writes nothing while another charge app runs. Click Remove to put charging and macOS’s charge limit back as they were and delete it."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "한도에서 충전을 멈추고, 배터리가 한도보다 %lld%%p 내려가면 다시 충전합니다."
+            "value" : "충전은 %1$@ 안에 든 작은 도우미가 관리자 권한으로 다룹니다. macOS 의 충전 제한만으로는 한도보다 높은 배터리를 한도까지 내리고, 정해진 몇 가지 값만 받기 때문입니다. 「설치」 를 누르면 도우미가 시스템의 백그라운드 항목으로 등록되고, 시스템 설정 → 일반 → 로그인 항목에서 허용하면 동작합니다. 도우미는 충전 말고는 아무것도 하지 않고, %2$@ 의 요청만 받으며, 다른 충전 앱이 실행 중이면 아무것도 쓰지 않습니다. 「제거」 를 누르면 충전과 macOS 의 충전 제한을 원래대로 돌려놓고 지웁니다."
           }
         }
       }
@@ -1991,16 +2007,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "자동 실행을 바꾸지 못했습니다: %@"
-          }
-        }
-      }
-    },
-    "Couldn’t change the charge limit" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "충전 제한을 바꾸지 못했습니다"
           }
         }
       }
@@ -3035,6 +3041,16 @@
         }
       }
     },
+    "How far the battery may fall below the limit before it charges again" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한도보다 얼마나 내려가야 다시 충전할지"
+          }
+        }
+      }
+    },
     "How long you used each app. Deleted after 90 days" : {
       "localizations" : {
         "ko" : {
@@ -3177,16 +3193,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "설치"
-          }
-        }
-      }
-    },
-    "Installed" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "설치되어 있습니다"
           }
         }
       }
@@ -4142,16 +4148,6 @@
         }
       }
     },
-    "No longer used" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "더 이상 쓰지 않습니다"
-          }
-        }
-      }
-    },
     "No text found." : {
       "localizations" : {
         "ko" : {
@@ -4262,16 +4258,6 @@
         }
       }
     },
-    "Not needed" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "필요 없습니다"
-          }
-        }
-      }
-    },
     "Not recording." : {
       "localizations" : {
         "ko" : {
@@ -4358,16 +4344,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "끔"
-          }
-        }
-      }
-    },
-    "Old Helper" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "예전 도우미"
           }
         }
       }
@@ -5263,6 +5239,16 @@
         }
       }
     },
+    "Sailing Range" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항해 범위"
+          }
+        }
+      }
+    },
     "Same as Output" : {
       "localizations" : {
         "ko" : {
@@ -6089,12 +6075,12 @@
         }
       }
     },
-    "The installed helper is from an older version of %@. Until it is updated, charge control is off; updating keeps the approval in Login Items." : {
+    "The installed helper is from an older version of %@. Until it is updated, charge control is off." : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "설치된 도우미는 예전 판 %@ 의 것입니다. 업데이트하기 전까지 충전 제어는 꺼져 있습니다. 업데이트해도 로그인 항목의 허용은 그대로 남습니다."
+            "value" : "설치된 도우미는 예전 판 %@ 의 것입니다. 업데이트하기 전까지 충전 제어는 꺼져 있습니다."
           }
         }
       }
@@ -6329,12 +6315,12 @@
         }
       }
     },
-    "This Mac uses macOS’s own charge limit, so the charge helper installed earlier is no longer needed. Removing it puts back the charge settings the helper changed, then deletes it." : {
+    "This Mac’s firmware takes limits only through macOS’s own charge limit, which the helper sets to the level to keep, so it is kept while the Mac sleeps. System Settings → Battery shows that value meanwhile." : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이 맥은 macOS 의 충전 제한을 쓰므로 예전에 설치한 충전 도우미가 필요 없습니다. 제거하면 도우미가 바꿔 둔 충전 설정을 원래대로 돌려놓고 지웁니다."
+            "value" : "이 맥의 펌웨어는 macOS 의 충전 제한으로만 한도를 받습니다. 도우미가 그 제한을 유지할 잔량으로 맞추므로 맥이 잠자는 동안에도 지켜집니다. 그동안 시스템 설정 → 배터리 에는 그 값이 보입니다."
           }
         }
       }
@@ -6891,26 +6877,6 @@
         }
       }
     },
-    "Uses macOS’s charge limit" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS 의 충전 제한을 씁니다"
-          }
-        }
-      }
-    },
-    "Uses macOS’s own charge limit, kept by the firmware even while the Mac sleeps. When the battery is above your limit, %@ sets macOS’s limit to the battery’s level so it is held there instead of running down, and lowers it as the battery is used; System Settings → Battery shows that value meanwhile. macOS does not allow limits below 80%%." : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS 의 충전 제한을 씁니다. 펌웨어가 지키므로 맥이 잠자는 동안에도 유지됩니다. 배터리가 한도보다 높으면 %@ 는 macOS 의 제한을 지금 배터리 잔량으로 맞춰 줄어들지 않고 그 자리에 유지되게 하고, 배터리를 쓰는 만큼 낮춥니다. 그동안 시스템 설정 → 배터리 에는 그 값이 보입니다. macOS 는 80%% 아래를 허용하지 않습니다."
-          }
-        }
-      }
-    },
     "Value for %@" : {
       "localizations" : {
         "ko" : {
@@ -7334,22 +7300,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "macOS 커널"
-          }
-        }
-      }
-    },
-    "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %@. Click Remove to put charging back as it was and delete it." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "macOS on this Mac has no charge limit (Apple silicon Macs with macOS 26.4 or later do), so values are written directly to the Mac’s power management chip (SMC). That needs administrator rights. Click Install and a small helper inside %1$@ is registered as a background item of the system; once you allow it in System Settings → General → Login Items, it runs with administrator rights. The helper does nothing but charging and takes requests only from %2$@. Click Remove to put charging back as it was and delete it."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 맥의 macOS 에는 충전 제한이 없어(macOS 26.4 이상 애플 실리콘 맥에 있습니다) 맥의 전원 관리 칩(SMC)에 직접 값을 씁니다. 이는 관리자 권한이 필요합니다. 「설치」 를 누르면 %1$@ 안에 든 작은 도우미가 시스템의 백그라운드 항목으로 등록되고, 시스템 설정 → 일반 → 로그인 항목에서 허용하면 관리자 권한으로 돕니다. 도우미는 충전 말고는 아무것도 하지 않고 %2$@ 의 요청만 받습니다. 「제거」 를 누르면 충전을 원래대로 돌려놓고 지웁니다."
           }
         }
       }

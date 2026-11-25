@@ -17,6 +17,22 @@
         }
       }
     },
+    "%@ also controls charging. Use one charge app: while it runs, %@ changes nothing." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ also controls charging. Use one charge app: while it runs, %2$@ changes nothing."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 도 충전을 다루고 있습니다. 충전 앱은 하나만 쓰세요. 그 앱이 실행 중인 동안 %2$@ 는 아무것도 바꾸지 않습니다."
+          }
+        }
+      }
+    },
     "%@ less than yesterday by this time." : {
       "localizations" : {
         "ko" : {
@@ -351,12 +367,18 @@
         }
       }
     },
-    "At %lld%% charging stops and the battery is held there." : {
+    "At %lld%% charging stops. The battery then sails on the adapter and charges again only below %lld%%." : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "At %1$lld%% charging stops. The battery then sails on the adapter and charges again only below %2$lld%%."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%%에서 충전을 멈추고 그 자리에 유지합니다."
+            "value" : "%1$lld%%에서 충전을 멈춥니다. 그 뒤로는 어댑터로 항해하고, %2$lld%% 아래로 내려가야 다시 충전합니다."
           }
         }
       }
@@ -491,16 +513,6 @@
         }
       }
     },
-    "Charging stopped at the limit. The adapter powers the Mac; the battery neither charges nor runs down." : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "한도에서 충전을 멈췄습니다. 어댑터가 맥에 전원을 대고, 배터리는 충전되지도 줄어들지도 않습니다."
-          }
-        }
-      }
-    },
     "Charging to %lld%%" : {
       "localizations" : {
         "ko" : {
@@ -511,12 +523,12 @@
         }
       }
     },
-    "Charging to 100% once" : {
+    "Charging to 100%" : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이번만 100%까지 충전 중"
+            "value" : "100%까지 충전 중"
           }
         }
       }
@@ -717,16 +729,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "형광펜"
-          }
-        }
-      }
-    },
-    "Holding at %lld%%" : {
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld%%에서 유지 중"
           }
         }
       }
@@ -1001,6 +1003,16 @@
         }
       }
     },
+    "Paused at %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%에서 멈춤"
+          }
+        }
+      }
+    },
     "Pen" : {
       "localizations" : {
         "ko" : {
@@ -1127,6 +1139,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Safari 와 웹 화면 (WebKit)"
+          }
+        }
+      }
+    },
+    "Sailing at %lld%%" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld%%에서 항해 중"
           }
         }
       }
@@ -1281,6 +1303,16 @@
         }
       }
     },
+    "The adapter powers the Mac; the battery neither charges nor runs down. It charges again below %lld%%." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어댑터가 맥에 전원을 대고, 배터리는 충전되지도 줄어들지도 않습니다. %lld%% 아래로 내려가면 다시 충전합니다."
+          }
+        }
+      }
+    },
     "The downloaded file contains no app." : {
       "localizations" : {
         "ko" : {
@@ -1301,12 +1333,12 @@
         }
       }
     },
-    "The limit is paused until the battery is full or the adapter comes off." : {
+    "The limit is lifted until the adapter comes off: the battery charges to 100% and stays there." : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "배터리가 가득 차거나 어댑터를 뺄 때까지 한도를 잠시 멈춥니다."
+            "value" : "어댑터를 뺄 때까지 한도를 풉니다. 배터리를 100%까지 채우고 그대로 둡니다."
           }
         }
       }
@@ -1451,12 +1483,12 @@
         }
       }
     },
-    "When plugged in, the battery is held where it is." : {
+    "When plugged in, the battery stays where it is and charges again below %lld%%." : {
       "localizations" : {
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "어댑터를 꽂으면 지금 잔량에서 유지합니다."
+            "value" : "어댑터를 꽂으면 지금 잔량 그대로 두고, %lld%% 아래로 내려가야 다시 충전합니다."
           }
         }
       }

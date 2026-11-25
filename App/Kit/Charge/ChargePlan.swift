@@ -1,16 +1,18 @@
 import Foundation
 
-/// What the battery is doing, in the user's terms. A limit below the battery's level does not drain
-/// it: the battery is held where it is (the adapter powers the Mac) until the user asks to
-/// discharge or the level falls by use.
+/// What the battery is doing, in the user's terms. The rules follow AlDente's: the battery charges to
+/// the limit, then sails (the adapter powers the Mac, the battery neither charges nor runs down) until
+/// it falls more than the sailing range below the limit. A limit below the level pauses charging at
+/// the level; the battery runs down only on an explicit Discharge.
 public enum ChargeActivity: String, Codable, Equatable, Sendable {
     /// On the adapter, filling up to the limit (or to full without one).
     case charging
-    /// On the adapter, which powers the Mac; the battery neither charges nor runs down.
+    /// On the adapter, which powers the Mac; the battery neither charges nor runs down. Within the
+    /// sailing range below the limit this is sailing; above the limit, a pause at the level.
     case holding
     /// Asked for: running from the battery although plugged in, down to the limit.
     case discharging
-    /// Asked for: charging to 100% this once.
+    /// Asked for: charging to 100% and staying there until unplugged.
     case toppingUp
     /// Not plugged in.
     case onBattery
@@ -21,7 +23,7 @@ public enum ChargeRequest: String, Codable, Equatable, Sendable {
     case none
     /// Run down to the limit while plugged in; ends at the limit.
     case discharge
-    /// Charge to 100% once; ends when full or unplugged.
+    /// Charge to 100% and keep it there; ends when unplugged.
     case topUp
 }
 
@@ -37,10 +39,7 @@ public struct ChargeAbilities: Equatable, Sendable {
         self.canDischarge = canDischarge
     }
 
-    /// macOS's own limit: the firmware stops charging at the target and runs the battery down to a
-    /// target below the level.
-    public static let system = ChargeAbilities(canHold: true, canDischarge: true)
-
+    /// What the charge controller's own keys allow.
     public init(keys: ChargeKeys) {
         self.init(canHold: keys.canPause, canDischarge: keys.canDischarge)
     }
@@ -53,75 +52,72 @@ public struct ChargeInput: Equatable, Sendable {
     public var onAdapter: Bool
     /// The user's limit; nil charges to full.
     public var limit: Int?
+    /// How far under the limit the battery may fall before it charges again.
+    public var sailing: Int
     public var request: ChargeRequest
     public var abilities: ChargeAbilities
-    /// The last plan's hold, so the level can sit inside the band below the limit without
-    /// switching between charging and holding at every percent.
-    public var wasHolding: Bool
-    /// The last target handed to macOS's limit, if any.
-    public var previousTarget: Int?
+    /// The last plan was charging towards the limit: it carries on up to the limit rather than
+    /// stopping as soon as the level enters the sailing range.
+    public var wasCharging: Bool
 
-    public init(level: Double, onAdapter: Bool, limit: Int?, request: ChargeRequest = .none, abilities: ChargeAbilities,
-                wasHolding: Bool = false, previousTarget: Int? = nil) {
+    public init(level: Double, onAdapter: Bool, limit: Int?, sailing: Int = ChargeLimit.defaultSailing, request: ChargeRequest = .none,
+                abilities: ChargeAbilities, wasCharging: Bool = false) {
         self.level = level
         self.onAdapter = onAdapter
         self.limit = limit
+        self.sailing = ChargeLimit.clampSailing(sailing)
         self.request = request
         self.abilities = abilities
-        self.wasHolding = wasHolding
-        self.previousTarget = previousTarget
+        self.wasCharging = wasCharging
     }
 }
 
 /// What to do now, for either way of controlling the charge.
 public struct ChargePlan: Equatable, Sendable {
     public var activity: ChargeActivity
-    /// The request after one-offs that have ended (top-up full or unplugged, discharge at the limit).
+    /// The request after one-offs that have ended (top-up unplugged, discharge at the limit).
     public var request: ChargeRequest
-    /// Charging is stopped by the limit (also while unplugged, so plugging in does not start it).
-    public var holding: Bool
-    /// For macOS's own limit: the level the firmware keeps the battery at. While holding above the
-    /// limit it is the level itself, so the firmware neither charges nor drains; it follows the level
-    /// down as the battery is used and never goes under the limit. nil: no limit, or a top-up.
-    public var target: Int?
-    /// For the helper: what to write to the charge controller.
+    /// Charging towards the limit (remembered while unplugged as false: plugging in within the
+    /// sailing range does not start it).
+    public var charging: Bool
+    /// For macOS's own limit: the level the firmware should keep the battery at or below. Charging:
+    /// the limit; holding: the level itself, so the firmware neither charges nor drains; discharging:
+    /// the limit, which the firmware drains down to. 100 means no limit.
+    public var target: Int
+    /// For the charge controller's own keys: what to write.
     public var output: ChargeOutput
 }
 
 public enum ChargePlanner {
-    /// How far under the limit the level must fall before charging starts again, so the controller
-    /// is not switched at every percent. Also how far the hold target trails the level before it is
-    /// lowered, so a battery in use is not rewritten at every percent.
-    public static let band = 2
-
     public static func plan(_ input: ChargeInput) -> ChargePlan {
         let level = input.level
-        let readable = level.isFinite
-        let limit = input.limit
         let request = remaining(input.request, input)
+        let here = holdTarget(level)
 
         // Nearly empty or unreadable: charge, adapter on, whatever was asked. A top-up already charges.
-        guard readable, level > ChargeLimit.safetyFloor else {
+        guard level.isFinite, level > ChargeLimit.safetyFloor else {
             return ChargePlan(activity: input.onAdapter ? .charging : .onBattery, request: request == .discharge ? .none : request,
-                              holding: false, target: limit, output: .normal)
+                              charging: input.onAdapter, target: request == .topUp ? 100 : input.limit ?? 100, output: .normal)
         }
 
         switch request {
         case .topUp:
-            return ChargePlan(activity: input.onAdapter ? .toppingUp : .onBattery, request: request, holding: false, target: nil, output: .normal)
+            return ChargePlan(activity: .toppingUp, request: request, charging: true, target: 100, output: .normal)
         case .discharge:
-            return ChargePlan(activity: input.onAdapter ? .discharging : .onBattery, request: request, holding: true, target: limit,
+            let limit = input.limit ?? 100
+            return ChargePlan(activity: input.onAdapter ? .discharging : .onBattery, request: request, charging: false, target: limit,
                               output: ChargeOutput(inhibit: input.abilities.canHold, adapterOff: true))
         case .none:
-            guard let limit, input.abilities.canHold else {
-                return ChargePlan(activity: input.onAdapter ? .charging : .onBattery, request: request, holding: false,
-                                  target: limit, output: .normal)
+            guard let limit = input.limit, input.abilities.canHold else {
+                return ChargePlan(activity: input.onAdapter ? .charging : .onBattery, request: request, charging: input.onAdapter,
+                                  target: input.limit ?? 100, output: .normal)
             }
-            let floor = Double(limit), band = Double(Self.band)
-            let holding = level >= floor || (input.wasHolding && level > floor - band)
-            return ChargePlan(activity: input.onAdapter ? (holding ? .holding : .charging) : .onBattery, request: request,
-                              holding: holding, target: holding ? holdTarget(level: level, limit: limit, previous: input.previousTarget) : limit,
-                              output: ChargeOutput(inhibit: holding, adapterOff: false))
+            let floor = Double(limit)
+            let charging = input.onAdapter && level < floor
+                && (input.wasCharging || level < floor - Double(input.sailing))
+            let activity: ChargeActivity = input.onAdapter ? (charging ? .charging : .holding) : .onBattery
+            return ChargePlan(activity: activity, request: request, charging: charging, target: charging ? limit : here,
+                              output: ChargeOutput(inhibit: !charging, adapterOff: false))
         }
     }
 
@@ -131,7 +127,7 @@ public enum ChargePlanner {
         case .none:
             return .none
         case .topUp:
-            return input.onAdapter && !(input.level.isFinite && input.level >= 100) ? .topUp : .none
+            return input.onAdapter ? .topUp : .none
         case .discharge:
             guard input.abilities.canDischarge, let limit = input.limit, input.level.isFinite,
                   input.level > Double(limit), input.level > ChargeLimit.safetyFloor else { return .none }
@@ -139,18 +135,11 @@ public enum ChargePlanner {
         }
     }
 
-    /// Holding above the limit keeps the level the battery has, never more and never under the limit.
-    /// The target follows the level down in steps of `band`, and up at once (a top-up or macOS's
-    /// occasional full charge left the battery above it: a lower target would drain it).
-    static func holdTarget(level: Double, limit: Int, previous: Int?) -> Int {
-        let now = min(100, Int(level.rounded()))
-        let target: Int
-        if let previous, now <= previous, previous - now < band {
-            target = previous
-        } else {
-            target = now
-        }
-        return min(100, max(limit, target))
+    /// The level as a target: rounded up, so a battery a fraction above a whole percent is not
+    /// drained to it.
+    static func holdTarget(_ level: Double) -> Int {
+        guard level.isFinite else { return 100 }
+        return min(100, max(1, Int(level.rounded(.up))))
     }
 
     /// Before the Mac sleeps nothing watches the level, so the adapter goes back on (a stopped

@@ -43,17 +43,23 @@ struct ChargeStateView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: compact ? Space.s : Space.m) {
+            if let conflict = ChargeSummary.conflict(snapshot.conflicts) {
+                Notice(text: conflict)
+            }
             header
-            ChargeGauge(level: snapshot.level, limit: snapshot.activity == .toppingUp ? nil : snapshot.limit, tint: color)
-            if snapshot.abilities.canHold || snapshot.abilities.canDischarge {
+            ChargeGauge(level: snapshot.level, limit: snapshot.activity == .toppingUp ? nil : snapshot.limit,
+                        resume: snapshot.activity == .toppingUp ? nil : snapshot.resumeLevel, tint: color)
+            if snapshot.conflicts.isEmpty, snapshot.abilities.canHold || snapshot.abilities.canDischarge {
                 VStack(alignment: .leading, spacing: Space.xs) {
                     Text("Limit").font(.role(.detail)).foregroundStyle(Ink.tertiary)
                     LimitPicker(choices: choices, selected: snapshot.limit ?? 100, tint: tint, onPick: onLimit)
                 }
             }
             actions
-            Text(ChargeSummary.explanation(snapshot)).font(.role(.detail)).foregroundStyle(Ink.tertiary)
-                .fixedSize(horizontal: false, vertical: true)
+            if snapshot.conflicts.isEmpty {
+                Text(ChargeSummary.explanation(snapshot)).font(.role(.detail)).foregroundStyle(Ink.tertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             if let error {
                 Text(error).font(.role(.detail)).foregroundStyle(Status.warning).fixedSize(horizontal: false, vertical: true)
             }
@@ -137,10 +143,12 @@ struct ChargeStateView: View {
     }
 }
 
-/// The battery as a bar, with the limit marked and the part above it set apart.
+/// The battery as a bar, with the limit marked, the sailing range below it and the part above it set apart.
 struct ChargeGauge: View {
     let level: Double?
     let limit: Int?
+    /// Where charging starts again: the sailing range is drawn between it and the limit.
+    var resume: Int?
     let tint: Color
 
     var body: some View {
@@ -154,6 +162,12 @@ struct ChargeGauge: View {
                     Rectangle().fill(Fill.control)
                         .frame(width: width * CGFloat(100 - limit) / 100)
                         .offset(x: width * CGFloat(limit) / 100)
+                }
+                if let limit, let resume, resume < limit {
+                    // The sailing range: the battery may sit anywhere here without charging.
+                    Rectangle().fill(Tint.wash(tint))
+                        .frame(width: width * CGFloat(limit - resume) / 100)
+                        .offset(x: width * CGFloat(resume) / 100)
                 }
                 if let level {
                     shape.fill(LinearGradient(colors: [Tint.strong(tint), tint], startPoint: .leading, endPoint: .trailing))

@@ -1,36 +1,35 @@
 import Foundation
 import ObjectiveC
-import ToolsmithKit
 
 /// Talks to macOS's own charge limit through PowerUI's `PowerUISmartChargeClient` (a private
-/// framework: the same client System Settings and the Shortcuts action use). Every call is looked
-/// up at run time, so a macOS without it simply reports `nil` instead of crashing.
-final class SystemChargeLimitClient {
+/// framework: the client System Settings uses). Every call is looked up at run time, so a macOS
+/// without it simply reports `nil` instead of crashing. The helper reads the limit through it and
+/// releases the limit through it; targets are written as preferences (`NativeChargeLimit`).
+public final class SystemChargeLimitClient {
     private let client: NSObject
 
     private typealias Flag = @convention(c) (AnyObject, Selector) -> Bool
     private typealias Action = @convention(c) (AnyObject, Selector, AutoreleasingUnsafeMutablePointer<NSError?>?) -> Bool
     private typealias Number = @convention(c) (AnyObject, Selector, AutoreleasingUnsafeMutablePointer<NSError?>?) -> UInt64
     private typealias Percent = @convention(c) (AnyObject, Selector, AutoreleasingUnsafeMutablePointer<NSError?>?) -> UInt8
-    private typealias SetPercent = @convention(c) (AnyObject, Selector, UInt8, AutoreleasingUnsafeMutablePointer<NSError?>?) -> Bool
     private typealias List = @convention(c) (AnyObject, Selector, AutoreleasingUnsafeMutablePointer<NSError?>?) -> AnyObject?
 
-    private static let required = ["isMCLSupported", "getMCLLimitWithError:", "setMCLLimit:error:", "isMCLCurrentlyEnabled:",
-                                   "enableMCL:", "temporarilyDisableMCL:", "availableChargeLimitsWithError:"]
+    private static let required = ["isMCLSupported", "getMCLLimitWithError:", "isMCLCurrentlyEnabled:",
+                                   "enableMCL:", "disableMCL:", "availableChargeLimitsWithError:"]
 
     /// nil when this macOS or this Mac has no charge limit of its own.
-    init?() {
+    public init?(clientName: String = ChargeHelperIdentity.helperBundleID) {
         guard dlopen("/System/Library/PrivateFrameworks/PowerUI.framework/PowerUI", RTLD_NOW) != nil,
               let type = NSClassFromString("PowerUISmartChargeClient") as? NSObject.Type else { return nil }
         let allocated = type.perform(NSSelectorFromString("alloc"))?.takeUnretainedValue() as? NSObject
-        guard let made = allocated?.perform(NSSelectorFromString("initWithClientName:"), with: ChargeHelperIdentity.appBundleID)?
+        guard let made = allocated?.perform(NSSelectorFromString("initWithClientName:"), with: clientName)?
             .takeUnretainedValue() as? NSObject,
             Self.required.allSatisfy({ made.responds(to: NSSelectorFromString($0)) }) else { return nil }
         client = made
         guard call("isMCLSupported", Flag.self)(client, NSSelectorFromString("isMCLSupported")) else { return nil }
     }
 
-    func read() -> SystemChargeLimitState? {
+    public func read() -> SystemChargeLimitState? {
         var error: NSError?
         let limit = call("getMCLLimitWithError:", Percent.self)(client, NSSelectorFromString("getMCLLimitWithError:"), &error)
         guard error == nil else { return nil }
@@ -40,27 +39,17 @@ final class SystemChargeLimitClient {
         return SystemChargeLimitState(limit: Int(limit), mode: SystemChargeLimitState.mode(raw: raw), choices: choices)
     }
 
-    /// Sets the limit (80…100) and turns it on. Returns why it failed, or nil.
-    func set(limit: Int) -> String? {
-        var error: NSError?
-        // PowerUI crashes below 80, so the value never goes there.
-        let value = UInt8(clamping: min(max(limit, 80), 100))
-        guard call("setMCLLimit:error:", SetPercent.self)(client, NSSelectorFromString("setMCLLimit:error:"), value, &error) else {
-            return error?.localizedDescription ?? String(localized: "Couldn’t change the charge limit")
-        }
-        return perform("enableMCL:")
+    /// Switches the limit off through the agent, the only way it also clears what it registered with
+    /// powerd. The agent ignores this while it thinks the limit is off, so it is switched on first.
+    public func disable() -> String? {
+        if read()?.mode == .off, let failure = perform("enableMCL:") { return failure }
+        return perform("disableMCL:")
     }
-
-    /// Suspends the limit until the battery is full or the adapter comes off.
-    func topUp() -> String? { perform("temporarilyDisableMCL:") }
-
-    /// Brings a suspended limit back now.
-    func resume() -> String? { perform("enableMCL:") }
 
     private func perform(_ selector: String) -> String? {
         var error: NSError?
         guard call(selector, Action.self)(client, NSSelectorFromString(selector), &error) else {
-            return error?.localizedDescription ?? String(localized: "Couldn’t change the charge limit")
+            return error?.localizedDescription ?? "PowerUI refused \(selector)"
         }
         return nil
     }
