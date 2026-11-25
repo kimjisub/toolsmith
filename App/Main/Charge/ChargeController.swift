@@ -125,8 +125,8 @@ import ToolsmithKit
 
     /// Replaces a running helper older than this app. Unregistering stops it (it gives charging back
     /// as it exits); registering again starts the copy inside this app.
-    func updateHelper() {
-        guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
+    func updateHelper(then done: (@MainActor () -> Void)? = nil) {
+        guard Self.isSignedByTeam else { state = .unsupportedBuild; done?(); return }
         busy = true
         connection?.invalidate()
         connection = nil
@@ -139,7 +139,7 @@ import ToolsmithKit
             }
             status = nil
             busy = false
-            refresh()
+            refresh(then: done)
         }
     }
 

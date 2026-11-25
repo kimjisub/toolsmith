@@ -26,7 +26,7 @@ public enum ChargeCommand: Equatable, Sendable {
       discharge on|off             Run from the battery down to the limit while plugged in
       topup on|off                 Charge to 100% and keep it there until unplugged
       helper status                Whether the administrator helper is installed and running
-      helper install [--wait]      Register the helper; macOS asks you to allow it in
+      helper install [--wait]      Register (or update) the helper; macOS asks you to allow it in
                                    System Settings → General → Login Items (--wait: until you do)
       helper uninstall             Give charging and macOS's limit back, then remove the helper
     """

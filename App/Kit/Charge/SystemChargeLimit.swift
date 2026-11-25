@@ -57,6 +57,16 @@ public enum NativeChargeLimit {
     /// The agent applies a new target at its next evaluation, about once a minute.
     public static let settleTime: TimeInterval = 150
 
+    /// The limit powerd enforces, from `pmset -g battlimit`: the first entry's `chargeSocLimitSoc`, or
+    /// 100 when there is none (no limit).
+    public static func enforced(pmset output: String) -> Int {
+        for line in output.split(separator: "\n") where line.contains("chargeSocLimitSoc") {
+            let digits = line.split(separator: "=").last?.filter(\.isNumber) ?? ""
+            if let value = Int(digits) { return value }
+        }
+        return 100
+    }
+
     /// The agent's own values before the helper first wrote, so they can be put back.
     public struct Originals: Codable, Equatable, Sendable {
         public var featureState: Int?

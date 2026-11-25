@@ -60,7 +60,9 @@ extension ChargeModule {
 
     private func install(wait: Bool, json: Bool) async -> CLIResponse {
         await charge.refreshed()
-        if !charge.helperEnabled {
+        if case .outdated = charge.state {
+            await withCheckedContinuation { continuation in charge.updateHelper { continuation.resume() } }
+        } else if !charge.helperEnabled {
             charge.install()
             await charge.refreshed()
         }

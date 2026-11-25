@@ -15,15 +15,28 @@ final class NativeLimitWriter {
         originalsFile = folder.appendingPathComponent("native-limit-originals.json")
     }
 
-    /// What macOS enforces now: the target in percent, or nil while its limit is off.
+    /// What powerd enforces now (`pmset -g battlimit`), 100 for no limit, nil when unreadable. The
+    /// agent's own value is not enough: it can read the new target while powerd keeps the old one
+    /// (a target of 100 written as a preference stayed 97 in powerd, seen on macOS 27.0.1).
     func reported() -> Int? {
-        guard let state = client.read(), state.mode == .on else { return nil }
-        return state.limit
+        let pmset = Process()
+        pmset.executableURL = URL(fileURLWithPath: "/usr/bin/pmset")
+        pmset.arguments = ["-g", "battlimit"]
+        let pipe = Pipe()
+        pmset.standardOutput = pipe
+        pmset.standardError = FileHandle.nullDevice
+        guard (try? pmset.run()) != nil else { return nil }
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        pmset.waitUntilExit()
+        guard pmset.terminationStatus == 0, let text = String(data: data, encoding: .utf8) else { return nil }
+        return NativeChargeLimit.enforced(pmset: text)
     }
 
-    /// Sets the target and asks the agent to reload. False when the preferences could not be saved.
+    /// Sets the target and asks the agent to reload; 100 switches the limit off through the agent,
+    /// the only way powerd lets go of the last target. False when that did not go through.
     func write(_ percent: Int) -> Bool {
         saveOriginalsOnce()
+        if percent >= 100 { return client.disable() == nil }
         return set(featureState: 1, limit: percent) && postReload()
     }
 

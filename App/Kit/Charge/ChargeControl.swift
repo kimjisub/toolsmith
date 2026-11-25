@@ -15,7 +15,8 @@ public enum ChargeHelperIdentity {
     /// Bumped when the helper's vocabulary changes; the app offers to update an older helper.
     /// 2: sails and holds instead of leaving the adapter, drives macOS's own limit where the keys are
     /// gone, `setTopUp` and `setSailing` replaced `setPaused`.
-    public static let version = 2
+    /// 3: macOS's limit read from powerd and lifted through the agent for a charge to 100%.
+    public static let version = 3
 
     /// A code signing requirement: Apple-anchored, this identifier, signed by our team.
     public static func requirement(identifier: String) -> String {

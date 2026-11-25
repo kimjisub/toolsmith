@@ -57,4 +57,19 @@ final class CommandLineTests: XCTestCase {
         XCTAssertEqual(try JSONDecoder().decode(ChargeReport.self, from: JSONEncoder().encode(report)), report)
         XCTAssertEqual(ChargeReport(helper: "notInstalled").text, "helper: notInstalled")
     }
+
+    func testPowerdsLimitIsReadFromPmset() {
+        let held = """
+        Battery level limits:
+        (
+                {
+                Terminated = 0;
+                chargeSocLimitDrain = 1;
+                chargeSocLimitSoc = 97;
+            }
+        )
+        """
+        XCTAssertEqual(NativeChargeLimit.enforced(pmset: held), 97)
+        XCTAssertEqual(NativeChargeLimit.enforced(pmset: "Battery level limits:\n(\n)\n"), 100)
+    }
 }
