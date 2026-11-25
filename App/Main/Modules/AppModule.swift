@@ -81,13 +81,14 @@ extension AppModule {
 /// A module's part of the command line tool. The tool sends its arguments to the running app
 /// (`CLIServer`), which hands `toolsmith <name> …` to the module with that name while it runs. A
 /// command does what the module's screens do, through the same objects.
+/// Its name and `--help` come from `CLIHelp`, so the tool can answer help without the app.
 struct ModuleCommandLine {
-    /// The word after `toolsmith` ("charge").
-    let name: String
-    /// What `toolsmith <name> --help` prints.
-    let usage: String
+    let help: CLICommandHelp
     /// The arguments after the name, `--json` included.
     let run: @MainActor (CLIRequest) async -> CLIResponse
+
+    /// The word after `toolsmith` ("charge").
+    var name: String { help.name }
 }
 
 /// What a module may ask of the app's shell.

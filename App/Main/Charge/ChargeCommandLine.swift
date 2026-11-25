@@ -7,7 +7,7 @@ import ToolsmithKit
 /// Settings → General → Login Items: macOS lets no program give that approval.
 extension ChargeModule {
     var commandLine: ModuleCommandLine? {
-        ModuleCommandLine(name: "charge", usage: ChargeCommand.usage) { [weak self] request in
+        ModuleCommandLine(help: CLIHelp.charge) { [weak self] request in
             guard let charge = self?.charge else { return .failure("Battery charging is not running.") }
             let command: ChargeCommand
             do {
