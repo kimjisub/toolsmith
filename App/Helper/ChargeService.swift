@@ -109,12 +109,14 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
         }
     }
 
-    /// Charging on, adapter on, macOS's limit as the user had it. Called before the helper exits.
-    func giveBack() {
+    /// Charging on, adapter on, and with `limit`, macOS's limit as the user had it (removing the
+    /// helper). Leaving for any other reason (an update, a restart) keeps macOS's limit: the firmware
+    /// holds it without the helper, while the user's old value could be one the battery drains to.
+    func giveBack(limit: Bool = false) {
         guard conflicts.isEmpty else { return }
         if method == .keys || keys.canDischarge { writeKeys(.normal, force: true) }
-        if let failure = native?.giveBack() { lastError = failure }
-        target = nil
+        if limit, let failure = native?.giveBack() { lastError = failure }
+        if limit { target = nil }
     }
 
     // MARK: XPC (calls arrive on a connection queue; work hops to main)
@@ -143,7 +145,7 @@ final class ChargeService: NSObject, ChargeHelperProtocol {
         DispatchQueue.main.async {
             self.settings = .defaults
             Self.save(self.settings)
-            self.giveBack()
+            self.giveBack(limit: true)
             reply(self.report())
         }
     }

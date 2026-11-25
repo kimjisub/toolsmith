@@ -133,13 +133,23 @@ import ToolsmithKit
         Task { @MainActor in
             do {
                 try await service.unregister()
-                try service.register()
+                try await registerAgain()
             } catch {
                 if service.status != .requiresApproval { state = .failed(String(localized: "Couldn’t update the helper: \(error.localizedDescription)")) }
             }
             status = nil
             busy = false
             refresh(then: done)
+        }
+    }
+
+    /// Right after unregistering, a registration can go unanswered (seen on macOS 27.0.1: the helper
+    /// stayed unregistered until asked again), so it is asked again until the system has it.
+    private func registerAgain() async throws {
+        for attempt in 0..<5 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(1)) }
+            try service.register()
+            if service.status == .enabled || service.status == .requiresApproval { return }
         }
     }
 
