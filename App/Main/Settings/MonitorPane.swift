@@ -19,7 +19,7 @@ struct MonitorPane: View {
             SettingsSection(title: String(localized: "Network"), footer: String(localized: "When on, opening the network details asks Cloudflare’s public address (www.cloudflare.com/cdn-cgi/trace) at most once every 5 minutes. Nothing is sent; Cloudflare sees this Mac’s public IP.")) {
                 ToggleRow(title: String(localized: "Look Up Public IP Address"), detail: String(localized: "Shows the address and country the internet sees for this Mac"), isOn: settings.binding(\.publicAddressLookup))
             }
-            SettingsSection(title: String(localized: "History"), footer: String(localized: "The last hour is kept in memory only. Longer periods are kept on this Mac for 28 days as 1-minute averages (10-minute averages after 3 days).")) {
+            SettingsSection(title: String(localized: "History"), footer: String(localized: "Kept on this Mac only, for 28 days: every reading of the last hour, then 1-minute averages (10-minute averages after 3 days). The graphs carry on after the app is reopened.")) {
                 SettingsRow(title: String(localized: "Saved History"), detail: ByteSize.text(Int(historyBytes))) {
                     RowButton(String(localized: "Clear…"), role: .destructive) { confirmingClear = true }
                 }

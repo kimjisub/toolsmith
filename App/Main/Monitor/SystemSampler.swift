@@ -4,6 +4,9 @@ import ToolsmithKit
 /// One look at how the Mac is doing.
 struct SystemSnapshot: Sendable {
     var cpu = CPUUsage()
+    /// Whether the CPU load and the disk and network rates were measured. The first reading has
+    /// nothing to compare with: those stay zero and are not history.
+    var ratesMeasured = false
     var cores: [Double] = []
     /// The kinds of cores, fastest first, and which kind each entry of `cores` is.
     var clusters: [CoreCluster] = []
@@ -69,7 +72,10 @@ final class SystemSampler: @unchecked Sendable {
     func sample(full: Bool) -> SystemSnapshot {
         var snapshot = SystemSnapshot()
         if let ticks = KernelReader.cpuTicks() {
-            if let lastCPU { snapshot.cpu = CPUUsage.between(lastCPU, ticks) }
+            if let lastCPU {
+                snapshot.cpu = CPUUsage.between(lastCPU, ticks)
+                snapshot.ratesMeasured = lastCounters != nil
+            }
             lastCPU = ticks
         }
         let (memory, pageIns, pageOuts) = KernelReader.memory()

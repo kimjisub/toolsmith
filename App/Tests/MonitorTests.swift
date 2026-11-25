@@ -26,10 +26,28 @@ final class MonitorTests: XCTestCase {
 
     func testHistoryKeepsTheLatest() {
         var history = History(capacity: 3)
-        [1, 2, 3, 4].forEach { history.push($0) }
+        [1, 2, 3, 4].forEach { history.push($0, at: $0 * 5) }
         XCTAssertEqual(history.values, [2, 3, 4])
         XCTAssertEqual(history.peak, 4)
         XCTAssertEqual(History(capacity: 3).peak, 0)
+    }
+
+    func testHistoryMarksAGapBetweenReadingsFarApart() {
+        var history = History(capacity: 10)
+        history.push(1, at: 0)
+        history.push(2, at: 30)                                   // display asleep: one reading every 30 seconds
+        history.push(3, at: 30 + History.gapAfter + 1)            // the app was not running in between
+        XCTAssertEqual(history.values, [1, 2, nil, 3])
+        XCTAssertEqual(history.peak, 3)
+    }
+
+    func testHistorySumIsAGapWhereEitherIs() {
+        var user = History(capacity: 10), system = History(capacity: 10)
+        for (time, value) in [(0.0, 1.0), (5, 2), (500, 3)] {
+            user.push(value, at: time)
+            system.push(value * 10, at: time)
+        }
+        XCTAssertEqual(History.sum(user, system), [11, 22, nil, 33])
     }
 
     func testSMCValues() {

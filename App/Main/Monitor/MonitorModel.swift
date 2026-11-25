@@ -68,13 +68,18 @@ struct NetworkConnection: Sendable {
 
     private var prepared = false
 
-    /// Starts reading (the feature was switched on).
+    /// Starts reading (the feature was switched on). The first time, the last hour of readings is
+    /// brought back from disk first, so the graphs carry on from before the app was reopened.
     func start() {
         guard !running else { return }
         running = true
         if !prepared {
             prepared = true
-            queue.async { [sampler] in sampler.prepare() }
+            queue.async { [weak self, sampler, store] in
+                sampler.prepare()
+                let readings = store?.restore(now: Date().timeIntervalSince1970) ?? []
+                DispatchQueue.main.async { self?.restore(readings) }
+            }
         }
         schedule()
         tick()
@@ -130,6 +135,7 @@ struct NetworkConnection: Sendable {
     /// Deletes the recorded history, in memory and on disk.
     func clearHistory() {
         recent = RecentReadings()
+        for metric in Metric.allCases { clearGraph(metric) }
         queue.async { [store] in store?.removeAll() }
     }
 
@@ -172,17 +178,18 @@ struct NetworkConnection: Sendable {
         if detail == .network, ticks % 5 == 0 { refreshConnection() }
         queue.async { [weak self, sampler, store] in
             let snapshot = sampler.sample(full: full)
-            let time = Date().timeIntervalSince1970
-            let values = Self.metrics(snapshot)
-            store?.add(values, at: time)
-            DispatchQueue.main.async { self?.apply(snapshot, metrics: values, at: time) }
+            let reading = Reading(time: Date().timeIntervalSince1970, Self.metrics(snapshot))
+            store?.add(reading)
+            DispatchQueue.main.async { self?.apply(snapshot, reading: reading) }
         }
     }
 
     nonisolated private static func metrics(_ s: SystemSnapshot) -> [(Metric, Double)] {
-        var values: [(Metric, Double)] = [(.cpuUser, s.cpu.user), (.cpuSystem, s.cpu.system), (.memoryPressure, s.memory.pressure),
-                                          (.memoryUsed, s.memory.usedPercent), (.download, s.downloadRate), (.upload, s.uploadRate),
-                                          (.diskRead, s.diskReadRate), (.diskWrite, s.diskWriteRate)]
+        var values: [(Metric, Double)] = [(.memoryPressure, s.memory.pressure), (.memoryUsed, s.memory.usedPercent)]
+        if s.ratesMeasured {
+            values += [(.cpuUser, s.cpu.user), (.cpuSystem, s.cpu.system), (.download, s.downloadRate), (.upload, s.uploadRate),
+                       (.diskRead, s.diskReadRate), (.diskWrite, s.diskWriteRate)]
+        }
         if let gpu = s.gpu { values.append((.gpu, gpu)) }
         if let power = s.power.system { values.append((.systemPower, power)) }
         if let battery = s.battery {
@@ -193,17 +200,40 @@ struct NetworkConnection: Sendable {
         return values
     }
 
-    private func apply(_ new: SystemSnapshot, metrics: [(Metric, Double)], at time: TimeInterval) {
+    /// Readings brought back from disk at launch, before the first new one.
+    private func restore(_ readings: [Reading]) {
+        recent = RecentReadings(readings)
+        for reading in readings.suffix(cpuUserHistory.capacity) { record(reading) }
+    }
+
+    /// Adds a reading to the small graphs.
+    private func record(_ reading: Reading) {
+        for (metric, value) in reading.values { updateGraph(metric) { $0.push(value, at: reading.time) } }
+    }
+
+    private func clearGraph(_ metric: Metric) {
+        updateGraph(metric) { $0 = History(capacity: $0.capacity) }
+    }
+
+    /// The small graph that shows `metric`, if there is one.
+    private func updateGraph(_ metric: Metric, _ change: (inout History) -> Void) {
+        switch metric {
+        case .cpuUser: change(&cpuUserHistory)
+        case .cpuSystem: change(&cpuSystemHistory)
+        case .download: change(&downloadHistory)
+        case .upload: change(&uploadHistory)
+        case .memoryUsed: change(&memoryHistory)
+        case .systemPower: change(&powerHistory)
+        case .diskRead: change(&diskReadHistory)
+        case .diskWrite: change(&diskWriteHistory)
+        case .gpu, .memoryPressure, .batteryLevel, .batteryTemperature, .cpuTemperature: break
+        }
+    }
+
+    private func apply(_ new: SystemSnapshot, reading: Reading) {
         load = new.cpu.total
-        for (metric, value) in metrics { recent.add(metric, value, at: time) }
-        cpuUserHistory.push(new.cpu.user)
-        cpuSystemHistory.push(new.cpu.system)
-        downloadHistory.push(new.downloadRate)
-        uploadHistory.push(new.uploadRate)
-        memoryHistory.push(new.memory.usedPercent)
-        if let power = new.power.system { powerHistory.push(power) }
-        diskReadHistory.push(new.diskReadRate)
-        diskWriteHistory.push(new.diskWriteRate)
+        for (metric, value) in reading.values { recent.add(metric, value, at: reading.time) }
+        record(reading)
         peakDownload = max(peakDownload, new.downloadRate)
         peakUpload = max(peakUpload, new.uploadRate)
         if isOpen {
