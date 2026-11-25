@@ -117,7 +117,8 @@ enum MonitorMenuBar {
 
     @MainActor static func glyph(_ reading: Reading, style: MenuBarStyle, monitor: MonitorModel) -> MenuBarGlyph? {
         let s = monitor.snapshot
-        func recent(_ history: History) -> [Double] { Array(history.values.suffix(barCount)) }
+        /// A gap (the app was not running) is an empty bar.
+        func recent(_ history: History) -> [Double] { history.values.suffix(barCount).map { $0 ?? 0 } }
         /// `floor` (bytes a second) is the least a full bar stands for, so idle chatter stays low.
         func scaled(_ a: [Double], _ b: [Double], floor: Double) -> ([Double], [Double]) {
             // One scale for both directions, so a busy one and an idle one look like that.

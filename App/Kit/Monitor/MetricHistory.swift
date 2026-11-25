@@ -50,12 +50,58 @@ public struct TimedValue: Equatable, Sendable {
     }
 }
 
+/// One reading of several metrics, as the sampler took it.
+public struct Reading: Equatable, Sendable {
+    public let time: TimeInterval
+    public let values: [Metric: Double]
+
+    public init(time: TimeInterval, values: [Metric: Double]) {
+        self.time = time
+        self.values = values
+    }
+
+    /// A reading as the sampler gives it; values that are not numbers (a sensor that failed) are left out.
+    public init(time: TimeInterval, _ pairs: [(Metric, Double)]) {
+        self.init(time: time, values: Dictionary(pairs.filter { $0.1.isFinite }, uniquingKeysWith: { _, last in last }))
+    }
+
+    /// Stored form: per metric, its number (1 byte) and the value's 8 bytes, little-endian.
+    /// Metrics this version does not know (written by a newer one) are skipped when read.
+    var encoded: Data {
+        var data = Data(capacity: values.count * 9)
+        for (metric, value) in values.sorted(by: { $0.key.rawValue < $1.key.rawValue }) {
+            data.append(UInt8(metric.rawValue))
+            withUnsafeBytes(of: value.bitPattern.littleEndian) { data.append(contentsOf: $0) }
+        }
+        return data
+    }
+
+    init(time: TimeInterval, encoded data: Data) {
+        var values: [Metric: Double] = [:]
+        let bytes = [UInt8](data)
+        var index = 0
+        while index + 9 <= bytes.count {
+            let bits = (0..<8).reduce(UInt64(0)) { $0 | UInt64(bytes[index + 1 + $1]) << (8 * UInt64($1)) }
+            if let metric = Metric(rawValue: Int(bytes[index])) { values[metric] = Double(bitPattern: bits) }
+            index += 9
+        }
+        self.init(time: time, values: values)
+    }
+}
+
 /// The last hour of readings of each metric, in memory.
 public struct RecentReadings: Sendable {
     public static let span: TimeInterval = 3_600
     private var values: [Metric: [TimedValue]] = [:]
 
     public init() {}
+
+    /// Readings brought back from disk, oldest first.
+    public init(_ readings: [Reading]) {
+        for reading in readings {
+            for (metric, value) in reading.values { add(metric, value, at: reading.time) }
+        }
+    }
 
     public mutating func add(_ metric: Metric, _ value: Double, at time: TimeInterval) {
         var list = values[metric, default: []]
@@ -87,9 +133,13 @@ public enum HistoryBuckets {
     }
 }
 
-/// Averages of each metric for the last 28 days, in one SQLite file on this Mac, sent nowhere.
-/// The last 3 days keep one average per minute; older days one per 10 minutes, which is all a graph
-/// of a week or more can show. That keeps the file to a few megabytes.
+/// The monitor's history, in one SQLite file on this Mac, sent nowhere.
+/// - Every reading of the last hour, so the recent graphs carry on after the app is reopened.
+/// - Averages of each metric for the last 28 days. The last 3 days keep one average per minute;
+///   older days one per 10 minutes, which is all a graph of a week or more can show.
+/// Readings are collected in memory and written once a minute, together with the minute's
+/// averages, in one transaction (and when the app quits). That keeps the file to a few megabytes
+/// and the disk writes to a few kilobytes a minute.
 /// Not thread-safe: use from one queue.
 public final class MetricHistoryStore: @unchecked Sendable {
     public enum StoreError: Error { case open(String) }
@@ -98,9 +148,16 @@ public final class MetricHistoryStore: @unchecked Sendable {
     public static let fineRetention: TimeInterval = 3 * 86_400
     static let coarseMinutes: Int64 = 10
 
+    /// How long every reading is kept: as long as the graphs drawn from readings look back.
+    public static let readingRetention: TimeInterval = RecentReadings.span
+    /// The file's layout; `migrate` brings older files up to it.
+    static let schemaVersion: Int32 = 1
+
     private var db: OpaquePointer?
     /// Readings of the minute in progress, averaged and written when the minute ends.
     private var pending: [Metric: (minute: Int64, sum: Double, count: Int)] = [:]
+    /// Readings not yet written; they go with the next finished minute.
+    private var unsaved: [Reading] = []
     private var lastCompaction: TimeInterval = 0
 
     public init(directory: URL) throws {
@@ -113,9 +170,18 @@ public final class MetricHistoryStore: @unchecked Sendable {
         for pragma in ["PRAGMA journal_mode = WAL", "PRAGMA synchronous = NORMAL", "PRAGMA journal_size_limit = 1048576"] {
             sqlite3_exec(db, pragma, nil, nil, nil)
         }
+        try migrate()
+    }
+
+    /// Version 0: per-minute averages only. Version 1 adds the readings of the last hour.
+    private func migrate() throws {
         // `minutes` is 1 for a minute average, 10 for a 10-minute one; `start` is its first minute since 1970.
-        let schema = "CREATE TABLE IF NOT EXISTS average (metric INTEGER NOT NULL, minutes INTEGER NOT NULL, start INTEGER NOT NULL, value REAL NOT NULL, PRIMARY KEY (metric, minutes, start)) WITHOUT ROWID"
-        guard sqlite3_exec(db, schema, nil, nil, nil) == SQLITE_OK else { throw StoreError.open(String(cString: sqlite3_errmsg(db))) }
+        let average = "CREATE TABLE IF NOT EXISTS average (metric INTEGER NOT NULL, minutes INTEGER NOT NULL, start INTEGER NOT NULL, value REAL NOT NULL, PRIMARY KEY (metric, minutes, start)) WITHOUT ROWID"
+        // `time` in milliseconds since 1970; `data` is `Reading.encoded`. One row per reading, appended in time order.
+        let reading = "CREATE TABLE IF NOT EXISTS reading (time INTEGER PRIMARY KEY, data BLOB NOT NULL)"
+        for statement in [average, reading, "PRAGMA user_version = \(Self.schemaVersion)"] {
+            guard sqlite3_exec(db, statement, nil, nil, nil) == SQLITE_OK else { throw StoreError.open(String(cString: sqlite3_errmsg(db))) }
+        }
     }
 
     deinit {
@@ -123,11 +189,14 @@ public final class MetricHistoryStore: @unchecked Sendable {
         sqlite3_close(db)
     }
 
-    /// One reading of several metrics. Minutes that ended are written together, in one transaction.
-    public func add(_ values: [(Metric, Double)], at time: TimeInterval) {
+    /// One reading of several metrics. When a minute ends, its averages and the readings collected
+    /// so far are written together, in one transaction.
+    public func add(_ reading: Reading) {
+        let time = reading.time
         let minute = Int64(time / 60)
         var finished: [(Metric, Int64, Double)] = []
-        for (metric, value) in values where value.isFinite {
+        unsaved.append(reading)
+        for (metric, value) in reading.values {
             if let current = pending[metric], current.minute != minute {
                 finished.append((metric, current.minute, current.sum / Double(current.count)))
                 pending[metric] = nil
@@ -137,7 +206,7 @@ public final class MetricHistoryStore: @unchecked Sendable {
             entry.count += 1
             pending[metric] = entry
         }
-        write(finished)
+        if !finished.isEmpty { write(finished, now: time) }
         if time - lastCompaction > 3_600 {
             lastCompaction = time
             compact(now: time)
@@ -147,15 +216,51 @@ public final class MetricHistoryStore: @unchecked Sendable {
     /// Forgets every recorded minute.
     public func removeAll() {
         pending = [:]
+        unsaved = []
         sqlite3_exec(db, "DELETE FROM average", nil, nil, nil)
+        sqlite3_exec(db, "DELETE FROM reading", nil, nil, nil)
         sqlite3_exec(db, "PRAGMA wal_checkpoint(TRUNCATE)", nil, nil, nil)
         sqlite3_exec(db, "VACUUM", nil, nil, nil)
     }
 
-    /// Writes the minutes in progress (before quitting).
+    /// Writes the minutes in progress, as averages of what they have so far, and the unsaved
+    /// readings (before quitting). If the app opens again within the same minute, `restore`
+    /// takes that minute up again so its average covers both sides.
     public func flush() {
-        write(pending.map { ($0.key, $0.value.minute, $0.value.sum / Double($0.value.count)) })
+        write(pending.map { ($0.key, $0.value.minute, $0.value.sum / Double($0.value.count)) }, now: unsaved.last?.time)
         pending = [:]
+    }
+
+    /// The readings of the last hour before `now`, oldest first, the unsaved ones included. Call it
+    /// once at launch: the minute in progress is taken up again from the readings it already has.
+    public func restore(now: TimeInterval) -> [Reading] {
+        let readings = readings(since: now - Self.readingRetention)
+        guard pending.isEmpty else { return readings }
+        let minute = Int64(now / 60)
+        for reading in readings where Int64(reading.time / 60) == minute {
+            for (metric, value) in reading.values {
+                var entry = pending[metric] ?? (minute, 0, 0)
+                entry.sum += value
+                entry.count += 1
+                pending[metric] = entry
+            }
+        }
+        return readings
+    }
+
+    /// Every reading since `start`, oldest first, the unsaved ones included.
+    public func readings(since start: TimeInterval) -> [Reading] {
+        var statement: OpaquePointer?
+        guard sqlite3_prepare_v2(db, "SELECT time, data FROM reading WHERE time >= ? ORDER BY time", -1, &statement, nil) == SQLITE_OK else { return [] }
+        defer { sqlite3_finalize(statement) }
+        sqlite3_bind_int64(statement, 1, Self.milliseconds(start))
+        var result: [Reading] = []
+        while sqlite3_step(statement) == SQLITE_ROW {
+            let count = Int(sqlite3_column_bytes(statement, 1))
+            let data = count > 0 ? Data(bytes: sqlite3_column_blob(statement, 1), count: count) : Data()
+            result.append(Reading(time: Double(sqlite3_column_int64(statement, 0)) / 1_000, encoded: data))
+        }
+        return result + unsaved.filter { $0.time >= start }
     }
 
     /// Averages since `start`, oldest first, the minute in progress included, as (time, value).
@@ -192,14 +297,31 @@ public final class MetricHistoryStore: @unchecked Sendable {
         }
     }
 
-    private func write(_ rows: [(Metric, Int64, Double)]) {
-        guard !rows.isEmpty else { return }
+    /// Writes minute averages and the unsaved readings, and drops readings older than `readingRetention`.
+    private func write(_ rows: [(Metric, Int64, Double)], now: TimeInterval?) {
+        guard !rows.isEmpty || !unsaved.isEmpty else { return }
         transaction {
             for (metric, minute, value) in rows {
                 run("INSERT OR REPLACE INTO average (metric, minutes, start, value) VALUES (?, 1, ?, ?)", [Int64(metric.rawValue), minute], value)
             }
+            for reading in unsaved { insert(reading) }
+            if let now { run("DELETE FROM reading WHERE time < ?", [Self.milliseconds(now - Self.readingRetention)]) }
         }
+        unsaved = []
     }
+
+    private func insert(_ reading: Reading) {
+        var statement: OpaquePointer?
+        guard sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO reading (time, data) VALUES (?, ?)", -1, &statement, nil) == SQLITE_OK else { return }
+        defer { sqlite3_finalize(statement) }
+        sqlite3_bind_int64(statement, 1, Self.milliseconds(reading.time))
+        let data = reading.encoded
+        _ = data.withUnsafeBytes { sqlite3_bind_blob(statement, 2, $0.baseAddress, Int32(data.count), Self.transient) }
+        sqlite3_step(statement)
+    }
+
+    private static func milliseconds(_ time: TimeInterval) -> Int64 { Int64((time * 1_000).rounded()) }
+    private static let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
     private func transaction(_ body: () -> Void) {
         sqlite3_exec(db, "BEGIN", nil, nil, nil)
