@@ -49,7 +49,7 @@ struct ChargeStateView: View {
             header
             ChargeGauge(level: snapshot.level, limit: snapshot.activity == .toppingUp ? nil : snapshot.limit,
                         resume: snapshot.activity == .toppingUp ? nil : snapshot.resumeLevel, tint: color)
-            if snapshot.conflicts.isEmpty, snapshot.abilities.canHold || snapshot.abilities.canDischarge {
+            if snapshot.abilities.canHold || snapshot.abilities.canDischarge {
                 VStack(alignment: .leading, spacing: Space.xs) {
                     Text("Limit").font(.role(.detail)).foregroundStyle(Ink.tertiary)
                     LimitPicker(choices: choices, selected: snapshot.limit ?? 100, tint: tint, onPick: onLimit)

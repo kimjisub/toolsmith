@@ -10,7 +10,7 @@ struct BatteryPane: View {
             if charge.canControl {
                 SettingsSection(title: String(localized: "Charge Limit"), footer: note) {
                     ContentRow { ChargeControls(charge: charge) }
-                    if let snapshot = charge.snapshot, snapshot.abilities.canHold, snapshot.conflicts.isEmpty {
+                    if let snapshot = charge.snapshot, snapshot.abilities.canHold {
                         PickerRow(title: String(localized: "Sailing Range"),
                                   detail: String(localized: "How far the battery may fall below the limit before it charges again"),
                                   selection: Binding(get: { snapshot.sailing }, set: { charge.setSailing($0) }),

@@ -49,7 +49,7 @@ public enum ChargeSummary {
     public static func conflict(_ names: [String], locale: Locale = .app) -> String? {
         guard !names.isEmpty else { return nil }
         let list = names.formatted(.list(type: .and).locale(locale))
-        return localized("\(list) also controls charging. Use one charge app: while it runs, \(AppIdentity.name) changes nothing.", locale: locale)
+        return localized("\(list) also controls charging. Use one charge app: while it runs, \(AppIdentity.name) changes nothing, and the limit set here takes effect once it quits.", locale: locale)
     }
 
     /// One line: what the battery is doing now.

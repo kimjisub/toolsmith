@@ -273,7 +273,7 @@ final class ChargeSummaryTests: XCTestCase {
         let shot = snapshot(.holding, 95, conflicts: ["AlDente"])
         XCTAssertFalse(shot.canDischarge)
         XCTAssertFalse(shot.canTopUp)
-        XCTAssertEqual(ChargeSummary.conflict(["AlDente"], locale: english), "AlDente also controls charging. Use one charge app: while it runs, \(AppIdentity.name) changes nothing.")
+        XCTAssertEqual(ChargeSummary.conflict(["AlDente"], locale: english), "AlDente also controls charging. Use one charge app: while it runs, \(AppIdentity.name) changes nothing, and the limit set here takes effect once it quits.")
         XCTAssertNil(ChargeSummary.conflict([], locale: english))
     }
 

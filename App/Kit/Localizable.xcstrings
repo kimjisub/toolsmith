@@ -17,7 +17,7 @@
         }
       }
     },
-    "%@ also controls charging. Use one charge app: while it runs, %@ changes nothing." : {
+    "%@ also controls charging. Use one charge app: while it runs, %@ changes nothing, and the limit set here takes effect once it quits." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -28,7 +28,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ 도 충전을 다루고 있습니다. 충전 앱은 하나만 쓰세요. 그 앱이 실행 중인 동안 %2$@ 는 아무것도 바꾸지 않습니다."
+            "value" : "%1$@ 도 충전을 다루고 있습니다. 충전 앱은 하나만 쓰세요. 그 앱이 실행 중인 동안 %2$@ 는 아무것도 바꾸지 않고, 여기서 정한 한도는 그 앱을 끄면 적용됩니다."
           }
         }
       }
