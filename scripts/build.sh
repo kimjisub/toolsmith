@@ -66,6 +66,7 @@ else
   if security find-identity -p codesigning 2>/dev/null | grep -q "\"$SIGN_IDENTITY\""; then
     codesign --force --sign "$SIGN_IDENTITY" --timestamp=none "$APP/Contents/Frameworks/ToolsmithKit.framework" 2>/dev/null
     codesign --force --sign "$SIGN_IDENTITY" --timestamp=none --identifier "$APP_BUNDLE_ID.helper" "$APP/Contents/MacOS/ToolsmithHelper" 2>/dev/null
+    codesign --force --sign "$SIGN_IDENTITY" --timestamp=none --identifier "$APP_BUNDLE_ID.cli" "$APP/Contents/Helpers/toolsmith" 2>/dev/null
     codesign --force --sign "$SIGN_IDENTITY" --timestamp=none --entitlements App/Main/Toolsmith.entitlements "$APP" 2>/dev/null
     echo "signed: $SIGN_IDENTITY"
   else

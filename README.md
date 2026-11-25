@@ -47,7 +47,7 @@ Every feature is a module you can turn off in Settings → Features.
 - **AI answers.** Type <kbd>.</kbd> in the launcher to ask a question; answers are searched on the web and cite their sources. Uses your own [OpenRouter](https://openrouter.ai) key, kept in the Keychain.
 - **System monitor.** CPU, memory, disk, network, battery, temperature and power in the menu bar; per-core load, top apps, power flow, sensors, Wi-Fi/VPN details and history up to 28 days in the panel.
 - **Screen time.** How long you spent in each app, by hour and over the week. Recorded only on your Mac, deleted after 90 days.
-- **Battery charge limit.** Stop charging at 80–95%, or charge to full just once. Uses macOS's own limit on macOS 26.4 and later (Apple silicon).
+- **Battery charge limit.** Charge to a limit, then sail on the adapter (no charging, no draining) until the battery falls a few points below it; a lower limit pauses at the level instead of draining. Discharge to the limit and charge to 100% only when you ask. A small administrator helper does the work, on the firmware's own switches or macOS's charge limit.
 
 ### One menu bar panel
 
@@ -78,6 +78,23 @@ Or by hand:
 3. Launch it. A short guide asks for Accessibility (window snapping and pasting) and the optional permissions.
 
 Releases are signed with a Developer ID and notarized by Apple, and update themselves from this repository's releases (Settings → About can turn that off).
+
+## Command line
+
+The app carries a command line tool, `toolsmith`, that does what the app's controls do (the cask links it into your PATH; otherwise it is at `/Applications/Toolsmith.app/Contents/Helpers/toolsmith`). It talks to the running app, starting it if needed, and only as the same user.
+
+```sh
+toolsmith status                     # version and the features that run
+toolsmith charge status [--json]     # what the battery is doing, limit, helper, other charge apps
+toolsmith charge limit 80            # 50-100, or off
+toolsmith charge sailing 5           # 2, 5, 10, 15 or 20 points
+toolsmith charge discharge on|off
+toolsmith charge topup on|off
+toolsmith charge helper install --wait
+toolsmith charge helper uninstall
+```
+
+`toolsmith <command> --help` lists the rest. Installing the helper still needs one approval from a person in System Settings → General → Login Items: macOS does not let a program give it. Exit codes: 0 done, 1 refused or failed, 2 not understood.
 
 ## Privacy
 

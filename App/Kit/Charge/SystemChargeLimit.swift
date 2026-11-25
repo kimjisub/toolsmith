@@ -38,3 +38,78 @@ public struct SystemChargeLimitState: Equatable, Sendable {
         }
     }
 }
+
+/// macOS's own charge limit driven to any percentage. PowerUIAgent (root) keeps the limit in its
+/// preferences, registers it with powerd, and the firmware enforces it, asleep too, draining a battery
+/// above it. Its client interface (System Settings' slider) takes only the listed values and quietly
+/// ignores others (seen on macOS 27.0.1), so the helper writes the preferences itself and asks the
+/// agent to reload them. The method is the one the open-source tools ampere (az-code-lab/ampere)
+/// and batt (charlie0129/batt) use.
+public enum NativeChargeLimit {
+    /// The agent's domain, in root's preferences (where a root process's current-user writes land).
+    public static let domain = "com.apple.smartcharging.topoffprotection"
+    /// 1 while the limit is on.
+    public static let featureStateKey = "MCLFeatureState"
+    /// The target, in percent.
+    public static let limitKey = "mclLimitValue"
+    /// The Darwin notification the agent reloads its preferences on.
+    public static let reloadNotification = "com.apple.smartcharging.defaultschanged"
+    /// The agent applies a new target at its next evaluation, about once a minute.
+    public static let settleTime: TimeInterval = 150
+
+    /// The limit powerd enforces, from `pmset -g battlimit`: the first entry's `chargeSocLimitSoc`, or
+    /// 100 when there is none (no limit).
+    public static func enforced(pmset output: String) -> Int {
+        for line in output.split(separator: "\n") where line.contains("chargeSocLimitSoc") {
+            let digits = line.split(separator: "=").last?.filter(\.isNumber) ?? ""
+            if let value = Int(digits) { return value }
+        }
+        return 100
+    }
+
+    /// The agent's own values before the helper first wrote, so they can be put back.
+    public struct Originals: Codable, Equatable, Sendable {
+        public var featureState: Int?
+        public var limit: Int?
+        public init(featureState: Int?, limit: Int?) {
+            self.featureState = featureState
+            self.limit = limit
+        }
+    }
+}
+
+/// Whether a target written to macOS's limit took. A target macOS does not report within the
+/// settle time, when none ever did, means this Mac does not take such targets: the helper stops
+/// writing instead of trying again every minute.
+public struct NativeLimitWatch: Codable, Equatable, Sendable {
+    public private(set) var written: Int?
+    public private(set) var writtenAt: Date?
+    /// macOS has reported a target the helper wrote at least once.
+    public private(set) var confirmed = false
+    public private(set) var failed = false
+
+    public init() {}
+
+    /// Takes in what macOS reports now.
+    public mutating func observe(_ reported: Int?, now: Date) {
+        guard let written, let writtenAt else { return }
+        if reported == written {
+            confirmed = true
+        } else if !confirmed, now.timeIntervalSince(writtenAt) > NativeChargeLimit.settleTime {
+            failed = true
+        }
+    }
+
+    /// Whether `target` should be written now: not after a failure, not when macOS has it, and not
+    /// again while the last write of it is still settling.
+    public func shouldWrite(_ target: Int, reported: Int?, now: Date) -> Bool {
+        guard !failed, reported != target else { return false }
+        if written == target, let writtenAt, now.timeIntervalSince(writtenAt) <= NativeChargeLimit.settleTime { return false }
+        return true
+    }
+
+    public mutating func wrote(_ target: Int, at now: Date) {
+        written = target
+        writtenAt = now
+    }
+}

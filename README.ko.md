@@ -47,7 +47,7 @@
 - **AI 답변.** 입력창에서 <kbd>.</kbd> 을 치고 물으면 웹을 검색해 출처와 함께 답합니다. 본인의 [OpenRouter](https://openrouter.ai) 키를 키체인에 두고 씁니다.
 - **시스템 모니터.** 메뉴 막대에 CPU, 메모리, 디스크, 네트워크, 배터리, 온도와 전력. 패널에서는 코어별 부하, 많이 쓰는 앱, 전원 흐름, 센서, Wi-Fi·VPN, 28일까지의 기록.
 - **사용 시간.** 앱마다 얼마나 썼는지 시간대별, 주간으로. 이 맥에만 기록하고 90일 뒤 지웁니다.
-- **배터리 충전 제한.** 80~95% 에서 충전을 멈추거나 이번만 끝까지 충전합니다. macOS 26.4 이상 애플 실리콘 맥에서는 macOS 자체의 충전 제한을 씁니다.
+- **배터리 충전 제한.** 한도까지 충전한 뒤에는 어댑터로 항해합니다(충전도 방전도 하지 않음). 배터리가 한도보다 몇 포인트 내려가야 다시 충전하고, 한도를 잔량보다 낮추면 줄이지 않고 그 자리에서 멈춥니다. 방전과 100% 충전은 고를 때만 합니다. 작은 관리자 도우미가 펌웨어의 스위치나 macOS 의 충전 제한으로 일을 합니다.
 
 ### 하나의 메뉴 막대 패널
 
@@ -78,6 +78,23 @@ brew install --cask toolsmith
 3. 실행하면 짧은 안내가 손쉬운 사용(화면 나누기와 붙여넣기)과 선택 권한을 묻습니다.
 
 배포판은 Developer ID 로 서명하고 애플 공증을 받았으며, 이 저장소의 릴리스에서 스스로 업데이트합니다(설정 → 정보 에서 끌 수 있습니다).
+
+## 명령줄
+
+앱 안에 명령줄 도구 `toolsmith` 가 들어 있어 앱의 버튼과 같은 일을 합니다(cask 가 PATH 에 연결합니다. 아니면 `/Applications/Toolsmith.app/Contents/Helpers/toolsmith`). 실행 중인 앱에 말을 걸고(안 떠 있으면 띄움), 같은 사용자만 쓸 수 있습니다.
+
+```sh
+toolsmith status                     # 판과 동작 중인 기능
+toolsmith charge status [--json]     # 배터리 상태, 한도, 도우미, 다른 충전 앱
+toolsmith charge limit 80            # 50-100, 또는 off
+toolsmith charge sailing 5           # 2, 5, 10, 15, 20 포인트
+toolsmith charge discharge on|off
+toolsmith charge topup on|off
+toolsmith charge helper install --wait
+toolsmith charge helper uninstall
+```
+
+나머지는 `toolsmith <명령> --help` 에 있습니다. 도우미 설치에는 시스템 설정 → 일반 → 로그인 항목에서 사람이 한 번 허용해야 합니다. macOS 는 프로그램이 이 허용을 대신하지 못하게 합니다. 종료 코드는 0 완료, 1 거절이나 실패, 2 이해하지 못함입니다. 출력은 스크립트가 읽기 쉽도록 영어입니다.
 
 ## 개인정보
 

@@ -7,7 +7,8 @@ Toolsmith is a native macOS menu bar app (Swift, SwiftUI + AppKit, macOS 26+) wh
 - `App/Main`: the app. Windows, views, system adapters, and the modules (`App/Main/<Feature>/<Feature>Module.swift`). The shell (`AppEnvironment`, the settings window, `MenuBarController`, `MenuBarPanel`) gathers what modules declare and knows no feature by name.
 - `App/Kit`: `ToolsmithKit.framework`, pure logic with XCTest coverage (search, commands, shortcut table, settings, module switches and resolver, menu bar layout, palette and contrast, clipboard store, snippets, monitor maths, charge rules). No SwiftUI or AppKit UI imports here (Carbon and AppKit's non-UI APIs used by adapters are the exception).
 - `App/Tests`: XCTest for `App/Kit`.
-- `App/Helper`: the charge-limit helper (root, launchd daemon), for Macs without macOS's own charge limit.
+- `App/Helper`: the charge-limit helper (root, launchd daemon).
+- `App/CLI`: the `toolsmith` command line tool (Contents/Helpers/toolsmith). It forwards its arguments over a Unix socket in the support folder (`CLIEndpoint`, owner-only, same user checked) to the running app's `CLIServer`, which hands `toolsmith <name> …` to the module whose `commandLine` has that name. Sign it like the helper, with `--identifier <bundle id>.cli`.
 - `App/Main/Theme`: design tokens and parts. Everything visual comes from here (see CONTRIBUTING, Design system).
 
 ## Modules
@@ -52,7 +53,7 @@ Toolsmith is a native macOS menu bar app (Swift, SwiftUI + AppKit, macOS 26+) wh
 ## Things to keep
 
 - Minimum macOS is 26. Do not add fallbacks for older systems.
-- Charge limit: on macOS 26.4+ Apple silicon the app drives macOS's own limit through the private `PowerUISmartChargeClient` (no admin rights, kept by the firmware while asleep, values below 80 are refused because PowerUI crashes on them). Other Macs can install the helper, which accepts only the five commands in `ChargeHelperProtocol` and requires the other side's signature (identifier + team). Sign the helper before the app with `--identifier <bundle id>.helper` and hardened runtime, or notarization fails.
+- Charge limit: the helper (root, launchd daemon) controls charging on every Mac, by AlDente's rules (`ChargePlanner`: charge to the limit, sail until the level falls the sailing range below it, pause at the level when the limit is under it, discharge and charge to 100% only on request). Where the firmware still has the charge controller's keys (`CHTE`, `CH0B`+`CH0C`) it writes them; where they are gone (macOS 27, 26.7 and 15.8 firmware) it writes macOS's own limit as PowerUIAgent's preferences (`NativeChargeLimit`), because PowerUI's client quietly ignores values outside its list, and checks the value took (`NativeLimitWatch`). It writes nothing while another charge app runs (`ChargeConflicts`). The helper accepts only the commands in `ChargeHelperProtocol` and requires the other side's signature (identifier + team). Sign the helper before the app with `--identifier <bundle id>.helper` and hardened runtime, or notarization fails.
 - The fan helper is a development stand-in that relaunches the app's own executable as root; it must never ship. Shipping fan control needs a separate small helper installed as a daemon with signature checks.
 - Hangul: composing text must already search, and one Return while composing both commits the syllable and runs the selection.
 - The launcher never takes "frontmost app" from the app in use (a non-activating panel): window snapping and pasting act on that app.

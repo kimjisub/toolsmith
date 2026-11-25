@@ -11,7 +11,7 @@ private struct ChargeLimitPanel: View {
         Panel {
             PanelHeader(title: String(localized: "Charge Limit"), symbol: "battery.75percent")
             if charge.canControl {
-                ChargeControls(charge: charge, battery: battery, tint: MonitorStyle.tertiary, compact: true)
+                ChargeControls(charge: charge, tint: MonitorStyle.tertiary, compact: true)
             } else {
                 HStack(spacing: Space.s) {
                     Text("Turn it on in Settings → Battery Charging").font(.role(.secondary)).foregroundStyle(MonitorStyle.quiet)

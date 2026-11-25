@@ -3,14 +3,13 @@ import Security
 import ServiceManagement
 import ToolsmithKit
 
-/// The app's side of battery charge control. Where macOS has a charge limit of its own (26.4 and
-/// later on Apple silicon) that is what it drives: the firmware keeps it even asleep, and nothing
-/// needs installing. Elsewhere it installs the administrator helper (a launchd daemon registered
-/// with SMAppService) and talks to it over XPC.
+/// The app's side of battery charge control. The administrator helper (a launchd daemon registered
+/// with SMAppService) does the work, by AlDente's rules, whether the Mac still has the charge
+/// controller's keys or only macOS's own limit; the app installs it, talks to it over XPC and shows
+/// what it reports. macOS's limit alone cannot hold a battery above it (it runs the battery down to
+/// it) nor take values outside its list, which is why the helper is needed on every Mac.
 @MainActor final class ChargeController: ObservableObject {
     enum State: Equatable {
-        /// macOS's own charge limit is in charge.
-        case system
         /// This build cannot install the helper (not signed with the team's Developer ID).
         case unsupportedBuild
         /// No battery on this Mac.
@@ -19,7 +18,9 @@ import ToolsmithKit
         /// Registered, waiting for the user to allow it in System Settings → General → Login Items.
         case needsApproval
         case running
-        /// The helper runs but this Mac's controller offers no key it knows.
+        /// The helper runs but is older than this app (its version); it needs updating.
+        case outdated(Int)
+        /// The helper runs but finds no way to control charging on this Mac.
         case unsupportedMac
         case failed(String)
     }
@@ -27,45 +28,68 @@ import ToolsmithKit
     @Published private(set) var state: State = .notInstalled
     @Published private(set) var status: ChargeStatus?
     @Published private(set) var busy = false
-    @Published private(set) var system: SystemChargeLimitState?
-    @Published private(set) var systemError: String?
+    /// What the screens show; nil until the helper reports.
+    @Published private(set) var snapshot: ChargeSnapshot?
 
-    private let systemClient = SystemChargeLimitClient()
     private let service = SMAppService.daemon(plistName: ChargeHelperIdentity.plistName)
     private var connection: NSXPCConnection?
+    private var timer: Timer?
+    #if TOOLSMITH_DEV
+    /// A made-up state for pictures: nothing is read from or sent to the helper while it is set.
+    private var demo: ChargeSnapshot?
+    private var isDemo: Bool { demo != nil }
+    #else
+    private let isDemo = false
+    #endif
 
-    init() { refresh() }
-
-    /// Looks again at the helper's registration and, when it runs, at its report.
-    func refresh() {
-        guard BatteryReader.battery() != nil else { state = .noBattery; return }
-        if let systemClient {
-            // A failed read keeps the last value rather than falling back to a helper this Mac does not need.
-            if let read = systemClient.read() { system = read }
-            if system != nil {
-                state = .system
-                releaseLeftoverHelper()
-                return
-            }
+    init() {
+        #if TOOLSMITH_DEV
+        if let made = ChargeModule.demoSnapshot(CommandLine.arguments) {
+            demo = made
+            snapshot = made
+            state = .running
         }
-        guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
+        #endif
+    }
+
+    /// Asks the helper how things are while the module runs. The helper keeps the charge on its own.
+    func start() {
+        refresh()
+        guard timer == nil else { return }
+        let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in Task { @MainActor in self?.refresh() } }
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+    }
+
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+        connection?.invalidate()
+        connection = nil
+    }
+
+    /// Looks again at the helper's registration and, when it runs, at its report. `done` runs once
+    /// the report is in.
+    func refresh(then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        guard BatteryReader.battery() != nil else { state = .noBattery; snapshot = nil; done?(); return }
+        guard Self.isSignedByTeam else { state = .unsupportedBuild; done?(); return }
         switch service.status {
-        case .notRegistered, .notFound: state = .notInstalled
-        case .requiresApproval: state = .needsApproval
-        case .enabled: call { $0.status(reply: $1) }
+        case .notRegistered, .notFound: state = .notInstalled; snapshot = nil
+        case .requiresApproval: state = .needsApproval; snapshot = nil
+        case .enabled: call({ $0.status(reply: $1) }, then: done); return
         @unknown default: state = .notInstalled
         }
+        done?()
     }
 
-    /// A helper installed before this Mac had its own limit would go on holding its old limit:
-    /// tell it once to give charging back.
-    private func releaseLeftoverHelper() {
-        guard !releasedHelper, service.status == .enabled else { return }
-        releasedHelper = true
-        call { $0.restoreDefaults(reply: $1) }
+    /// `refresh`, awaited.
+    func refreshed() async {
+        await withCheckedContinuation { continuation in refresh { continuation.resume() } }
     }
 
-    private var releasedHelper = false
+    /// Whether the helper is registered and allowed to run (Login Items approval given).
+    var helperEnabled: Bool { service.status == .enabled }
 
     func install() {
         guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
@@ -79,8 +103,8 @@ import ToolsmithKit
         if state == .needsApproval { SMAppService.openSystemSettingsLoginItems() }
     }
 
-    /// Gives charging back, then removes the helper.
-    func uninstall() {
+    /// Gives charging back (and macOS's limit as it was), then removes the helper.
+    func uninstall(then done: (@MainActor () -> Void)? = nil) {
         busy = true
         let finish: @MainActor () -> Void = { [weak self] in
             guard let self else { return }
@@ -92,63 +116,92 @@ import ToolsmithKit
                 self.state = .failed(String(localized: "Couldn’t remove the helper: \(error.localizedDescription)"))
             }
             self.status = nil
+            self.snapshot = nil
             self.busy = false
-            self.refresh()
+            self.refresh(then: done)
         }
-        // A helper left over on a Mac that now uses macOS's own limit still gives charging back first.
         if service.status == .enabled { call({ $0.restoreDefaults(reply: $1) }, then: finish) } else { finish() }
+    }
+
+    /// Replaces a running helper older than this app. Unregistering stops it (it gives charging back
+    /// as it exits); registering again starts the copy inside this app.
+    func updateHelper(then done: (@MainActor () -> Void)? = nil) {
+        guard Self.isSignedByTeam else { state = .unsupportedBuild; done?(); return }
+        busy = true
+        connection?.invalidate()
+        connection = nil
+        Task { @MainActor in
+            do {
+                try await service.unregister()
+                try await registerAgain()
+            } catch {
+                if service.status != .requiresApproval { state = .failed(String(localized: "Couldn’t update the helper: \(error.localizedDescription)")) }
+            }
+            status = nil
+            busy = false
+            refresh(then: done)
+        }
+    }
+
+    /// Right after unregistering, a registration can go unanswered (seen on macOS 27.0.1: the helper
+    /// stayed unregistered until asked again), so it is asked again until the system has it.
+    private func registerAgain() async throws {
+        for attempt in 0..<5 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(1)) }
+            try service.register()
+            if service.status == .enabled || service.status == .requiresApproval { return }
+        }
     }
 
     func openLoginItems() { SMAppService.openSystemSettingsLoginItems() }
 
-    /// Whether a helper from before is still registered (on a Mac that no longer needs it).
-    var helperRegistered: Bool { service.status == .enabled || service.status == .requiresApproval }
+    // MARK: What the controls show
 
-    // MARK: What the controls show, whichever does the work
+    var choices: [Int] { ChargeLimit.choices }
+    var canControl: Bool { isDemo || state == .running }
+    var error: String? { status?.error }
 
-    /// The limit in effect, or nil when the battery charges to full.
-    var limit: Int? {
-        if state == .system { return system?.effectiveLimit }
-        return status?.settings.limit
+    func setLimit(_ percent: Int?, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setLimit(percent ?? 0, reply: $1) }, then: done)
     }
 
-    /// The limits the user can pick; 100 stands for none.
-    var choices: [Int] {
-        if state == .system { return system?.choices ?? SystemChargeLimitState.fallbackChoices }
-        return [50, 60, 70, 80, 85, 90, 95, 100]
+    func setSailing(_ points: Int, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setSailing(points, reply: $1) }, then: done)
     }
 
-    var canControl: Bool { state == .system || state == .running }
-    var canTopUp: Bool { state == .system }
-    var toppingUp: Bool { system?.mode == .toppingUp }
-    var canPause: Bool { state == .running && status?.canPause == true }
-    var canDischarge: Bool { state == .running && status?.canDischarge == true }
-    var paused: Bool { status?.settings.paused ?? false }
-    var discharging: Bool { status?.settings.discharging ?? false }
-    var error: String? { state == .system ? systemError : status?.error }
+    /// Runs the battery down to the limit while plugged in; ends there by itself.
+    func setDischarging(_ on: Bool, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setDischarging(on, reply: $1) }, then: done)
+    }
 
-    func setLimit(_ percent: Int?) {
-        if state == .system {
-            updateSystem { $0.set(limit: percent ?? 100) }
-        } else {
-            call { $0.setLimit(percent ?? 0, reply: $1) }
+    /// Charges to 100% and keeps it there until unplugged.
+    func setToppingUp(_ on: Bool, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setTopUp(on, reply: $1) }, then: done)
+    }
+
+    // MARK: The helper
+
+    private func helperReported(_ status: ChargeStatus?) {
+        self.status = status
+        guard let status else { return }
+        if status.version < ChargeHelperIdentity.version {
+            state = .outdated(status.version)
+            snapshot = nil
+            return
         }
+        state = status.canPause || status.canDischarge || status.method == .nativeLimit ? .running : .unsupportedMac
+        let battery = BatteryReader.battery()
+        let activity = status.activity ?? (battery?.onAdapter == true ? .charging : .onBattery)
+        snapshot = state == .running
+            ? ChargeSnapshot(activity: activity, level: battery?.level ?? status.level, onAdapter: battery?.onAdapter ?? false,
+                             limit: status.settings.limit, sailing: status.settings.sailing, abilities: status.abilities,
+                             batteryWatts: BatteryReader.batteryWatts(), conflicts: status.conflicts ?? [])
+            : nil
     }
-
-    /// Charges to full this once; the limit comes back when it is full or unplugged.
-    func topUp() { updateSystem { $0.topUp() } }
-    func resumeLimit() { updateSystem { $0.resume() } }
-
-    private func updateSystem(_ change: (SystemChargeLimitClient) -> String?) {
-        guard let systemClient else { return }
-        systemError = change(systemClient)
-        system = systemClient.read() ?? system
-    }
-
-    func setPaused(_ paused: Bool) { call { $0.setPaused(paused, reply: $1) } }
-    func setDischarging(_ discharging: Bool) { call { $0.setDischarging(discharging, reply: $1) } }
-
-    // MARK: XPC
 
     private func call(_ send: @escaping (ChargeHelperProtocol, @escaping (Data) -> Void) -> Void, then done: (@MainActor () -> Void)? = nil) {
         let connection = self.connection ?? makeConnection()
@@ -156,18 +209,15 @@ import ToolsmithKit
             Task { @MainActor in
                 self?.connection = nil
                 self?.state = .failed(String(localized: "Couldn’t connect to the helper: \(error.localizedDescription)"))
+                self?.snapshot = nil
                 done?()
             }
         }
-        guard let helper = proxy as? ChargeHelperProtocol else { return }
+        guard let helper = proxy as? ChargeHelperProtocol else { done?(); return }
         send(helper) { [weak self] data in
             let status = try? JSONDecoder().decode(ChargeStatus.self, from: data)
             Task { @MainActor in
-                guard let self else { return }
-                self.status = status
-                if let status, self.state != .system {
-                    self.state = status.canPause || status.canDischarge ? .running : .unsupportedMac
-                }
+                self?.helperReported(status)
                 done?()
             }
         }

@@ -80,6 +80,26 @@ targets:
         # Finds ToolsmithKit.framework next to the app's own executable.
         LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
 
+  # The command line tool, `toolsmith`, at Contents/Helpers/toolsmith (the Homebrew cask links it
+  # into the PATH). It only forwards its arguments to the running app (see App/CLI/main.swift).
+  ToolsmithCLI:
+    type: tool
+    platform: macOS
+    sources:
+      - path: App/CLI
+    dependencies:
+      - target: ToolsmithKit
+        embed: false
+    settings:
+      base:
+        PRODUCT_NAME: toolsmith
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID).cli
+        GENERATE_INFOPLIST_FILE: YES
+        CREATE_INFOPLIST_SECTION_IN_BINARY: YES
+        SKIP_INSTALL: YES
+        # Contents/Helpers/../Frameworks: ToolsmithKit.framework inside the app.
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+
   Toolsmith:
     type: application
     platform: macOS
@@ -92,6 +112,11 @@ targets:
         embed: true
         copy:
           destination: executables
+      - target: ToolsmithCLI
+        embed: true
+        copy:
+          destination: wrapper
+          subpath: Contents/Helpers
     settings:
       base:
         PRODUCT_NAME: $(APP_NAME)

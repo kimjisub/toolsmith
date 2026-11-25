@@ -17,6 +17,7 @@ CI (`.github/workflows/ci.yml`, macOS runner) then:
 2. signs every executable (the charge helper with its own identifier, then the app) with hardened runtime, makes the DMG and notarizes it (`scripts/release.sh`);
 3. publishes the DMG and `release.json` (version, build, sha256, size) as a release in this repository (`scripts/publish-release.sh`), where people download it and installed apps look for updates;
 4. points the Homebrew cask `kimjisub/tap/toolsmith` ([homebrew-tap](https://github.com/kimjisub/homebrew-tap)) at the new version and sha256 (`scripts/update-homebrew-cask.sh`).
+   The cask also links the command line tool into the PATH with `binary "#{appdir}/Toolsmith.app/Contents/Helpers/toolsmith"`; the script changes only the version and sha256, so that line is kept in the tap by hand.
 
 Versions are CalVer `YYYY.M.PATCH`: year, month without a leading zero, and a number that starts at `0` each month (`2026.11.0`, `2026.11.1`, `2026.12.0`). Never reuse or lower a version; automatic updates only install higher ones.
 

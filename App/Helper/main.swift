@@ -20,7 +20,8 @@ let delegate = ListenerDelegate(service: service)
 listener.delegate = delegate
 listener.resume()
 
-// Leaving (unregistered, updated, or stopped) gives charging back first.
+// Leaving (unregistered, updated, or stopped) puts the charge controller back first; macOS's own
+// limit stays as it is until the app asks to remove the helper (restoreDefaults).
 for name in [SIGTERM, SIGINT, SIGHUP] {
     signal(name, SIG_IGN)
     let source = DispatchSource.makeSignalSource(signal: name, queue: .main)

@@ -19,6 +19,8 @@ import ToolsmithKit
         ModuleManager(modules: ModuleRegistry.make(host: self), settings: settings)
     }()
     private(set) lazy var menuBar = MenuBarController(environment: self)
+    /// The `toolsmith` command line tool's way in.
+    private lazy var commandLineServer = CLIServer(modules: modules)
     private(set) lazy var updates = UpdateController(settings: settings, isBusy: { [weak self] in self?.modules.running.contains(where: \.isBusy) ?? false })
     /// The app in front when the launcher opened or a shortcut fired.
     private(set) var targetApp: NSRunningApplication?
@@ -78,10 +80,14 @@ import ToolsmithKit
             .sink { [weak self] table in self?.applyHotkeys(table) }
             .store(in: &subscriptions)
         updates.launch()
+        commandLineServer.start()
     }
 
     /// Stops every module, for the app quitting.
-    func terminate() { modules.deactivate() }
+    func terminate() {
+        commandLineServer.stop()
+        modules.deactivate()
+    }
 
     /// New features bring default shortcuts; each is offered once (see HotkeyTable.seed), whether
     /// its module is on or not, so switching it on later finds its key.

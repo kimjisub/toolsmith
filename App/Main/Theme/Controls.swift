@@ -101,3 +101,30 @@ struct LevelMeter: View {
     }
 }
 
+
+/// A one-off that is on or off, as a wide button with a symbol: lit in its tint while it runs
+/// (the charge screen's "discharge" and "charge to 100% once").
+struct ActionChip: View {
+    let title: String
+    let symbol: String
+    let on: Bool
+    var tint: Color = Brand.accent
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: Space.xs) {
+                Image(systemName: symbol).font(.role(.detail, weight: .semibold))
+                Text(title).font(.role(.detail, weight: .medium)).lineLimit(1).minimumScaleFactor(0.8)
+            }
+            .foregroundStyle(on ? tint : Ink.secondary)
+            .frame(maxWidth: .infinity, minHeight: 28)
+            .padding(.horizontal, Space.s)
+            .background(on ? Tint.wash(tint) : Fill.control, in: RoundedRectangle(cornerRadius: Radius.s, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Radius.s, style: .continuous).strokeBorder(on ? Tint.edge(tint) : Line.subtle, lineWidth: 1))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(on ? .isSelected : [])
+    }
+}
