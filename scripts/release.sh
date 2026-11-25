@@ -74,6 +74,10 @@ done
 if [[ -f "$APP/Contents/MacOS/ToolsmithHelper" ]]; then
   sign --identifier "$APP_BUNDLE_ID.helper" "$APP/Contents/MacOS/ToolsmithHelper"
 fi
+# The command line tool, likewise.
+if [[ -f "$APP/Contents/Helpers/toolsmith" ]]; then
+  sign --identifier "$APP_BUNDLE_ID.cli" "$APP/Contents/Helpers/toolsmith"
+fi
 sign --entitlements "$ENTITLEMENTS" "$APP"
 codesign --verify --deep --strict "$APP"
 

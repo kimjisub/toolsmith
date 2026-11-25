@@ -8,6 +8,7 @@ Toolsmith is a native macOS menu bar app (Swift, SwiftUI + AppKit, macOS 26+) wh
 - `App/Kit`: `ToolsmithKit.framework`, pure logic with XCTest coverage (search, commands, shortcut table, settings, module switches and resolver, menu bar layout, palette and contrast, clipboard store, snippets, monitor maths, charge rules). No SwiftUI or AppKit UI imports here (Carbon and AppKit's non-UI APIs used by adapters are the exception).
 - `App/Tests`: XCTest for `App/Kit`.
 - `App/Helper`: the charge-limit helper (root, launchd daemon).
+- `App/CLI`: the `toolsmith` command line tool (Contents/Helpers/toolsmith). It forwards its arguments over a Unix socket in the support folder (`CLIEndpoint`, owner-only, same user checked) to the running app's `CLIServer`, which hands `toolsmith <name> …` to the module whose `commandLine` has that name. Sign it like the helper, with `--identifier <bundle id>.cli`.
 - `App/Main/Theme`: design tokens and parts. Everything visual comes from here (see CONTRIBUTING, Design system).
 
 ## Modules

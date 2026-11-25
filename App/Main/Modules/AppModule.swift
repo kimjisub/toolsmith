@@ -49,6 +49,8 @@ import ToolsmithKit
     var isBusy: Bool { get }
     /// Which of the module's menu bar items are on screen now (sampling can slow down when none is).
     func menuBarItemsShown(_ ids: Set<String>)
+    /// The module's commands for the `toolsmith` command line tool (`toolsmith <name> …`); nil: none.
+    var commandLine: ModuleCommandLine? { get }
     #if TOOLSMITH_DEV
     /// Development flags of this module (`--show-monitor`, `--record-demo`…), run after launch.
     func runDevelopmentAid(_ arguments: [String])
@@ -70,9 +72,22 @@ extension AppModule {
     func hotkeyPressed(_ id: String) {}
     var isBusy: Bool { false }
     func menuBarItemsShown(_ ids: Set<String>) {}
+    var commandLine: ModuleCommandLine? { nil }
     #if TOOLSMITH_DEV
     func runDevelopmentAid(_ arguments: [String]) {}
     #endif
+}
+
+/// A module's part of the command line tool. The tool sends its arguments to the running app
+/// (`CLIServer`), which hands `toolsmith <name> …` to the module with that name while it runs. A
+/// command does what the module's screens do, through the same objects.
+struct ModuleCommandLine {
+    /// The word after `toolsmith` ("charge").
+    let name: String
+    /// What `toolsmith <name> --help` prints.
+    let usage: String
+    /// The arguments after the name, `--json` included.
+    let run: @MainActor (CLIRequest) async -> CLIResponse
 }
 
 /// What a module may ask of the app's shell.

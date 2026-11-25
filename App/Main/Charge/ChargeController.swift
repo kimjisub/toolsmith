@@ -68,18 +68,28 @@ import ToolsmithKit
         connection = nil
     }
 
-    /// Looks again at the helper's registration and, when it runs, at its report.
-    func refresh() {
-        guard !isDemo else { return }
-        guard BatteryReader.battery() != nil else { state = .noBattery; snapshot = nil; return }
-        guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
+    /// Looks again at the helper's registration and, when it runs, at its report. `done` runs once
+    /// the report is in.
+    func refresh(then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        guard BatteryReader.battery() != nil else { state = .noBattery; snapshot = nil; done?(); return }
+        guard Self.isSignedByTeam else { state = .unsupportedBuild; done?(); return }
         switch service.status {
-        case .notRegistered, .notFound: state = .notInstalled
-        case .requiresApproval: state = .needsApproval
-        case .enabled: call { $0.status(reply: $1) }
+        case .notRegistered, .notFound: state = .notInstalled; snapshot = nil
+        case .requiresApproval: state = .needsApproval; snapshot = nil
+        case .enabled: call({ $0.status(reply: $1) }, then: done); return
         @unknown default: state = .notInstalled
         }
+        done?()
     }
+
+    /// `refresh`, awaited.
+    func refreshed() async {
+        await withCheckedContinuation { continuation in refresh { continuation.resume() } }
+    }
+
+    /// Whether the helper is registered and allowed to run (Login Items approval given).
+    var helperEnabled: Bool { service.status == .enabled }
 
     func install() {
         guard Self.isSignedByTeam else { state = .unsupportedBuild; return }
@@ -94,7 +104,7 @@ import ToolsmithKit
     }
 
     /// Gives charging back (and macOS's limit as it was), then removes the helper.
-    func uninstall() {
+    func uninstall(then done: (@MainActor () -> Void)? = nil) {
         busy = true
         let finish: @MainActor () -> Void = { [weak self] in
             guard let self else { return }
@@ -108,7 +118,7 @@ import ToolsmithKit
             self.status = nil
             self.snapshot = nil
             self.busy = false
-            self.refresh()
+            self.refresh(then: done)
         }
         if service.status == .enabled { call({ $0.restoreDefaults(reply: $1) }, then: finish) } else { finish() }
     }
@@ -141,26 +151,26 @@ import ToolsmithKit
     var canControl: Bool { isDemo || state == .running }
     var error: String? { status?.error }
 
-    func setLimit(_ percent: Int?) {
-        guard !isDemo else { return }
-        call { $0.setLimit(percent ?? 0, reply: $1) }
+    func setLimit(_ percent: Int?, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setLimit(percent ?? 0, reply: $1) }, then: done)
     }
 
-    func setSailing(_ points: Int) {
-        guard !isDemo else { return }
-        call { $0.setSailing(points, reply: $1) }
+    func setSailing(_ points: Int, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setSailing(points, reply: $1) }, then: done)
     }
 
     /// Runs the battery down to the limit while plugged in; ends there by itself.
-    func setDischarging(_ on: Bool) {
-        guard !isDemo else { return }
-        call { $0.setDischarging(on, reply: $1) }
+    func setDischarging(_ on: Bool, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setDischarging(on, reply: $1) }, then: done)
     }
 
     /// Charges to 100% and keeps it there until unplugged.
-    func setToppingUp(_ on: Bool) {
-        guard !isDemo else { return }
-        call { $0.setTopUp(on, reply: $1) }
+    func setToppingUp(_ on: Bool, then done: (@MainActor () -> Void)? = nil) {
+        guard !isDemo else { done?(); return }
+        call({ $0.setTopUp(on, reply: $1) }, then: done)
     }
 
     // MARK: The helper
@@ -193,7 +203,7 @@ import ToolsmithKit
                 done?()
             }
         }
-        guard let helper = proxy as? ChargeHelperProtocol else { return }
+        guard let helper = proxy as? ChargeHelperProtocol else { done?(); return }
         send(helper) { [weak self] data in
             let status = try? JSONDecoder().decode(ChargeStatus.self, from: data)
             Task { @MainActor in
