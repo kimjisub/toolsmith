@@ -32,7 +32,7 @@
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "macOS 는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다."
+            "value": "macOS는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다."
           }
         }
       }
@@ -50,7 +50,7 @@
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "macOS 는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다."
+            "value": "macOS는 위치 권한이 있는 앱에만 연결된 Wi-Fi 이름을 알려 줍니다. 위치 자체는 읽지 않습니다."
           }
         }
       }
